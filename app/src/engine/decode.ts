@@ -47,7 +47,8 @@ export function scoreDecode(input: {
     response_states: states,
     accepted_responses: accepted,
     correct_count: correct,
-    accuracy_percent: accepted ? Math.round((1000 * correct) / accepted) / 10 : null,
+    // Stored unrounded (status-0.3.0 checks accuracy == 100*correct/accepted exactly); round only for display.
+    accuracy_percent: accepted ? (100 * correct) / accepted : null,
     median_correct_rt_ms: rts.length ? median(rts) : null,
   }
 }
