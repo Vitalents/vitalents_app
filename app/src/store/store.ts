@@ -17,6 +17,16 @@ interface State {
   put: <K extends EntityName>(entity: K, records: EntityMap[K][]) => Promise<void>
 }
 
+/** FNV-1a fingerprint of a fixture file, to notice when the demo data on the server has changed. */
+export function fingerprint(text: string): string {
+  let h = 0x811c9dc5
+  for (let i = 0; i < text.length; i++) {
+    h ^= text.charCodeAt(i)
+    h = Math.imul(h, 0x01000193) >>> 0
+  }
+  return `${text.length}:${h.toString(16)}`
+}
+
 async function readAll(): Promise<Data> {
   const d = empty()
   for (const e of ENTITY_NAMES) (d as Record<string, unknown[]>)[e] = await db.table(e).toArray()
@@ -36,6 +46,16 @@ export const useStore = create<State>((set, get) => ({
         await get().loadScenario('S1')
         return
       }
+      // Demo data changed since this device saved it (new fixture version): reload it so nobody sees stale data.
+      const saved = (await db.meta.get('bundle_hash'))?.value ?? null
+      const latest = await fetch(`/data/fixtures/${meta.value}.json`, { cache: 'no-cache' })
+        .then((r) => (r.ok ? r.text() : null))
+        .then((t) => (t ? fingerprint(t) : null))
+        .catch(() => null) // offline: keep what is on the device
+      if (latest && latest !== saved) {
+        await get().loadScenario(meta.value)
+        return
+      }
       set({ data: await readAll(), scenario: meta.value, ready: true })
     } catch (err) {
       set({ error: String(err), ready: true })
@@ -46,7 +66,8 @@ export const useStore = create<State>((set, get) => ({
     try {
       const res = await fetch(`/data/fixtures/${code}.json`)
       if (!res.ok) throw new Error(`Scenario ${code} not found (${res.status})`)
-      const bundle = (await res.json()) as Bundle
+      const text = await res.text()
+      const bundle = JSON.parse(text) as Bundle
       await db.transaction('rw', [db.meta, ...ENTITY_NAMES.map((e) => db.table(e))], async () => {
         for (const e of ENTITY_NAMES) {
           await db.table(e).clear()
@@ -54,6 +75,7 @@ export const useStore = create<State>((set, get) => ({
           if (recs?.length) await db.table(e).bulkPut(recs)
         }
         await db.meta.put({ key: 'scenario', value: code })
+        await db.meta.put({ key: 'bundle_hash', value: fingerprint(text) })
       })
       set({ data: await readAll(), scenario: code, ready: true, error: null })
     } catch (err) {

@@ -16,6 +16,7 @@ export const S = {
     record: { full: 'Record & trends', short: 'Record' },
     plan: { full: 'Plan & follow-ups', short: 'Plan' },
     share: { full: 'Review & sharing', short: 'Share' },
+    ask: { full: 'Ask NASA', short: 'Ask' },
     settings: 'Settings',
   },
 

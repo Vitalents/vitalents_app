@@ -330,7 +330,7 @@ a.crew:hover { color: var(--deep); text-decoration: underline; }
   .top-actions { display: contents; }
   .tb-help { grid-area: help; justify-content: center; }
   .tb-report { grid-area: report; justify-content: center; }
-  .tb-settings { grid-area: settings; }
+  .tb-tools { grid-area: settings; }
   .brand-full { display: none; }
   .brand-compact { display: block; }
   .mission-day .long { display: none; }
@@ -350,7 +350,7 @@ a.crew:hover { color: var(--deep); text-decoration: underline; }
   .nav-item { flex: 1; flex-direction: column; gap: 0.1rem; padding: 0.3rem 0.1rem; min-height: calc(var(--nav-h) - 0.6rem); font-size: 0.72rem; justify-content: center; text-align: center; }
   .nav-full { display: none; }
   .nav-short { display: inline; }
-  .draft-note { display: none; }
+  .draft-note, .nav .pwa-note { display: none; }
   /* Content clears the fixed tab bar: its height plus the safe-area inset, plus breathing room. */
   .main { padding: 1rem 1rem calc(var(--nav-h) + env(safe-area-inset-bottom) + 1.5rem); }
   html { scroll-padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 0.5rem); }
@@ -386,3 +386,6 @@ a.crew:hover { color: var(--deep); text-decoration: underline; }
 }
 /* Visible to screen readers only (page titles on full-screen task pages). */
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Header tools: theme switch and settings. */
+.tb-tools { display: flex; gap: 0.35rem; align-items: center; }

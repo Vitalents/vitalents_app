@@ -10,6 +10,7 @@ import { useStore } from '../store/store'
 import { HelpDialog, ReportDialog } from './Dialogs'
 import { Icon } from './Icons'
 import { Emblem, Logo, Mark } from './Logo'
+import { ThemeToggle } from './ThemeToggle'
 import { HELP_EVENT } from '../features/decode/useRound'
 import { useOutboxTicker } from '../sync/link'
 import { OfflineNote } from '../pwa'
@@ -21,6 +22,7 @@ export const NAV = [
   { to: '/record', key: 'record' },
   { to: '/plan', key: 'plan' },
   { to: '/share', key: 'share' },
+  { to: '/ask', key: 'ask' },
 ] as const
 
 export function Layout() {
@@ -61,7 +63,7 @@ export function Layout() {
         <div className="top-actions">
           <button className="btn danger tb-help" onClick={() => setDialog('help')}><Icon name="help" /><span>{S.header.help}</span></button>
           <button className="btn tb-report" onClick={() => setDialog('report')}><Icon name="report" /><span>{S.header.report}</span></button>
-          <NavLink to="/settings" className="icon-btn tb-settings" aria-label={S.nav.settings} title={S.nav.settings}><Icon name="settings" /></NavLink>
+          <span className="tb-tools"><ThemeToggle /><NavLink to="/settings" className="icon-btn tb-settings" aria-label={S.nav.settings} title={S.nav.settings}><Icon name="settings" /></NavLink></span>
         </div>
       </header>
 

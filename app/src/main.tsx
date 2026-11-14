@@ -10,6 +10,7 @@ import './styles/tokens.css'
 import './styles/app.css'
 import { Layout } from './shell/Layout'
 import { registerPwa, UpdateToast } from './pwa'
+import { applyStoredTheme } from './store/preferences'
 import { MapPage } from './features/map/MapPage'
 import { S } from './content/strings'
 import { useSubject } from './store/selectors'
@@ -66,6 +67,7 @@ const router = createBrowserRouter([
   },
 ])
 
+applyStoredTheme() // remembered light/dark choice before the first screen
 registerPwa() // offline after one visit; never caches the local assistant
 
 createRoot(document.getElementById('root')!).render(

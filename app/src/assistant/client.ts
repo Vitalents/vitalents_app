@@ -225,7 +225,8 @@ export function buildContext(data: Data, domainId?: DomainId): Record<string, un
       (r) => String(r.start_at_utc).slice(0, 10),
       date,
     )
-    if (dec && typeof dec.correct_count === 'number') ctx.decode_correct_count = dec.correct_count
+    // Today's round only: an older score must never be shown as today's (no reading today -> omitted).
+    if (dec && String(dec.start_at_utc).slice(0, 10) === date && typeof dec.correct_count === 'number') ctx.decode_correct_count = dec.correct_count
     const ref = [...data.personal_reference].filter((p) => p.metric_code === 'decode_correct_count').pop()
     if (ref && typeof ref.reference_value === 'number') ctx.reference_value = ref.reference_value
   }
