@@ -1,13 +1,13 @@
 {
   "model": "gpt-oss:20b",
-  "library_version": "7995e34aa713",
+  "library_version": "b64bf122595e",
   "counts": {
     "total": 15,
-    "passed": 14,
-    "correct_source": 9,
+    "passed": 13,
+    "correct_source": 8,
     "correct_abstention": 5,
-    "blocked": 2,
-    "answered": 10
+    "blocked": 3,
+    "answered": 9
   },
   "results": [
     {
@@ -23,12 +23,10 @@
     {
       "question": "Did astronauts' cognitive performance decline during 6-month missions on the space station?",
       "answerable": true,
-      "status": "answered",
-      "pass": true,
-      "reason": null,
-      "citations": [
-        "Cognitive performance in ISS astronauts on 6-month low earth orbit missions"
-      ]
+      "status": "blocked",
+      "pass": false,
+      "reason": "unsupported numbers ['25']",
+      "citations": []
     },
     {
       "question": "Why is the sleep-wake cycle hard to keep on the space station?",
@@ -38,8 +36,7 @@
       "reason": null,
       "citations": [
         "Risk from Inadequate Sleep and Irregular Schedules",
-        "NASA-STD-3001 Technical Brief: Sleep Accommodations (OCHMO-TB-041)",
-        "Circadian rhythms, sleep, and performance in space"
+        "NASA-STD-3001 Medical Technical Brief: Circadian Desynchrony (OCHMO-MTB-009)"
       ]
     },
     {

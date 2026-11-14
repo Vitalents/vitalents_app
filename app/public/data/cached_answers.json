@@ -3,21 +3,21 @@
     "question": "Why do we measure sleep on a long mission?",
     "response": {
       "status": "blocked",
-      "question_id": "ca226a6b9fb3",
+      "question_id": "05f4ea29ef41",
       "your_data": "From your record: Mission day: 27.",
       "science": null,
       "citations": [],
-      "limits": "Publication review withheld this recorded response. The sleep response claims that monitoring ensures adequate rest; the cited monitoring evidence does not establish that guarantee. This is a publication decision, not a new answer from the model. No medical advice is provided.",
+      "limits": "Publication review withheld this recorded response. This exact recording has not been checked against its sources. This is a publication decision, not a new answer from the model. No medical advice is provided.",
       "model": "gpt-oss:20b",
       "reason": "publication_review"
     },
     "label": "Recorded from the onboard model",
     "publication_review": {
       "policy_version": "cache-review-2026-11-14.1",
-      "decision": "withdraw",
+      "decision": "pending_review",
       "review_kind": "automated_source_comparison_not_human_or_clinical_approval",
-      "raw_recording_sha256": "46433500b802ca7932d1c60f1bc41c67e7057781ef8bd3a05ca6bc08952c1fae",
-      "entry_sha256": "8a53d0e9a4d432d5cb31c962e466edd3b84f02832dc72d2d56f87b55c6854381",
+      "raw_recording_sha256": "c10781654fb32e60a2fa0a8b6b022c8d388ce4a9448c42608d182c83f7dd5074",
+      "entry_sha256": "f0c7e52aaa6894793c5359f453ebe98ed2f453edde58466fdaa963bf70cc299c",
       "original_status": "answered",
       "science_text_changed": false,
       "science_text_withheld": true,
@@ -27,25 +27,26 @@
   {
     "question": "What does a Decode result below my reference mean?",
     "response": {
-      "status": "not_in_library",
-      "question_id": "a57434f435bb",
+      "status": "blocked",
+      "question_id": "0e64eb4af681",
       "your_data": "From your record: Mission day: 27.",
       "science": null,
       "citations": [],
-      "limits": "That isn't covered by the onboard NASA library. You can add this question for review.",
+      "limits": "Publication review withheld this recorded response. This exact recording has not been checked against its sources. This is a publication decision, not a new answer from the model. No medical advice is provided.",
       "model": "gpt-oss:20b",
-      "top_score": 0.5295
+      "top_score": 0.5295,
+      "reason": "publication_review"
     },
     "label": "Recorded from the onboard model",
     "publication_review": {
       "policy_version": "cache-review-2026-11-14.1",
-      "decision": "retain",
+      "decision": "pending_review",
       "review_kind": "automated_source_comparison_not_human_or_clinical_approval",
-      "raw_recording_sha256": "46433500b802ca7932d1c60f1bc41c67e7057781ef8bd3a05ca6bc08952c1fae",
-      "entry_sha256": "14ba38783bd7444d866b808cdddb0afb416121161bb15f66412786ee2fa240fb",
+      "raw_recording_sha256": "c10781654fb32e60a2fa0a8b6b022c8d388ce4a9448c42608d182c83f7dd5074",
+      "entry_sha256": "c42cefe5515a751c39550bb251c9506c60d77a963e38615abd9070cb491a2ab1",
       "original_status": "not_in_library",
       "science_text_changed": false,
-      "science_text_withheld": false,
+      "science_text_withheld": true,
       "citation_metadata_changes": []
     }
   },
@@ -53,21 +54,21 @@
     "question": "Why is pulse alone not enough to judge heart health?",
     "response": {
       "status": "blocked",
-      "question_id": "55efa55a319e",
+      "question_id": "f7274b995162",
       "your_data": "From your record: Mission day: 27.",
       "science": null,
       "citations": [],
-      "limits": "Publication review withheld this recorded response. The pulse response includes an unsupported absolute claim and attributes a structural claim to a source that does not state it. This is a publication decision, not a new answer from the model. No medical advice is provided.",
+      "limits": "Publication review withheld this recorded response. This exact recording has not been checked against its sources. This is a publication decision, not a new answer from the model. No medical advice is provided.",
       "model": "gpt-oss:20b",
       "reason": "publication_review"
     },
     "label": "Recorded from the onboard model",
     "publication_review": {
       "policy_version": "cache-review-2026-11-14.1",
-      "decision": "withdraw",
+      "decision": "pending_review",
       "review_kind": "automated_source_comparison_not_human_or_clinical_approval",
-      "raw_recording_sha256": "46433500b802ca7932d1c60f1bc41c67e7057781ef8bd3a05ca6bc08952c1fae",
-      "entry_sha256": "b17c49d6ee2767345df47e472447e5639a989d5a6814f04f212d2eb88e16f804",
+      "raw_recording_sha256": "c10781654fb32e60a2fa0a8b6b022c8d388ce4a9448c42608d182c83f7dd5074",
+      "entry_sha256": "06a252a4966760e3fc9669559c4b906ff5f539cc262492eaa6de6d08265e5591",
       "original_status": "answered",
       "science_text_changed": false,
       "science_text_withheld": true,
@@ -77,77 +78,50 @@
   {
     "question": "How does light affect the sleep cycle in space?",
     "response": {
-      "status": "answered",
-      "question_id": "9e91864abed0",
+      "status": "blocked",
+      "question_id": "5654ee2eb743",
       "your_data": "From your record: Mission day: 27.",
-      "science": "Light exposure in space can disrupt circadian rhythms because astronauts experience many sunrises and sunsets per day, leading to sleep‑wake cycle disturbances. [S1] Exposure to light at inappropriate times causes circadian misalignment and sleep disruption, so mission design recommends dedicated quiet sleep quarters and controlled lighting. [S2] Countermeasures such as using LEDs to simulate Earth’s light‑dark cycle help align biological clocks. [S1] Covering windows with blinds and wearing eye masks also mitigate circadian desynchrony. [S3]",
-      "citations": [
-        {
-          "id": "S1",
-          "source_id": "lib:nasa-sleep-risk",
-          "title": "Risk from Inadequate Sleep and Irregular Schedules",
-          "url": "https://www.nasa.gov/reference/risk-from-inadequate-sleep-and-irregular-schedules/",
-          "page": null,
-          "excerpt": "- [What are the top risks?] \"Astronauts are exposed to numerous stressors during spaceflight\" - [What are the top risks?] \"can lead to short- and long-term health consequences that can affect mission success.\" - [What can be done about it?] \"light-emitting diodes, or LEDs, simulate Earth’s light-dar"
-        },
-        {
-          "id": "S2",
-          "source_id": "lib:nasa-std-3001-tb-sleep-accommodations",
-          "title": "NASA-STD-3001 Technical Brief: Sleep Accommodations (OCHMO-TB-041)",
-          "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-041-sleep-accommodations.pdf",
-          "page": null,
-          "excerpt": "- [p. 1, Executive Summary] \"Thus, for crewmembers to achieve optimal sleep, they must be provided with a sleep environment\" - [p. 5, Reference Data] \"astronauts sleep an average of about six hours while in space\" - [p. 9, Design Considerations] \"For long-duration missions (>30 days), crewmembers sh"
-        },
-        {
-          "id": "S3",
-          "source_id": "lib:nasa-std-3001-mtb-circadian-desynchrony",
-          "title": "NASA-STD-3001 Medical Technical Brief: Circadian Desynchrony (OCHMO-MTB-009)",
-          "url": "https://www.nasa.gov/wp-content/uploads/2026/03/ochmo-mtb-009-circadian-desynchrony.pdf",
-          "page": null,
-          "excerpt": "- [p. 2, Overview: What is Circadian Desynchrony?] \"an individual can experience 'circadian desynchrony.'\" - [p. 1, Executive Summary] \"cognitive impairment (e.g., inattention; distraction; slowed reaction time; poor decision making)\" - [p. 2, Overview: Spaceflight Considerations] \"altered light-dar"
-        }
-      ],
-      "limits": "This explains the evidence; it is not a diagnosis. Your medical team makes medical decisions.",
-      "model": "gpt-oss:20b"
+      "science": null,
+      "citations": [],
+      "limits": "Publication review withheld this recorded response. This exact recording has not been checked against its sources. This is a publication decision, not a new answer from the model. No medical advice is provided.",
+      "model": "gpt-oss:20b",
+      "reason": "publication_review"
     },
     "label": "Recorded from the onboard model",
     "publication_review": {
       "policy_version": "cache-review-2026-11-14.1",
-      "decision": "retain",
+      "decision": "pending_review",
       "review_kind": "automated_source_comparison_not_human_or_clinical_approval",
-      "raw_recording_sha256": "46433500b802ca7932d1c60f1bc41c67e7057781ef8bd3a05ca6bc08952c1fae",
-      "entry_sha256": "8b2c6fb7382728b9a09ce5b328d7f5e56bb83f040c78db91d02552b14e634e3b",
+      "raw_recording_sha256": "c10781654fb32e60a2fa0a8b6b022c8d388ce4a9448c42608d182c83f7dd5074",
+      "entry_sha256": "213ac0e005055619b0fea0579b188f5ec45000eba748ec3af09ed5e23c59bd94",
       "original_status": "answered",
       "science_text_changed": false,
-      "science_text_withheld": false,
-      "citation_metadata_changes": [
-        "Corrected printed-page locator in citation excerpt.",
-        "Removed corpus page number; it is not an original-source page."
-      ]
+      "science_text_withheld": true,
+      "citation_metadata_changes": []
     }
   },
   {
     "question": "What dose of melatonin should I take tonight?",
     "response": {
       "status": "blocked",
-      "question_id": "6c3d1bce99ab",
+      "question_id": "bac6c4af2ac3",
       "your_data": "From your record: Mission day: 27.",
       "science": null,
       "citations": [],
-      "limits": "I can't advise on medications, supplements or doses. Use Request help to ask the medical team.",
+      "limits": "Publication review withheld this recorded response. This exact recording has not been checked against its sources. This is a publication decision, not a new answer from the model. No medical advice is provided.",
       "model": "gpt-oss:20b",
-      "reason": "medication_or_dose"
+      "reason": "publication_review"
     },
     "label": "Recorded from the onboard model",
     "publication_review": {
       "policy_version": "cache-review-2026-11-14.1",
-      "decision": "retain",
+      "decision": "pending_review",
       "review_kind": "automated_source_comparison_not_human_or_clinical_approval",
-      "raw_recording_sha256": "46433500b802ca7932d1c60f1bc41c67e7057781ef8bd3a05ca6bc08952c1fae",
-      "entry_sha256": "1b8a18a6102a862b0d3e1b4d97c99420d1a3d0ff21f88329d04150ee48d9aa02",
+      "raw_recording_sha256": "c10781654fb32e60a2fa0a8b6b022c8d388ce4a9448c42608d182c83f7dd5074",
+      "entry_sha256": "1348dd28cba776b1685252993d728b2c4c55484ec325921e69d3cb1ecc9c1fbd",
       "original_status": "blocked",
       "science_text_changed": false,
-      "science_text_withheld": false,
+      "science_text_withheld": true,
       "citation_metadata_changes": []
     }
   }
