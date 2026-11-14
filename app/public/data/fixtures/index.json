@@ -1,0 +1,40 @@
+{
+  "index_version": "1.0",
+  "scenarios": [
+    {
+      "code": "S1",
+      "title": "Performance change",
+      "subject_id": "sim:crew:fahim",
+      "description": "Fahim: Decode below his personal range after short nights; a rest-window step and the open pain follow-up.",
+      "file": "S1.json"
+    },
+    {
+      "code": "S2",
+      "title": "Missing measurement",
+      "subject_id": "sim:crew:c2",
+      "description": "Crew B: no sleep reading for last night and an interrupted Decode round; nothing is invented.",
+      "file": "S2.json"
+    },
+    {
+      "code": "S3",
+      "title": "No schedule alternative",
+      "subject_id": "sim:crew:c3",
+      "description": "Crew C: short nights, but every evening task is fixed; the system says no valid alternative exists.",
+      "file": "S3.json"
+    },
+    {
+      "code": "S4",
+      "title": "Presentation needing review",
+      "subject_id": "sim:crew:c4",
+      "description": "Crew D: a reported symptom opens a review right away, even with a good Decode result.",
+      "file": "S4.json"
+    },
+    {
+      "code": "S5",
+      "title": "Communication delay",
+      "subject_id": "sim:crew:fahim",
+      "description": "Fahim: a consult summary waits to send and moves through each delivery state with a 24-minute delay.",
+      "file": "S5.json"
+    }
+  ]
+}
