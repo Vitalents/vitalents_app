@@ -1,0 +1,26 @@
+{
+  "examples_are_synthetic": true,
+  "description": "Invented values and identifiers for Task 4 verification.",
+  "resting_hr": {
+    "observations": [[1,62],[2,65],[3,63],[4,60],[5,64]],
+    "target": [6,68],
+    "median": 63
+  },
+  "S1": {
+    "description": "Several shorter nights and slower DECODE results during a simulated mission.",
+    "baseline_sleep": [[1,415],[2,420],[3,425]],
+    "baseline_decode_rt": [[1,600],[2,620],[3,640]],
+    "baseline_target": [4,425,625],
+    "sustained_change": [[5,350,720],[6,340,740],[7,330,760],[8,320,780]],
+    "expected_sleep_reference": 420,
+    "expected_decode_reference": 620,
+    "external_followup_status": "watching"
+  },
+  "S2": {
+    "description": "A missing sleep value and an interrupted DECODE session.",
+    "day": 9,
+    "sleep_value": null,
+    "decode_state": "interrupted",
+    "external_followup_status": "action_open"
+  }
+}

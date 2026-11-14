@@ -6,7 +6,7 @@ from collections.abc import Mapping
 from datetime import date, datetime, timedelta
 from fractions import Fraction
 
-RULESET_VERSION = "status-0.3.0"
+RULESET_VERSION = "status-0.3.1"
 DECODE_WINDOW_MS = 90_000
 KINDS = ("measurement", "sleep_record", "decode_session")
 MODES = {
@@ -42,7 +42,8 @@ def _number(value):
     return type(value) is int or (type(value) is float and math.isfinite(value))
 
 
-def _utc(value):
+def parse_utc(value):
+    """Parse the contract's explicit UTC timestamp or return None."""
     if not isinstance(value, str) or not re.fullmatch(
         r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}"
         r"(?:\.[0-9]+)?(?:Z|\+00:00)", value
@@ -74,8 +75,8 @@ def _decode_clock_adjustment_verified(record, context):
 
 def _observed_time(record, kind, context):
     if kind == "decode_session":
-        start = _utc(record.get("start_at_utc"))
-        end = _utc(record.get("end_at_utc"))
+        start = parse_utc(record.get("start_at_utc"))
+        end = parse_utc(record.get("end_at_utc"))
         if record.get("session_state") == "completed" or record.get("end_at_utc") is not None:
             return start is not None and end is not None and (
                 start <= end or _decode_clock_adjustment_verified(record, context)
@@ -88,7 +89,7 @@ def _observed_time(record, kind, context):
     resolution = record.get("source_metric_granularity")
     instant = record.get("observed_at_utc")
     research = record.get("data_origin") == "real_research"
-    if instant is not None and (research or _utc(instant) is None):
+    if instant is not None and (research or parse_utc(instant) is None):
         return False
     if not _date(record.get("observation_date")):
         return False
@@ -167,8 +168,8 @@ def _decode(record, context, issues, mismatch):
     if state == "completed":
         if context.get("events_verified") is not True:
             issues.append("unverified_decode_events")
-        start = _utc(record.get("start_at_utc"))
-        end = _utc(record.get("end_at_utc"))
+        start = parse_utc(record.get("start_at_utc"))
+        end = parse_utc(record.get("end_at_utc"))
         if (
             start is not None and end is not None and elapsed == DECODE_WINDOW_MS
             and end - start != timedelta(milliseconds=DECODE_WINDOW_MS)
@@ -216,7 +217,8 @@ def _decode_summaries(record, issues):
             or accuracy != (100 * correct) / accepted
         ))
         or (correct == 0 and median is not None)
-        or (correct > 0 and (not _number(median) or median < 0))
+        # Accepted trials lie inside the protocol window, so their median cannot exceed it.
+        or (correct > 0 and (not _number(median) or not 0 <= median <= DECODE_WINDOW_MS))
     ):
         issues.append("invalid_decode_summary")
 
@@ -314,7 +316,7 @@ def evaluate(kind, record, *, context=None):
                 or (origin == "real_research" and context.get("source_link_verified") is not True)):
             issues.append("subject_source_mismatch")
         if (any(not _text(record.get(key)) for key in (kind + "_id", "schema_version"))
-                or _utc(record.get("created_at_utc")) is None):
+                or parse_utc(record.get("created_at_utc")) is None):
             issues.append("invalid_record_metadata")
         source = _source_known(record, kind)
         if not source:
@@ -387,7 +389,7 @@ def evaluate(kind, record, *, context=None):
 def information_status(kind, record, *, information_status_id, created_at_utc,
                        schema_version, context=None):
     """Attach caller-owned persistence metadata to an evaluation."""
-    if not _text(information_status_id) or not _text(schema_version) or _utc(created_at_utc) is None:
+    if not _text(information_status_id) or not _text(schema_version) or parse_utc(created_at_utc) is None:
         raise ValueError("Output ID, schema version and UTC creation time are required")
     result = evaluate(kind, record, context=context)
     subject = context.get("subject") if context else None
