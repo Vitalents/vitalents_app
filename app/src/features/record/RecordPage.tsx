@@ -1,5 +1,6 @@
 // Record & trends (UI-07) with the reference screen per indicator (UI-06): FR-REF-03, FR-REF-04, FR-REF-07.
 // Follow-up status and data status stay separate labels (CLAUDE.md rule 2); the self-rating and Decode stay separate cards.
+import { PatternCard } from '../research/PatternCard'
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { DOMAINS } from '../../content/content'
@@ -28,7 +29,7 @@ export function RecordPage() {
         <h1>{T.title}</h1>
         <p className="muted">{T.lead}</p>
       </header>
-      <p className="callout tr-pattern">{T.patternNote}</p>
+      <PatternCard />
       <nav className="tr-jump" aria-label={T.jumpLabel}>
         <ul>
           {live.flatMap((v) => v.indicators.map((i) => (

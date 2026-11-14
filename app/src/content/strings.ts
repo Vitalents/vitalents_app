@@ -219,6 +219,7 @@ export const S = {
     plannerView: 'Mission planner view',
     profileView: 'Mission profile',
     proofView: 'Proof and limits',
+    researchView: 'Research prototype (simulated data)',
     linkTitle: 'Link to Earth (simulated)',
     thisDevice: 'This device',
   },

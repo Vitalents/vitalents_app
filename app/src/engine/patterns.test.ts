@@ -1,4 +1,5 @@
 // FR-PE-07: descriptive sleep / Decode pattern on the astronaut's own record (S1 Fahim, S3, S4 fixtures).
+import { STARTER_RULES } from './rules.starter'
 import { describe, expect, it } from 'vitest'
 import s1 from '../../public/data/fixtures/S1.json'
 import s3 from '../../public/data/fixtures/S3.json'
@@ -30,7 +31,7 @@ describe('sleepDecodePattern on S1', () => {
   })
 
   it('uses the rule threshold when there is no personal sleep reference, with its rule id and source', () => {
-    expect(p.shortNight).toMatchObject({ basis: 'rule', hours: SHORT_NIGHT_RULE_HOURS, ruleId: 'R-PLAN-01', ruleVersion: '0.1', sourceId: 'lib:nasa-sleep-risk' })
+    expect(p.shortNight).toMatchObject({ basis: 'rule', hours: SHORT_NIGHT_RULE_HOURS, ruleId: 'R-PLAN-01', ruleVersion: STARTER_RULES.find((r) => r.id === 'R-PLAN-01')!.version, sourceId: 'lib:nasa-sleep-risk' })
   })
 
   it('pairs each night with the Decode round of the same morning', () => {

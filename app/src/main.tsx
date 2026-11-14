@@ -31,6 +31,7 @@ const MedicalView = pick(() => import('./features/roles/MedicalView'), 'MedicalV
 const PlannerView = pick(() => import('./features/roles/PlannerView'), 'PlannerView')
 const ProfilePage = pick(() => import('./features/profile/ProfilePage'), 'ProfilePage')
 const ProofPage = pick(() => import('./features/proof/ProofPage'), 'ProofPage')
+const ResearchPage = pick(() => import('./features/research/ResearchPage'), 'ResearchPage')
 
 const page = (node: ReactNode) => <Suspense fallback={<p className="muted pad" role="status">{S.loading}</p>}>{node}</Suspense>
 
@@ -59,6 +60,7 @@ const router = createBrowserRouter([
       { path: 'ask', element: page(<AskPage />) },
       { path: 'profile', element: page(<ProfilePage />) },
       { path: 'proof', element: page(<ProofPage />) },
+      { path: 'research', element: page(<ResearchPage />) },
       { path: '*', element: <MapPage /> },
     ],
   },
