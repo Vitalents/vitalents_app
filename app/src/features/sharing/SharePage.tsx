@@ -45,7 +45,7 @@ export function SharePage({ subjectId }: { subjectId: string }) {
     )
   }
 
-  async function onConfirm() {
+  async function onConfirm(consultText: string | null = null) {
     setBusy(true)
     setError(null)
     setDraftId(draftId)
@@ -56,7 +56,7 @@ export function SharePage({ subjectId }: { subjectId: string }) {
           packageId: draftId,
           previewedRecordIds: summary.previewedRecordIds,
           excludedFieldCodes: summary.excludedFieldCodes,
-          summaryText: summary.summaryText,
+          summaryText: consultText ? `${summary.summaryText}\n\n${consultText}` : summary.summaryText,
         },
         role,
       )

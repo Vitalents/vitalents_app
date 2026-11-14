@@ -1,5 +1,7 @@
 // SharePreview (FR-SHR-02): exactly what will be sent, to whom, and what is left out.
+import { useState } from 'react'
 import { DataBadge } from '../../shell/StatusChips'
+import { ConsultDraft, type ConsultDraftState } from '../consult'
 import type { Summary } from './summary'
 import { T } from './strings'
 
@@ -50,18 +52,23 @@ export function SharePreview({
   busy,
 }: {
   summary: Summary
-  onConfirm: () => void
+  onConfirm: (consultText: string | null) => void
   busy: boolean
 }) {
+  const [consult, setConsult] = useState<ConsultDraftState | null>(null)
+  const consultBlocked = !!consult && !consult.sendable
   return (
     <div className="sh-preview">
-      <section className="card sh-manifest" aria-labelledby="sh-included">
-        <header className="sh-manifest-head">
-          <h2 id="sh-included">{T.share.includedTitle}</h2>
-          <p className="muted small">{T.share.recordCount(summary.previewedRecordIds.length)}</p>
-        </header>
-        <SummarySections summary={summary} />
-      </section>
+      <div className="stack">
+        <section className="card sh-manifest" aria-labelledby="sh-included">
+          <header className="sh-manifest-head">
+            <h2 id="sh-included">{T.share.includedTitle}</h2>
+            <p className="muted small">{T.share.recordCount(summary.previewedRecordIds.length)}</p>
+          </header>
+          <SummarySections summary={summary} />
+        </section>
+        <ConsultDraft summary={summary} onChange={setConsult} />
+      </div>
 
       <aside className="sh-side">
         <dl className="card sh-to">
@@ -77,7 +84,7 @@ export function SharePreview({
           </ul>
           <p className="small">{T.share.plannerNever}</p>
         </section>
-        <button type="button" className="btn primary sh-confirm" onClick={onConfirm} disabled={busy || summary.isEmpty}>
+        <button type="button" className="btn primary sh-confirm" onClick={() => onConfirm(consult?.text ?? null)} disabled={busy || summary.isEmpty || consultBlocked}>
           {T.share.confirm}
         </button>
         {summary.isEmpty && <p className="muted small">{T.share.empty}</p>}
