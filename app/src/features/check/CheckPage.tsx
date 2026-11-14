@@ -5,6 +5,7 @@ import {
   DEMO_MS, MEASURE_MS, PRACTICE_MS, buildRoundRecords, makeDifferentKey, makeKey, makeSequence, newSeed, type BuiltRecords,
 } from '../../engine/decodeSession'
 import { baselineSessions } from '../../engine/decodeValidity'
+import { referenceForDate } from '../../engine/reference'
 import { missionDay, MISSION_ANCHOR } from '../../engine/mission'
 import { useStore } from '../../store/store'
 import { DecodeRound } from '../decode/DecodeRound'
@@ -34,7 +35,7 @@ export function CheckPage() {
   const ctx = useCheckContext()
   const location = useLocation()
   const data = useStore((s) => s.data)
-  const put = useStore((s) => s.put)
+  const putMany = useStore((s) => s.putMany)
   const [step, setStep] = useState<Step>(() => new URLSearchParams(location.search).get('story') === 'home' ? 'reward' : 'check')
   const stepRef = useRef(step)
   stepRef.current = step
@@ -49,8 +50,10 @@ export function CheckPage() {
   const practiceSeq = useMemo(() => makeSequence(seed + 7), [seed])
   const [pending, setPending] = useState<RoundEnd | null>(null)
   const [saved, setSaved] = useState<BuiltRecords | null>(null)
-  // Build once: retrying storage must preserve the original session/event IDs and timestamps.
-  const attempt = useRef<BuiltRecords | null>(null)
+  // Checkpoints and both finalisation phases update one attempt. Each retry retains its exact batch.
+  const roundKey = useRef(crypto.randomUUID())
+  const writeQueue = useRef<Promise<unknown>>(Promise.resolve())
+  const attempt = useRef<{ built: BuiltRecords; destination: 'interruption' | 'result' | 'stopped' } | null>(null)
   const saving = useRef(false)
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'error' | 'saved'>('idle')
   const durationMs = demo ? DEMO_MS : MEASURE_MS
@@ -72,23 +75,41 @@ export function CheckPage() {
     if (heading) { heading.tabIndex = -1; heading.focus({ preventScroll: true }) }
   }, [step, preview])
 
+  const buildAttempt = (end: RoundEnd, extraReasons: string[]) => {
+    let n = 0
+    const key = roundKey.current
+    return buildRoundRecords({
+      subjectId: ctx.subjectId, seed, raw: end.raw, plannedMs: durationMs, isPractice: demo, state: end.state,
+      interruptionReasons: [...end.interruptionReasons, ...extraReasons], interruptedAtMs: end.cutMs,
+      startedAt: end.startedAt, elapsedMs: end.elapsedMs, inputMethod: end.inputMethod,
+      hidden: end.hidden, deviceClass: end.deviceClass,
+      baseline: baselineSessions(data, ctx.subjectId, end.startedAt.toISOString()),
+      uuid: () => `${key}-${n++}`,
+    })
+  }
+
+  const enqueueWrite = (built: BuiltRecords) => {
+    // A slow checkpoint cannot land after finalisation and turn a completed round back into started.
+    const write = writeQueue.current.catch(() => undefined).then(() => putMany({
+      decode_session: [built.session], decode_response_event: built.events, information_status: [built.info],
+    }))
+    writeQueue.current = write
+    return write
+  }
+
   const persistAttempt = async () => {
-    const built = attempt.current
-    if (!built || saving.current) return
+    const request = attempt.current
+    if (!request || saving.current) return
+    const { built, destination } = request
     saving.current = true
     setSaveState('saving')
     if (stepRef.current !== 'reward') setStep('saving')
     try {
-      // Integration seam: phase 1 may replace these puts with its atomic, derived-record save API.
-      await put('decode_session', [built.session])
-      await put('decode_response_event', built.events)
-      await put('information_status', [built.info])
-      setSaved(built)
-      setPending(null)
+      await enqueueWrite(built)
+      if (destination !== 'interruption') { setSaved(built); setPending(null) }
       setSaveState('saved')
-      const destination = built.session.session_state === 'completed' ? 'result' : 'stopped'
       storyReturn.current = destination
-      if (stepRef.current !== 'reward') setStep(destination === 'result' ? 'reward' : 'stopped')
+      if (stepRef.current !== 'reward') setStep(destination === 'result' ? 'reward' : destination)
     } catch {
       setSaveState('error')
       storyReturn.current = 'save_error'
@@ -98,24 +119,29 @@ export function CheckPage() {
     }
   }
 
-  const prepareSave = (end: RoundEnd, extraReasons: string[]) => {
-    if (attempt.current) return
-    attempt.current = buildRoundRecords({
-      subjectId: ctx.subjectId, seed, raw: end.raw, plannedMs: durationMs, isPractice: demo, state: end.state,
-      interruptionReasons: [...end.interruptionReasons, ...extraReasons], interruptedAtMs: end.cutMs,
-      startedAt: end.startedAt, elapsedMs: end.elapsedMs, inputMethod: end.inputMethod,
-      hidden: end.hidden, deviceClass: end.deviceClass, baseline: baselineSessions(data, ctx.subjectId),
-    })
+  const prepareSave = (end: RoundEnd, extraReasons: string[], destination: 'interruption' | 'result' | 'stopped') => {
+    if (saving.current || attempt.current?.destination === destination) return
+    attempt.current = { built: buildAttempt(end, extraReasons), destination }
     void persistAttempt()
   }
 
+  const onCheckpoint = (end: RoundEnd) => {
+    // Once finalisation has begun, only its retained batch may update the attempt.
+    if (attempt.current) return
+    // Keep the measurement window neutral. Final persistence exposes an error and retry if needed.
+    void enqueueWrite(buildAttempt(end, [])).catch(() => undefined)
+  }
+
   const onRoundEnd = (end: RoundEnd) => {
-    if (end.state === 'completed') { setPending(end); setStep('interruption') }
-    else prepareSave(end, [])
+    if (end.state === 'completed') {
+      setPending(end)
+      // Persist the full ledger before asking about conditions, while comparison stays ineligible.
+      prepareSave(end, ['pending_interruption_check'], 'interruption')
+    } else prepareSave(end, [], 'stopped')
   }
 
   const answerInterruption = (yes: boolean) => {
-    if (pending) prepareSave(pending, yes ? ['reported_interruption'] : [])
+    if (pending) prepareSave(pending, yes ? ['reported_interruption'] : [], 'result')
   }
 
   const openStory = () => {
@@ -126,18 +152,18 @@ export function CheckPage() {
   const closeStory = () => {
     setPreview(false)
     const target = storyReturn.current
-    setStep(target === 'saving' ? (saveState === 'error' ? 'save_error' : saveState === 'saved' ? 'result' : 'saving') : target)
+    setStep(target === 'saving' ? (saveState === 'error' ? 'save_error' : saveState === 'saved' ? attempt.current?.destination ?? 'stopped' : 'saving') : target)
   }
   const restart = () => {
     setSeed(newSeed()); setSaved(null); setPending(null); attempt.current = null
+    roundKey.current = crypto.randomUUID()
     setSaveState('idle'); setStep('intro')
   }
 
   const selfRating = todaysAlertness(data, ctx)?.alertness_rating ?? null
   const reference = useMemo(
-    () => [...data.personal_reference].filter((r) => r.subject_id === ctx.subjectId && r.metric_code === 'decode_correct_count')
-      .sort((a, b) => a.created_at_utc.localeCompare(b.created_at_utc)).pop() ?? null,
-    [data.personal_reference, ctx.subjectId],
+    () => referenceForDate(data.personal_reference, 'decode_correct_count', saved?.session.start_at_utc.slice(0, 10) ?? ctx.today, ctx.subjectId),
+    [data.personal_reference, ctx.subjectId, ctx.today, saved],
   )
   const storyLink = <button type="button" className="dc-text-button" onClick={openStory}>{S.openStory}</button>
   const returnLabel = storyReturn.current === 'result' ? S.showResult : storyReturn.current === 'check' ? S.backToCheck : S.backToRoundStatus
@@ -170,7 +196,7 @@ export function CheckPage() {
         <button type="button" className="dc-btn" onClick={() => setStep('round')}>{S.startRound}</button>
       </section>}
       {step === 'round' && <DecodeRound key={`m-${seed}`} keyMap={keyMap} sequence={sequence} durationMs={durationMs}
-        label={demo ? S.demoLabel : S.measureLabel} onEnd={onRoundEnd} />}
+        label={demo ? S.demoLabel : S.measureLabel} onEnd={onRoundEnd} onCheckpoint={onCheckpoint} />}
       {step === 'interruption' && <section className="dc-card" aria-labelledby="dc-int-title">
         <h2 id="dc-int-title">{S.interruptionTitle}</h2><p className="dc-muted">{S.interruptionHelp}</p>
         <div className="dc-row"><button type="button" className="dc-btn dc-btn-secondary" onClick={() => answerInterruption(true)}>{S.yes}</button>

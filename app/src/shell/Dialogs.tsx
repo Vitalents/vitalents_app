@@ -67,7 +67,7 @@ function useCtx() {
 }
 
 export function HelpDialog({ onClose }: { onClose: () => void }) {
-  const put = useStore((s) => s.put)
+  const putMany = useStore((s) => s.putMany)
   const ctx = useCtx()
   const [note, setNote] = useState('')
   const [done, setDone] = useState(false)
@@ -75,9 +75,7 @@ export function HelpDialog({ onClose }: { onClose: () => void }) {
   async function submit() {
     setBusy(true)
     const r = buildHelpRecords({ ...ctx, note })
-    await put('finding', [r.finding])
-    await put('action', [r.action])
-    await put('follow_up', [r.follow_up])
+    await putMany({ finding: [r.finding], action: [r.action], follow_up: [r.follow_up] })
     setBusy(false)
     setDone(true)
   }
@@ -106,7 +104,7 @@ export function HelpDialog({ onClose }: { onClose: () => void }) {
 }
 
 export function ReportDialog({ onClose }: { onClose: () => void }) {
-  const put = useStore((s) => s.put)
+  const putMany = useStore((s) => s.putMany)
   const ctx = useCtx()
   const reportDate = useReviewDate()
   const [text, setText] = useState('')
@@ -120,10 +118,7 @@ export function ReportDialog({ onClose }: { onClose: () => void }) {
       return
     }
     const r = buildReportRecords({ ...ctx, text, onset, severity, reportDate })
-    await put('self_report', [r.self_report])
-    await put('finding', [r.finding])
-    await put('action', [r.action])
-    await put('follow_up', [r.follow_up])
+    await putMany({ self_report: [r.self_report], finding: [r.finding], action: [r.action], follow_up: [r.follow_up] })
     setDone(true)
   }
   return (

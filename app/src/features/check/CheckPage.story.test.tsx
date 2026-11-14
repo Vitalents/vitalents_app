@@ -8,17 +8,19 @@ import type { RoundEnd } from '../decode/useRound'
 import { CheckPage } from './CheckPage'
 
 const ended: RoundEnd = {
-  state: 'completed', raw: [], interruptionReasons: [], cutMs: null, startedAt: new Date('2026-11-14T08:00:00Z'),
+  state: 'completed', raw: [{ trial_index: 1, symbol_id: 'g1', correct_digit: 1, stimulus_ms: 0, response_ms: 400, response_digit: 1 }], interruptionReasons: [], cutMs: null, startedAt: new Date('2026-11-14T08:00:00Z'),
   elapsedMs: 90_000, inputMethod: 'keyboard', hidden: [], deviceClass: 'laptop',
 }
 vi.mock('../decode/DecodeRound', () => ({
-  DecodeRound: ({ label, onEnd }: { label: string; onEnd: (end: RoundEnd) => void }) => <div>
+  DecodeRound: ({ label, onEnd, onCheckpoint }: { label: string; onEnd: (end: RoundEnd) => void; onCheckpoint?: (end: RoundEnd) => void }) => <div>
     <p>{label}</p><button onClick={() => onEnd(ended)}>Complete test round</button>
+    {onCheckpoint && <button onClick={() => onCheckpoint({ ...ended, state: 'started', elapsedMs: 1000 })}>Checkpoint test round</button>}
     <button onClick={() => onEnd({ ...ended, state: 'interrupted', cutMs: 5000, elapsedMs: 5000, interruptionReasons: ['interrupted_help'] })}>Interrupt test round</button>
   </div>,
 }))
 
 const put = vi.fn().mockResolvedValue(undefined)
+const putMany = vi.fn().mockResolvedValue(undefined)
 const open = (path = '/check') => render(<MemoryRouter initialEntries={[path]}><CheckPage /></MemoryRouter>)
 function startRound() {
   fireEvent.click(screen.getByRole('button', { name: 'Go to Decode' }))
@@ -28,8 +30,9 @@ function startRound() {
 }
 beforeEach(() => {
   put.mockReset().mockResolvedValue(undefined)
+  putMany.mockReset().mockResolvedValue(undefined)
   vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => {})
-  useStore.setState({ data: structuredClone(fixture) as unknown as Data, put })
+  useStore.setState({ data: structuredClone(fixture) as unknown as Data, put, putMany })
 })
 afterEach(() => { cleanup(); vi.restoreAllMocks() })
 
@@ -94,19 +97,19 @@ describe('Decode story and save boundaries', () => {
     expect(screen.getByRole('heading', { name: 'The biggest star is yours.' })).toBeTruthy()
   })
   it('keeps access on save failure, retries original IDs, and preserves result through preview', async () => {
-    let fail = true
-    put.mockImplementation(async (entity) => { if (entity === 'decode_response_event' && fail) { fail = false; throw new Error('quota') } })
+    putMany.mockResolvedValueOnce(undefined).mockRejectedValueOnce(new Error('quota')).mockResolvedValue(undefined)
     open(); startRound()
     fireEvent.click(screen.getByRole('button', { name: 'Complete test round' }))
-    fireEvent.click(screen.getByRole('button', { name: /^No$/ }))
+    fireEvent.click(await screen.findByRole('button', { name: /^No$/ }))
     await screen.findByRole('heading', { name: 'Your round could not be fully saved' })
     expect(screen.queryByText('Round saved on this device')).toBeNull()
     fireEvent.click(screen.getByRole('button', { name: 'A message from home' }))
     fireEvent.click(screen.getByRole('button', { name: 'Try saving again' }))
     await screen.findByText('Round saved on this device')
-    const saves = put.mock.calls.filter(([entity]) => entity === 'decode_session')
-    expect(saves).toHaveLength(2)
-    expect(saves[0][1]).toEqual(saves[1][1])
+    const saves = putMany.mock.calls
+    expect(saves).toHaveLength(3)
+    expect(saves[1][0]).toEqual(saves[2][0])
+    expect(saves[0][0].decode_session[0].decode_session_id).toBe(saves[1][0].decode_session[0].decode_session_id)
     fireEvent.click(screen.getByRole('button', { name: 'Preview next story' }))
     fireEvent.click(screen.getByRole('button', { name: 'Back to today’s story' }))
     fireEvent.click(screen.getByRole('button', { name: 'See your result' }))
@@ -116,11 +119,53 @@ describe('Decode story and save boundaries', () => {
   it('rewards a completed reported interruption without a reference comparison', async () => {
     open(); startRound()
     fireEvent.click(screen.getByRole('button', { name: 'Complete test round' }))
-    fireEvent.click(screen.getByRole('button', { name: /^Yes$/ }))
+    fireEvent.click(await screen.findByRole('button', { name: /^Yes$/ }))
     await screen.findByRole('heading', { name: 'The biggest star is yours.' })
     fireEvent.click(screen.getByRole('button', { name: 'See your result' }))
     expect(screen.getByText('Saved, but not used for comparison with your reference.')).toBeTruthy()
     expect(screen.queryByText(/Within your personal range/)).toBeNull()
+  })
+  it('serializes a slow checkpoint before the complete ledger and final answer with stable identities', async () => {
+    let releaseCheckpoint!: () => void
+    putMany.mockImplementationOnce(() => new Promise<void>((resolve) => { releaseCheckpoint = resolve }))
+    open(); startRound()
+    fireEvent.click(screen.getByRole('button', { name: 'Checkpoint test round' }))
+    await waitFor(() => expect(putMany).toHaveBeenCalledTimes(1))
+    fireEvent.click(screen.getByRole('button', { name: 'Complete test round' }))
+    expect(screen.queryByRole('heading', { name: 'Was there an interruption during the round?' })).toBeNull()
+    expect(putMany).toHaveBeenCalledTimes(1)
+    fireEvent.click(screen.getByRole('button', { name: 'A message from home' }))
+    await act(async () => releaseCheckpoint())
+    await waitFor(() => expect(putMany).toHaveBeenCalledTimes(2))
+    expect(screen.getByRole('heading', { name: 'The biggest star is yours.' })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: 'See your result' })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Back to round status' }))
+    fireEvent.click(await screen.findByRole('button', { name: /^No$/ }))
+    await screen.findByRole('button', { name: 'See your result' })
+    expect(putMany).toHaveBeenCalledTimes(3)
+    const batches = putMany.mock.calls.map(([batch]) => batch)
+    expect(batches.map((b) => b.decode_session[0].session_state)).toEqual(['started', 'completed', 'completed'])
+    expect(new Set(batches.map((b) => b.decode_session[0].decode_session_id)).size).toBe(1)
+    expect(new Set(batches.map((b) => b.decode_response_event[0].decode_response_event_id)).size).toBe(1)
+    expect(batches[1].information_status[0].reason_codes).toContain('pending_interruption_check')
+    expect(batches[1].information_status[0].reference_eligible).toBe(false)
+    expect(batches[2].information_status[0].reason_codes).not.toContain('pending_interruption_check')
+  })
+  it('retries a failed pre-question save without publishing a result or losing the interruption answer', async () => {
+    putMany.mockRejectedValueOnce(new Error('quota')).mockResolvedValue(undefined)
+    open(); startRound()
+    fireEvent.click(screen.getByRole('button', { name: 'Complete test round' }))
+    await screen.findByRole('heading', { name: 'Your round could not be fully saved' })
+    expect(screen.queryByRole('button', { name: /^No$/ })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'A message from home' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Try saving again' }))
+    await screen.findByText('Round saved on this device')
+    expect(putMany.mock.calls[0][0]).toEqual(putMany.mock.calls[1][0])
+    expect(screen.queryByRole('button', { name: 'See your result' })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Back to round status' }))
+    fireEvent.click(await screen.findByRole('button', { name: /^Yes$/ }))
+    await screen.findByRole('button', { name: 'See your result' })
+    expect(putMany.mock.calls[2][0].information_status[0].reason_codes).toContain('reported_interruption')
   })
   it('lets a stopped round read the same story without claiming completion', async () => {
     open(); startRound()

@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { StrictMode } from 'react'
 import { makeKey, makeSequence } from '../../engine/decodeSession'
 import { DecodeRound } from './DecodeRound'
 import type { RoundEnd } from './useRound'
@@ -11,14 +12,16 @@ afterEach(() => {
   vi.useRealTimers()
 })
 
-function setup() {
+function setup({ checkpoint = false, strict = false, durationMs = 90_000 } = {}) {
   const onEnd = vi.fn<(end: RoundEnd) => void>()
-  render(<DecodeRound keyMap={makeKey(42)} sequence={makeSequence(42)} durationMs={90_000} label="Measured round" onEnd={onEnd} />)
+  const onCheckpoint = vi.fn<(end: RoundEnd) => void>()
+  const round = <DecodeRound keyMap={makeKey(42)} sequence={makeSequence(42)} durationMs={durationMs} label="Measured round" onEnd={onEnd} onCheckpoint={checkpoint ? onCheckpoint : undefined} />
+  const view = render(strict ? <StrictMode>{round}</StrictMode> : round)
   const finish = () => {
     fireEvent.click(screen.getByRole('button', { name: 'Quit' }))
     return onEnd.mock.calls[0][0]
   }
-  return { onEnd, finish }
+  return { onEnd, onCheckpoint, finish, unmount: view.unmount }
 }
 
 describe('Decode input guards', () => {
@@ -89,5 +92,40 @@ describe('Decode input guards', () => {
     expect(onEnd).toHaveBeenCalledOnce()
     expect(onEnd.mock.calls[0][0]).toMatchObject({ state: 'interrupted', interruptionReasons: ['interrupted_help'] })
     expect(onEnd.mock.calls[0][0].raw.filter((r) => r.response_digit !== null)).toHaveLength(0)
+  })
+
+  it('checkpoints without a phantom StrictMode interruption, then preserves the partial round on unmount', () => {
+    const { onEnd, onCheckpoint, unmount } = setup({ checkpoint: true, strict: true })
+    expect(onEnd).not.toHaveBeenCalled()
+    act(() => vi.advanceTimersByTime(0))
+    expect(onCheckpoint).toHaveBeenCalledOnce()
+    fireEvent.keyDown(window, { key: '4' })
+    act(() => vi.advanceTimersByTime(160))
+    unmount()
+    expect(onEnd).toHaveBeenCalledOnce()
+    const end = onEnd.mock.calls[0][0]
+    expect(end).toMatchObject({ state: 'aborted', interruptionReasons: ['aborted'] })
+    expect(end.raw.map((r) => r.response_digit)).toEqual([4, null])
+    expect(onCheckpoint.mock.calls.at(-1)?.[0].raw.map((r) => r.response_digit)).toEqual([4])
+  })
+
+  it('does not finalise twice when help is followed by pagehide and unmount', () => {
+    const { onEnd, unmount } = setup({ checkpoint: true })
+    act(() => vi.advanceTimersByTime(0))
+    fireEvent.click(screen.getByRole('button', { name: 'Request help' }))
+    fireEvent(window, new Event('pagehide'))
+    unmount()
+    expect(onEnd).toHaveBeenCalledOnce()
+    expect(onEnd.mock.calls[0][0]).toMatchObject({ state: 'interrupted', interruptionReasons: ['interrupted_help'] })
+  })
+
+  it('keeps a completed round completed when pagehide occurs during the late-response grace window', () => {
+    const { onEnd, unmount } = setup({ checkpoint: true, durationMs: 1_000 })
+    act(() => vi.advanceTimersByTime(1_060))
+    expect(onEnd).not.toHaveBeenCalled()
+    fireEvent(window, new Event('pagehide'))
+    unmount()
+    expect(onEnd).toHaveBeenCalledOnce()
+    expect(onEnd.mock.calls[0][0]).toMatchObject({ state: 'completed', interruptionReasons: [], elapsedMs: 1_000, cutMs: null })
   })
 })

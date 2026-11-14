@@ -98,6 +98,7 @@ export function DailyCheck({ ctx, onDone }: { ctx: CheckContext; onDone: () => v
     pendingId.current = rec.self_report_id
     try {
       await put('self_report', [rec])
+      pendingId.current = null
       if (mounted.current) onDone()
     } catch {
       if (mounted.current) setSaveError(true)

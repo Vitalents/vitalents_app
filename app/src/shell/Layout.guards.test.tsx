@@ -4,8 +4,9 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { makeKey, makeSequence } from '../engine/decodeSession'
 import { DecodeRound } from '../features/decode/DecodeRound'
-import type { RoundEnd } from '../features/decode/useRound'
+import { HELP_EVENT, REPORT_EVENT, type RoundEnd } from '../features/decode/useRound'
 import { useStore } from '../store/store'
+import { useRole } from '../store/role'
 import { loadS1WithPrivate } from '../sync/testkit'
 import { Layout } from './Layout'
 
@@ -13,14 +14,17 @@ vi.mock('../sync/link', () => ({ useOutboxTicker: () => undefined }))
 vi.mock('../pwa', () => ({ OfflineNote: () => null }))
 
 const original = useStore.getState()
+const originalRole = useRole.getState()
 beforeEach(() => {
   vi.useFakeTimers()
   vi.spyOn(window, 'scrollTo').mockImplementation(() => undefined)
   useStore.setState({ ready: true, error: null, init: vi.fn(), data: loadS1WithPrivate() })
+  useRole.setState({ role: 'astronaut' })
 })
 afterEach(() => {
   cleanup()
   useStore.setState(original, true)
+  useRole.setState(originalRole, true)
   vi.useRealTimers()
   vi.restoreAllMocks()
 })
@@ -65,5 +69,27 @@ describe('shell round guards', () => {
     fireEvent.click(screen.getByRole('link', { name: 'Vitalents' }))
     expect(screen.getByRole('heading', { name: 'Map route' })).toBeTruthy()
     expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, left: 0, behavior: 'instant' })
+  })
+
+  it.each(['medical', 'planner'] as const)('dismisses the dialog on switching to %s without leaving an inert shell or reopening it later', (role) => {
+    setup()
+    const header = document.querySelector('header')!
+    fireEvent.click(within(header).getByRole('button', { name: 'Request help' }))
+    expect(screen.getByRole('dialog')).toBeTruthy()
+    act(() => useRole.setState({ role }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(header.hasAttribute('inert')).toBe(false)
+    expect(document.querySelector('main')?.closest('[inert]')).toBeNull()
+    expect(within(header).queryByRole('button', { name: 'Request help' })).toBeNull()
+    expect(within(header).queryByRole('button', { name: 'Report something' })).toBeNull()
+    act(() => {
+      window.dispatchEvent(new CustomEvent(HELP_EVENT))
+      window.dispatchEvent(new CustomEvent(REPORT_EVENT))
+    })
+    expect(screen.queryByRole('dialog')).toBeNull()
+    act(() => useRole.setState({ role: 'astronaut' }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+    fireEvent.click(within(header).getByRole('button', { name: 'Report something' }))
+    expect(screen.getByRole('dialog')).toBeTruthy()
   })
 })
