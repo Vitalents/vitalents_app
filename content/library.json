@@ -1,6 +1,6 @@
 {
-  "content_version": "0.2-draft",
-  "review_status": "TODO(review: Amr checks every excerpt word for word against its URL, confirms page/section and licence, then sets approval_status per entry. Entries added by the WP-04 library agent on 2026-11-14; nutrition, movement, radiation and general context live in library.extra.json)",
+  "content_version": "0.3-draft",
+  "review_status": "Automated source-text comparison completed on 2026-11-14; see ai/source_verification.json for scope and snapshot hashes. Human approval, clinical review and source-specific rights clearance are not recorded.",
   "sources": [
     {
       "id": "lib:nasa-hrp-hazards",
@@ -12,7 +12,7 @@
       "date": "2023-10-26",
       "retrieved": "2026-11-14",
       "domain": "general",
-      "license": "US government work (NASA); public domain in the US",
+      "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -29,7 +29,7 @@
         }
       ],
       "corpus_file": "nasa-hrp-hazards.md",
-      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:nasa-hrp-risks",
@@ -41,7 +41,7 @@
       "date": null,
       "retrieved": "2026-11-14",
       "domain": "general",
-      "license": "US government work (NASA); public domain in the US",
+      "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -58,7 +58,7 @@
         }
       ],
       "corpus_file": "nasa-hrp-risks.md",
-      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:nasa-behavioral-risk",
@@ -70,7 +70,7 @@
       "date": "2024-10-22",
       "retrieved": "2026-11-14",
       "domain": "cognition",
-      "license": "US government work (NASA); public domain in the US",
+      "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -87,7 +87,7 @@
         }
       ],
       "corpus_file": "nasa-behavioral-risk.md",
-      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:nasa-std-3001-tb-behavioral-health",
@@ -99,7 +99,7 @@
       "date": "2023-10-24",
       "retrieved": "2026-11-14",
       "domain": "cognition",
-      "license": "US government work (NASA); public domain in the US",
+      "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -112,11 +112,11 @@
         },
         {
           "text": "Crew behavioral health and performance are affected by missions in isolated, confined, and extreme (ICE) environments.",
-          "location": "p. 2, Executive Summary"
+          "location": "p. 1, Executive Summary"
         }
       ],
       "corpus_file": "nasa-std-3001-tb-016-behavioral-health.md",
-      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:cognition-battery",
@@ -128,7 +128,7 @@
       "date": null,
       "retrieved": "2026-11-14",
       "domain": "cognition",
-      "license": "not verified: third-party web page; short quotes with attribution only",
+      "license": "No open redistribution licence verified. Short attributed quotations do not establish permission.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -145,7 +145,7 @@
         }
       ],
       "corpus_file": "upenn-cognition-battery.md",
-      "review_status": "TODO(review: non-NASA source; Amr confirms licence and that excerpts stay short quotes, checks each excerpt word for word, then sets approval_status)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:basner-2015-cognition",
@@ -157,7 +157,7 @@
       "date": "2015-11-01",
       "retrieved": "2026-11-14",
       "domain": "cognition",
-      "license": "not verified: author manuscript, no open licence stated; short quotes with attribution only",
+      "license": "No open redistribution licence verified. Short attributed quotations do not establish permission.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -170,7 +170,7 @@
         }
       ],
       "corpus_file": "basner-2015-cognition.md",
-      "review_status": "TODO(review: non-NASA source; Amr confirms licence and that excerpts stay short quotes, checks each excerpt word for word, then sets approval_status)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:dev-2024-cognition-iss",
@@ -182,7 +182,7 @@
       "date": "2024-11-20",
       "retrieved": "2026-11-14",
       "domain": "cognition",
-      "license": "CC BY (as stated on the PMC page)",
+      "license": "CC BY as stated by the original paper; credit authors and journal.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -199,7 +199,7 @@
         }
       ],
       "corpus_file": "dev-2024-cognition-iss.md",
-      "review_status": "TODO(review: non-NASA source; Amr confirms licence and that excerpts stay short quotes, checks each excerpt word for word, then sets approval_status)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:nasa-standard-measures",
@@ -211,7 +211,7 @@
       "date": "2021-01-11",
       "retrieved": "2026-11-14",
       "domain": "cognition",
-      "license": "US government work (NASA); public domain in the US",
+      "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -228,7 +228,7 @@
         }
       ],
       "corpus_file": "nasa-standard-measures.md",
-      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:nasa-sleep-risk",
@@ -240,7 +240,7 @@
       "date": "2024-10-22",
       "retrieved": "2026-11-14",
       "domain": "sleep",
-      "license": "US government work (NASA); public domain in the US",
+      "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -257,7 +257,7 @@
         }
       ],
       "corpus_file": "nasa-sleep-risk.md",
-      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:nasa-std-3001-tb-sleep-accommodations",
@@ -269,7 +269,7 @@
       "date": "2023-10-23",
       "retrieved": "2026-11-14",
       "domain": "sleep",
-      "license": "US government work (NASA); public domain in the US",
+      "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -286,7 +286,7 @@
         }
       ],
       "corpus_file": "nasa-std-3001-tb-041-sleep-accommodations.md",
-      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:nasa-std-3001-mtb-circadian-desynchrony",
@@ -298,7 +298,7 @@
       "date": "2026-03-04",
       "retrieved": "2026-11-14",
       "domain": "sleep",
-      "license": "US government work (NASA); public domain in the US",
+      "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -315,7 +315,7 @@
         }
       ],
       "corpus_file": "nasa-std-3001-mtb-009-circadian-desynchrony.md",
-      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:ntrs-mallis-2005-sleep",
@@ -327,7 +327,7 @@
       "date": "2005-06-01",
       "retrieved": "2026-11-14",
       "domain": "sleep",
-      "license": "not verified: NTRS lists copyright as Other; short quotes with attribution only",
+      "license": "NTRS determinationType OTHER; no open redistribution licence verified. Short attributed quotations do not establish permission.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -340,7 +340,7 @@
         }
       ],
       "corpus_file": "ntrs-mallis-2005-sleep.md",
-      "review_status": "TODO(review: non-NASA source; Amr confirms licence and that excerpts stay short quotes, checks each excerpt word for word, then sets approval_status)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:nasa-cardio-risk",
@@ -352,7 +352,7 @@
       "date": "2024-10-23",
       "retrieved": "2026-11-14",
       "domain": "heart",
-      "license": "US government work (NASA); public domain in the US",
+      "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -369,7 +369,7 @@
         }
       ],
       "corpus_file": "nasa-cardio-risk.md",
-      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:nasa-std-3001-tb-orthostatic-intolerance",
@@ -381,7 +381,7 @@
       "date": "2023-12-01",
       "retrieved": "2026-11-14",
       "domain": "heart",
-      "license": "US government work (NASA); public domain in the US",
+      "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -398,7 +398,7 @@
         }
       ],
       "corpus_file": "nasa-std-3001-tb-019-orthostatic-intolerance.md",
-      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:nasa-cardiac-rhythm-evidence",
@@ -410,7 +410,7 @@
       "date": "2017-06-12",
       "retrieved": "2026-11-14",
       "domain": "heart",
-      "license": "US government work (NASA); public domain in the US",
+      "license": "NTRS record: PUBLIC_USE_PERMITTED. This is the recorded rights determination, not a blanket public-domain claim.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -427,7 +427,7 @@
         }
       ],
       "corpus_file": "nasa-cardiac-rhythm-evidence.md",
-      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:nasa-sans-risk",
@@ -439,7 +439,7 @@
       "date": "2024-10-23",
       "retrieved": "2026-11-14",
       "domain": "symptoms",
-      "license": "US government work (NASA); public domain in the US",
+      "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -456,7 +456,7 @@
         }
       ],
       "corpus_file": "nasa-sans-risk.md",
-      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:nasa-std-3001-mtb-sans",
@@ -468,7 +468,7 @@
       "date": "2024-02-21",
       "retrieved": "2026-11-14",
       "domain": "symptoms",
-      "license": "US government work (NASA); public domain in the US",
+      "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -485,7 +485,7 @@
         }
       ],
       "corpus_file": "nasa-std-3001-mtb-001-sans.md",
-      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:nasa-sensorimotor-risk",
@@ -497,7 +497,7 @@
       "date": "2024-10-23",
       "retrieved": "2026-11-14",
       "domain": "symptoms",
-      "license": "US government work (NASA); public domain in the US",
+      "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -514,7 +514,7 @@
         }
       ],
       "corpus_file": "nasa-sensorimotor-risk.md",
-      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:nasa-std-3001-mtb-sas",
@@ -526,7 +526,7 @@
       "date": "2025-09-25",
       "retrieved": "2026-11-14",
       "domain": "symptoms",
-      "license": "US government work (NASA); public domain in the US",
+      "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -543,7 +543,7 @@
         }
       ],
       "corpus_file": "nasa-std-3001-mtb-004-space-adaptation-sickness.md",
-      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:nasa-immune-risk",
@@ -555,7 +555,7 @@
       "date": "2024-10-23",
       "retrieved": "2026-11-14",
       "domain": "symptoms",
-      "license": "US government work (NASA); public domain in the US",
+      "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -572,7 +572,7 @@
         }
       ],
       "corpus_file": "nasa-immune-risk.md",
-      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:nasa-medops",
@@ -584,12 +584,12 @@
       "date": "2025-08-13",
       "retrieved": "2026-11-14",
       "domain": "symptoms",
-      "license": "US government work (NASA); public domain in the US",
+      "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
       "approval_status": "draft",
       "excerpts": [
         {
           "text": "Medical operations encompass everything related to crew health",
-          "location": "p. 3, Reference Data"
+          "location": "p. 2, Reference Data"
         },
         {
           "text": "Ensure private (visual and auditory) location for FS to conduct PMCs with access to voice loops.",
@@ -601,7 +601,7 @@
         }
       ],
       "corpus_file": "nasa-std-3001-tb-044-medical-operations.md",
-      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     },
     {
       "id": "lib:esa-radiation",
@@ -613,7 +613,7 @@
       "date": "2016-09-09",
       "retrieved": "2026-11-14",
       "domain": "radiation",
-      "license": "not verified: ESA terms and conditions apply; short quotes with attribution only",
+      "license": "No open redistribution licence verified. Short attributed quotations do not establish permission.",
       "approval_status": "draft",
       "excerpts": [
         {
@@ -622,7 +622,7 @@
         }
       ],
       "corpus_file": "esa-radiation.md",
-      "review_status": "TODO(review: URL fetched by the WP-04 agent; quote only, no summary (same convention as the radiation entries in library.extra.json); Amr confirms ESA reuse terms)"
+      "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
     }
   ]
 }

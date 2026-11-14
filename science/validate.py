@@ -200,9 +200,9 @@ def execution_integrity(replay, bundles):
              method="science/decode.py verify() on every replayed session with the capture seal; stored summary equals the recomputed one"),
         rate("information_status_reproduced", "Stored information statuses reproduced by the status engine", *reproduced["export"],
              method="science/status.py evaluate() on each record of the exported S1-S4 bundles with its subject and ledger context"),
-        rate("s5_fixture_status_reproduced", "Hand-made S5 fixture statuses reproduced by the status engine", *reproduced["S5"], scenario="S5",
-             method="Same check on the hand-made S5 fixture; its Decode sessions carry no response events, so the engine cannot verify them "
-                    "(listed in science/tests/test_fixtures_status.py)"),
+        rate("s5_fixture_status_reproduced", "S5 fixture statuses reproduced by the status engine", *reproduced["S5"], scenario="S5",
+             method="Same check on the generated S5 fixture, preserving S1's history and complete response ledgers; "
+                    "Decode event coverage and stored summaries are verified before evaluating information status"),
         check("permission_tests", "Role permission tests", None, unit="rate",
               method="Run by the app test suite (app/src/store/permissions.test.ts, npm test); this script does not run TypeScript tests"),
         check("sync_dedupe_test", "Resending a summary creates no duplicate", None, unit="rate",

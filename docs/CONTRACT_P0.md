@@ -45,7 +45,7 @@ python3 scripts/validate_data.py file.json  # one file
 
 ### Status engine (Shaimaa, `science/status.py`, ruleset status-0.3.0)
 
-Merged 14 Nov. Run: `python3 -B -m unittest discover -s science/tests -t .` (88 tests). Open alignment items: (1) map `weak_sensor_contact` to `limited` (D-6); (2) simulated Decode sessions need raw `decode_response_event` rows so they pass the same event check as live ones; (3) her four statuses plus D-6's `stale` and `limited`.
+Phase-one alignment, 14 Nov: a missing (`null`) pulse is `no_reading`, including when weak sensor contact explains its absence. `limited` requires a present value usable with a caveat (D-3/D-6); it must not imply an absent measurement is usable. This explicitly supersedes the earlier null-pulse `limited` fixture example. Simulated Decode sessions now include response-event ledgers and are checked against the same scoring summaries as live rounds. The broader `stale`/`limited` quality rules remain demonstration policies, not clinically approved thresholds. Run the current suite with `python -m pytest -q science`.
 
 ## 2. What P0 builds
 
@@ -66,9 +66,9 @@ These live as **files**, not database rows: `rule_definition` → `content/rules
 | `simulator_scenario` | `sim:scenario:S1`, seed, crew IDs, expected outcomes, banner `SIMULATED DATA` |
 | `subject_profile` | `sim:crew:fahim` (+ the other 3 crew for S2–S5) |
 | `decode_session` | Mission days 13–26: first two sessions (learning), 9 valid reference sessions, day 23 interrupted, days 25–26 lower |
-| `information_status` | One per measured record: `valid`, `not_comparable` (day 23), `limited` (day-27 pulse, `weak_sensor_contact`) |
+| `information_status` | One per measured record: `valid`, `not_comparable` (day 23), `no_reading` (day-27 null pulse, `weak_sensor_contact`) |
 | `sleep_record` | Days 13–27; days 25–27 under 6 h (`recorded_interval_ms`, `minutes_asleep`) |
-| `measurement` | Daily `hr_resting_bpm`; day 27 has limited quality and **no substitute value** |
+| `measurement` | Daily `hr_resting_bpm`; day 27 has **no reading and no substitute value**, with weak sensor contact retained as context |
 | `self_report` | Alertness 8/10 on days 25–27; a pain symptom on day 20 |
 | `follow_up` | Pain follow-up opened on day 20, still open, assigned to `medical` |
 | `mission_schedule` | Day 27: rest window 23:00–06:00 (`item_kind: rest_window`) and a movable meeting 23:00–00:00 (allowed 21:00–00:00) |

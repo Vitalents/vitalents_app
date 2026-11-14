@@ -5,7 +5,7 @@ Version: Web page (no date shown)
 Date: not shown
 URL: https://www.med.upenn.edu/uep/cognition.html
 Retrieved: 2026-11-14
-Licence: not verified: third-party web page; short quotes with attribution only
+Licence: No open redistribution licence verified. Short attributed quotations do not establish permission.
 Library ID: lib:cognition-battery
 
 ## Verbatim excerpts (short quotes, non-NASA source)

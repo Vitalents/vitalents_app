@@ -5,7 +5,7 @@ Version: Published article, PMC11614644
 Date: 2024-11-20
 URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC11614644/
 Retrieved: 2026-11-14
-Licence: CC BY (as stated on the PMC page)
+Licence: CC BY as stated by the original paper; credit authors and journal.
 Library ID: lib:dev-2024-cognition-iss
 
 ## Verbatim excerpts (short quotes, non-NASA source)

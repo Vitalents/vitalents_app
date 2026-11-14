@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-11-14T09:12:51Z",
+  "generated_at_utc": "2026-11-14T11:01:36Z",
   "generated_by": "science/validate.py",
   "seed": 42,
   "areas": {
@@ -23,8 +23,8 @@
           "method": "Decode start before end and end minus start equal to the monotonic elapsed time; stimulus before response; schedule start before end; follow-up opened before its review date; reference period before its target date",
           "value": 1.0,
           "unit": "rate",
-          "numerator": 1779,
-          "denominator": 1779,
+          "numerator": 2353,
+          "denominator": 2353,
           "passed": true,
           "scenario": null
         },
@@ -45,8 +45,8 @@
           "method": "Each record in the five app scenario bundles (S1-S4 exported from the replay, S5 fixture) against contracts/*.schema.json",
           "value": 1.0,
           "unit": "rate",
-          "numerator": 1978,
-          "denominator": 1978,
+          "numerator": 2568,
+          "denominator": 2568,
           "passed": true,
           "scenario": null
         },
@@ -85,13 +85,13 @@
         },
         {
           "id": "s5_fixture_status_reproduced",
-          "label": "Hand-made S5 fixture statuses reproduced by the status engine",
-          "method": "Same check on the hand-made S5 fixture; its Decode sessions carry no response events, so the engine cannot verify them (listed in science/tests/test_fixtures_status.py)",
-          "value": 0.7045454545454546,
+          "label": "S5 fixture statuses reproduced by the status engine",
+          "method": "Same check on the generated S5 fixture, preserving S1's history and complete response ledgers; Decode event coverage and stored summaries are verified before evaluating information status",
+          "value": 1.0,
           "unit": "rate",
-          "numerator": 31,
+          "numerator": 44,
           "denominator": 44,
-          "passed": false,
+          "passed": true,
           "scenario": "S5"
         },
         {

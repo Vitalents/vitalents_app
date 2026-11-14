@@ -15,7 +15,7 @@ python eval_summary.py ../science/out/assistant_eval_gptoss.json || true
 cd "$ROOT"
 python scripts/publish_proof.py
 python scripts/check_language.py
-git add app/public/data/cached_answers.json app/public/data/proof.json science/out/assistant_eval_gptoss.json
+git add app/public/data/cached_answers.json app/public/data/proof.json science/out/assistant_eval_gptoss.json ai/recordings/*.raw.json
 git commit -m "FR-AS-08: recorded answers and assistant evaluation from the onboard model"
 git push
-echo "Done. Check every recorded answer by reading app/public/data/cached_answers.json."
+echo "Done. New recordings stay withheld until a hash-bound editorial review in ai/cache_review.json. Review raw recordings and the published cache separately."

@@ -81,6 +81,7 @@ test('daily check then demo Decode: result beside the self-rating, never combine
   await expect(decode).toContainText('correct answers')
   await expect(decode).toContainText('Accuracy')
   await expect(decode).toContainText('Demo-length round: saved as practice, never used for your reference.')
+  await expect(decode).not.toContainText('your personal range')
   await expect(self.getByRole('heading', { name: 'Your self-rating today' })).toBeVisible()
   await expect(self.locator('.dc-big')).toHaveText('6/10')
   await expect(result).toContainText('Shown side by side: these are different scales and are never combined.')

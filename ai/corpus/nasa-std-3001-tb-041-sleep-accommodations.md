@@ -5,12 +5,12 @@ Version: OCHMO-TB-041 Rev B
 Date: 2023-10-23
 URL: https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-041-sleep-accommodations.pdf
 Retrieved: 2026-11-14
-Licence: US government work (NASA); public domain in the US
+Licence: NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.
 Library ID: lib:nasa-std-3001-tb-sleep-accommodations
 
 ## Verbatim excerpts (NASA, US government work)
 
-- [p. 2, Executive Summary] "Thus, for crewmembers to achieve optimal sleep, they must be provided with a sleep environment"
+- [p. 1, Executive Summary] "Thus, for crewmembers to achieve optimal sleep, they must be provided with a sleep environment"
 - [p. 5, Reference Data] "astronauts sleep an average of about six hours while in space"
 - [p. 9, Design Considerations] "For long-duration missions (>30 days), crewmembers should have dedicated quarters that provide privacy"
 - [p. 9, Design Considerations] "Mission task analysis should plan for a reasonable rest-work schedule to allow enough time for sleep."

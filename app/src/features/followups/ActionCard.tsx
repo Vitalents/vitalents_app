@@ -5,11 +5,11 @@ import { LIBRARY } from '../../content/content'
 import { FollowChip } from '../../shell/StatusChips'
 import { fmtDue, T } from './strings'
 import {
-  accept, answerReview, closeFollowUp, decline, markDone, rate, reviewDue, splitOutcome, start, unable,
+  accept, answerReview, closeFollowUp, decline, markDone, rate, reviewDue, reviewLaterReading, splitOutcome, start, unable,
   type LaterReading, type Role, type Usefulness,
 } from './records'
 import type { SinceReading } from './later'
-import { ReviewQuestion } from './ReviewQuestion'
+import { ReadingsSince, ReviewQuestion } from './ReviewQuestion'
 import './act.css'
 
 export interface ActionWrites {
@@ -23,7 +23,7 @@ export interface ActionCardProps {
   followUp: FollowUp | null
   role: Role
   /** Reading after the action, for "Mark done"; null keeps it awaiting_impact_review. */
-  laterReading: (a: Action, after: string) => LaterReading
+  laterReading: (a: Action, after: string, until: string) => LaterReading
   /** FR-FU-04: readings of the step's indicators between two times; without it the question shows no readings. */
   readingsSince?: (a: Action, since: string, until: string) => SinceReading[]
   onWrite: (w: ActionWrites) => Promise<void>
@@ -52,6 +52,10 @@ export function ActionCard({ action: a, followUp: fu, role, laterReading, readin
   const due = mine && reviewDue(a, fu, now())
   const outcome = fu?.outcome_note ? splitOutcome(fu.outcome_note) : null
   const canClose = !!fu && fu.followup_status !== 'closed' && fu.assigned_role === role && ['completed', 'unable', 'rejected'].includes(a.execution_status)
+  const waitingForReview = mine && !!fu && fu.assigned_role === role && fu.followup_status !== 'closed' && a.execution_status === 'awaiting_impact_review'
+  const completedAt = a.completed_at_utc ?? fu?.opened_at_utc ?? null
+  const reviewTime = now()
+  const observation = waitingForReview && completedAt ? laterReading(a, completedAt, reviewTime) : null
 
   async function run(fn: () => ActionWrites) {
     setError(null)
@@ -92,7 +96,7 @@ export function ActionCard({ action: a, followUp: fu, role, laterReading, readin
       {a.execution_status === 'unable' && <p className="act-small act-muted">{T.unableWith(a.rejection_reason ?? null)}</p>}
       {outcome && (
         <div className="act-note" role="status">
-          <strong>{T.outcome}</strong>
+          <strong>{waitingForReview ? T.previousOutcome : T.outcome}</strong>
           <p>{outcome.text}</p>
           {outcome.ids.length > 0 && (
             <details className="act-why">
@@ -115,9 +119,21 @@ export function ActionCard({ action: a, followUp: fu, role, laterReading, readin
           onSave={(answer, note) => run(() => {
             const t = now()
             const readings = readingsSince ? readingsSince(a, fu.opened_at_utc, t) : []
-            return answerReview(a, fu, answer, note, readings.map((r) => r.record_id), laterReading(a, fu.opened_at_utc), role, t)
+            return answerReview(a, fu, answer, note, readings.map((r) => r.record_id), null, role, t)
           })}
         />
+      )}
+
+      {waitingForReview && fu && completedAt && mode === 'idle' && (
+        <section className="act-review" aria-label={T.laterReviewTitle}>
+          <h3>{T.laterReviewTitle}</h3>
+          <p className="act-small act-muted">{observation ? T.laterReviewAvailable : T.laterReviewWaiting}</p>
+          <ReadingsSince readings={readingsSince ? readingsSince(a, completedAt, reviewTime) : []} since={completedAt} />
+          <button className="btn primary" disabled={busy || !observation} onClick={() => run(() => {
+            const t = now()
+            return reviewLaterReading(a, fu, laterReading(a, completedAt, t), role, t)
+          })}>{T.reviewLaterReading}</button>
+        </section>
       )}
 
       {mine && mode === 'idle' && !finished && !due && (
@@ -136,7 +152,7 @@ export function ActionCard({ action: a, followUp: fu, role, laterReading, readin
               <button
                 className="btn primary"
                 disabled={busy}
-                onClick={() => run(() => { const t = now(); return markDone(a, fu, laterReading(a, t), role, t) })}
+                onClick={() => run(() => { const t = now(); return markDone(a, fu, laterReading(a, t, t), role, t) })}
               >{T.done}</button>
               <button className="btn" disabled={busy} onClick={() => setMode('unable')}>{T.unable}</button>
             </>

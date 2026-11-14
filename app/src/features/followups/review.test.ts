@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
 import type { Action, FollowUp } from '../../data/contract'
 import { laterReading, readingsSince } from './later'
 import {
-  accept, answerReview, closeFollowUp, NotPermitted, OUTCOME_TEXT, REVIEW_TEXT, reviewDue, splitOutcome,
+  accept, answerReview, closeFollowUp, NotPermitted, OUTCOME_TEXT, REVIEW_TEXT, reviewDue, reviewLaterReading, splitOutcome,
 } from './records'
 import { T } from './strings'
 
@@ -79,21 +79,33 @@ describe('readings since the step started', () => {
 describe('storing the answer (FR-FU-04, D-7)', () => {
   const ids = readingsSince(S1, watch, fu.opened_at_utc, AFTER).map((x) => x.record_id)
 
-  it('done with a later reading → completed, non-causal template, note and data IDs; follow-up stays open', () => {
-    const later = laterReading(S1, watch, fu.opened_at_utc)
-    expect(later).toEqual({ position: 'outside', record_id: 'sim:decode_session:d26' })
+  it('deadline done records completion now; observations since opening cannot stand in for an observation after completion', () => {
+    const later = laterReading(S1, watch, fu.opened_at_utc, AFTER)
+    expect(later).toMatchObject({ position: 'outside', record_id: 'sim:decode_session:d26' })
     const { action, follow_up } = answerReview(watch, fu, 'done', '  Felt more focused in the afternoon ', ids, later, 'astronaut', AFTER)
-    expect(action.execution_status).toBe('completed')
+    expect(action.execution_status).toBe('awaiting_impact_review')
     expect(action.completed_at_utc).toBe(AFTER)
     expect(follow_up.followup_status).toBe(fu.followup_status)
     expect(follow_up.closed_at_utc ?? null).toBeNull()
     const o = splitOutcome(follow_up.outcome_note as string)
-    expect(o.text).toBe(`${OUTCOME_TEXT.outside} You noted: “Felt more focused in the afternoon”`)
+    expect(o.text).toBe(`${OUTCOME_TEXT.no_reading} You noted: “Felt more focused in the afternoon”`)
     expect(o.ids).toEqual(['sim:decode_session:d26'])
     valid('action', action)
     valid('follow_up', follow_up)
-    // only the owner's explicit close moves it to closed
-    const closed = closeFollowUp(follow_up, action, 'Reviewed the readings', 'astronaut', AFTER)
+    expect(() => closeFollowUp(follow_up, action, 'Reviewed the readings', 'astronaut', AFTER)).toThrow(NotPermitted)
+    expect(laterReading(S1, action, AFTER, AFTER)).toBeNull()
+    const laterSession = { ...S1.decode_session.find((s: { decode_session_id: string }) => s.decode_session_id === 'sim:decode_session:d26'),
+      decode_session_id: 'sim:decode_session:after-deadline-completion', start_at_utc: '2026-11-15T09:00:00Z', end_at_utc: '2026-11-15T09:01:30Z', created_at_utc: '2026-11-15T09:01:30Z' }
+    const afterCompletion = { ...S1, decode_session: [...S1.decode_session, laterSession],
+      information_status: [...S1.information_status, { record_ref: laterSession.decode_session_id, status: 'valid', created_at_utc: laterSession.created_at_utc }] }
+    const observation = laterReading(afterCompletion, action, AFTER, '2026-11-15T10:00:00Z')
+    expect(observation?.record_id).toBe(laterSession.decode_session_id)
+    const reviewed = reviewLaterReading(action, follow_up, observation, 'astronaut', '2026-11-15T10:00:00Z')
+    expect(reviewed.action.execution_status).toBe('completed')
+    expect(reviewed.action.completed_at_utc).toBe(AFTER)
+    expect(reviewed.follow_up.followup_status).not.toBe('closed')
+    // only the owner's separate explicit close moves it to closed
+    const closed = closeFollowUp(reviewed.follow_up, reviewed.action, 'Reviewed the later observation', 'astronaut', '2026-11-15T10:01:00Z')
     expect(closed.followup_status).toBe('closed')
     valid('follow_up', closed)
   })

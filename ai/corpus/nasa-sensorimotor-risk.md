@@ -5,7 +5,7 @@ Version: Web page, last updated 2025-12-02
 Date: 2024-10-23
 URL: https://www.nasa.gov/reference/risk-of-altered-sensorimotor-and-vestibular-function/
 Retrieved: 2026-11-14
-Licence: US government work (NASA); public domain in the US
+Licence: NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.
 Library ID: lib:nasa-sensorimotor-risk
 
 ## Verbatim excerpts (NASA, US government work)

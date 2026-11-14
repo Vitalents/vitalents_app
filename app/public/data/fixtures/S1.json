@@ -13303,7 +13303,7 @@
     {
       "subject_id": "sim:crew:fahim",
       "record_ref": "sim:measurement:hr-d27",
-      "status": "limited",
+      "status": "no_reading",
       "reason_codes": [
         "weak_sensor_contact"
       ],
@@ -13637,7 +13637,7 @@
       "subject_id": "sim:crew:fahim",
       "is_simulated": true,
       "finding_id": "sim:finding:dec-d27",
-      "step_category": "approved_plan_step",
+      "step_category": "observe",
       "reason_text": "Two observations: 2 sessions in a row below your personal range (41\u201344), and 3 of the last 3 nights under 6 hours of recorded sleep.",
       "action_text": "Review tonight's rest window",
       "source_reference_id": "lib:nasa-sleep-risk",
@@ -13732,7 +13732,7 @@
         "sim:sleep_record:d27"
       ],
       "explanation": "Two observations: 2 sessions in a row below your personal range (41\u201344), and 3 of the last 3 nights under 6 hours of recorded sleep.",
-      "limitations": "These two observations happen together. This does not show that one causes the other. The planner approves any schedule change.",
+      "limitations": "These two observations happen together. This does not show that one causes the other. The counts and sleep cutoff are demonstration parameters, not medical thresholds. The planner approves any schedule change.",
       "owner_role": "astronaut"
     }
   ],
@@ -13815,7 +13815,7 @@
         "sim:finding:dec-d27"
       ],
       "selected_action_id": "sim:action:rest-d27",
-      "review_explanation": "Today's entries include sleep, alertness and a wrist check with limited contact. Today's Decode is missing."
+      "review_explanation": "Today's entries include sleep and alertness. The wrist check produced no pulse reading because of weak sensor contact. Today's Decode is missing."
     },
     {
       "daily_review_id": "sim:daily_review:d20",

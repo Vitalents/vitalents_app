@@ -90,6 +90,25 @@ describe('Decode story and save boundaries', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Back to daily check' }))
     expect(screen.getByRole('heading', { name: 'Daily check' })).toBeTruthy()
   })
+  it('creates a new daily-check record for changed answers after a successful save during a story detour', async () => {
+    let finishFirstSave!: () => void
+    put.mockImplementationOnce(() => new Promise<void>((resolve) => { finishFirstSave = resolve }))
+    open()
+    fireEvent.click(screen.getByRole('radio', { name: '7' }))
+    fireEvent.change(screen.getByRole('textbox', { name: /Private note/ }), { target: { value: 'First check' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Save and continue to Decode' }))
+    fireEvent.click(screen.getByRole('button', { name: 'A message from home' }))
+    await act(async () => finishFirstSave())
+    fireEvent.click(screen.getByRole('button', { name: 'Back to daily check' }))
+    fireEvent.click(screen.getByRole('radio', { name: '8' }))
+    fireEvent.change(screen.getByRole('textbox', { name: /Private note/ }), { target: { value: 'Second check' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Save and continue to Decode' }))
+    await screen.findByRole('heading', { name: /^Decode$/ })
+    const attempts = put.mock.calls.filter(([entity]) => entity === 'self_report').map(([, records]) => records[0])
+    expect(attempts).toHaveLength(2)
+    expect(attempts[0].self_report_id).not.toBe(attempts[1].self_report_id)
+    expect(attempts.map((r) => [r.alertness_rating, r.private_note])).toEqual([[7, 'First check'], [8, 'Second check']])
+  })
   it('uses this person’s mission date even when another person has a newer review', () => {
     const data = useStore.getState().data
     useStore.setState({ data: { ...data, daily_review: [...data.daily_review, { ...data.daily_review[0], subject_id: 'sim:crew:other', review_date: '2026-12-01' }] } })

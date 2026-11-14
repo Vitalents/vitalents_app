@@ -1,5 +1,6 @@
 // English UI strings for the daily check and Decode. TODO(merge into app/src/content/strings.ts once the shell lands).
 export const S = {
+  saveFailed: 'The round could not be saved. Keep this page open and try again; earlier checkpoints are kept on this device.',
   // daily check
   stepOf: (n: number, of: number) => `Step ${n} of ${of}`,
   checkTitle: 'Daily check',
@@ -105,6 +106,7 @@ export const S = {
     interrupted_page_hidden: 'the app was in the background',
     interrupted_help: 'Request help was used',
     reported_interruption: 'you reported an interruption',
+    pending_interruption_check: 'the interruption question has not been answered yet',
     random_pressing: 'the response pattern did not meet this demo’s comparison rules',
     pause: 'two or more pauses of 5 s or more without an answer',
     device_change: 'a different device or input than your reference rounds',

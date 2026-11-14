@@ -15,8 +15,11 @@ import json
 import pathlib
 import random
 import statistics
+import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+from science.contract_logic import build_reference  # noqa: E402
 OUT = ROOT / "app/public/data/fixtures"
 V = "1.0"
 T = "2026-11-14T06:00:00Z"   # fixture creation time
@@ -40,6 +43,23 @@ class Builder:
         self.b = {}
 
     def add(self, entity, rec):
+        # Persistence follows the captured observation; the fixture generation clock
+        # must not make a final reading or a share appear before its source existed.
+        if rec.get("created_at_utc") == T:
+            at = next((rec.get(k) for k in ("end_at_utc", "submitted_at_utc", "observed_at_utc",
+                                           "opened_at_utc", "prepared_at_utc", "permission_time_utc", "occurred_at_utc")
+                       if rec.get(k)), None)
+            if at:
+                rec["created_at_utc"] = at
+            elif entity == "sleep_record":
+                rec["created_at_utc"] = f"{rec['observation_date']}T06:00:00Z"
+            elif entity in ("finding", "action", "daily_review"):
+                rec["created_at_utc"] = f"{date(27)}T08:00:00Z"
+            elif entity == "information_status":
+                source = next((r for rows in self.b.values() for r in rows
+                               if rec.get("record_ref") in (r.get(f"{kind}_id") for kind in self.b)), None)
+                if source:
+                    rec["created_at_utc"] = source["created_at_utc"]
         self.b.setdefault(entity, []).append(rec)
         return rec
 
@@ -134,6 +154,8 @@ class Builder:
         if interrupted_at_ms is None:
             rec["end_at_utc"] = end.strftime("%Y-%m-%dT%H:%M:%SZ")
         self.add("decode_session", rec)
+        for event in events:
+            event["created_at_utc"] = rec["end_at_utc"]
         if interrupted_at_ms is not None:
             self.info(sid, "not_comparable", ["interrupted_page_hidden"], False, key=f"dec-d{d:02d}")
         else:
@@ -147,13 +169,15 @@ class Builder:
             "response_time_ms": (resp - stim) if resp is not None else None, "response_state": state,
             "is_accepted": accepted, "input_method": "touch", "focus_state": "foreground" if state != "interrupted" else "background"}
 
-    def finding(self, key, kind, sup, expl, lim, owner="astronaut", rule="rule:R-OBS-01"):
+    def finding(self, key, kind, sup, expl, lim, owner="astronaut", rule="rule:R-OBS-01", created=None):
         return self.add("finding", self.base("finding", self.rid("finding", key), "application_generated") | {
+            "created_at_utc": created or f"{date(27)}T08:00:00Z",
             "review_id": self.rid("daily_review", "d27"), "rule_id": rule, "rule_version": "1.0", "finding_kind": kind,
             "supporting_record_ids": sup, "explanation": expl, "limitations": lim, "owner_role": owner})["finding_id"]
 
-    def action(self, key, fid, cat, reason, text, src, owner, status, due="2026-11-15T07:00:00Z"):
+    def action(self, key, fid, cat, reason, text, src, owner, status, due="2026-11-15T07:00:00Z", created=None):
         return self.add("action", self.base("action", self.rid("action", key), "application_generated") | {
+            "created_at_utc": created or f"{date(27)}T08:00:00Z",
             "finding_id": fid, "step_category": cat, "reason_text": reason, "action_text": text,
             "source_reference_id": src, "owner_role": owner, "execution_status": status, "follow_up_due_utc": due})["action_id"]
 
@@ -171,6 +195,25 @@ class Builder:
             "review_date": date(27), "reading_ids": list(reading_ids), "sleep_record_id": sleep_id, "decode_session_id": decode_id,
             "self_report_ids": list(reports), "finding_ids": list(findings), "selected_action_id": action,
             "review_explanation": explanation})
+
+    def reference(self, target_day, *, frozen=False, freeze_reason=None):
+        """Build the stored D-10 reference from its exact historical source IDs."""
+        statuses = {r["record_ref"]: r["status"] for r in self.b.get("information_status", [])}
+        sessions = sorted(self.b["decode_session"], key=lambda s: s["start_at_utc"])
+        history = [{"record_id": s["decode_session_id"], "date": s["start_at_utc"][:10], "value": s["correct_count"],
+                    "info_status": statuses.get(s["decode_session_id"]), "is_practice": s["is_practice"], "session_index": i}
+                   for i, s in enumerate(sessions, 1)]
+        ref = build_reference("decode_correct_count", date(target_day), history,
+                              {"lookback_days": 14, "min_valid": 5, "exclude_first_sessions": 2}, False, None)
+        rid = self.rid("personal_reference", f"decode-d{target_day}")
+        self.add("personal_reference", self.base("personal_reference", rid, "application_generated") | ref | {
+            "created_at_utc": f"{date(target_day)}T07:29:00Z", "metric_code": "decode_correct_count",
+            "reference_version": "ref-1.0", "unit": "count", "comparison_target_date": date(target_day),
+            "method": "Median of valid past sessions in a 14-day window, excluding the first two sessions",
+            "eligibility_notes": "Demonstration heuristic using 5 valid sessions in 14 days, not a medical threshold.",
+            "frozen": frozen, "freeze_reason": freeze_reason,
+        })
+        return rid
 
     def scenario(self, code, seed, outcomes, record_ids):
         return {"simulator_scenario_id": f"sim:scenario:{code}", "schema_version": V, "data_origin": "simulated_mission",
@@ -205,10 +248,10 @@ def s2():
     dec27 = b.decode(27, 18, interrupted_at_ms=41_000)
     f_sleep = b.finding("missing-sleep-d27", "missing_data", [],
                         "No sleep reading for last night (mission day 27). Nothing is filled in.",
-                        "A missing reading says nothing about how the night went.")
+                        "A missing reading says nothing about how the night went.", rule="rule:R-MEAS-02")
     f_dec = b.finding("interrupted-dec-d27", "missing_data", [dec27],
                       "Today's Decode round was interrupted (page hidden after 41 s). It is saved but not comparable.",
-                      "An interrupted round is not compared with your reference.")
+                      "An interrupted round is not compared with your reference.", rule="rule:R-MEAS-01")
     a_dec = b.action("repeat-dec-d27", f_dec, "complete_measurement", "Today's Decode round was interrupted.",
                      "Repeat Decode in the same conditions", "lib:cognition-battery", "astronaut", "proposed")
     b.action("sync-sleep-d27", f_sleep, "complete_measurement", "No sleep reading arrived for last night.",
@@ -230,7 +273,7 @@ def s3():
     b = Builder("sim:crew:c3", "c3", seed)
     b.profile("Crew C (fictional crew member)")
     sleep_h = {13: 7.0, 14: 7.2, 15: 6.9, 16: 7.1, 17: 7.0, 18: 6.8, 19: 7.2, 20: 7.0, 21: 6.9, 22: 7.1, 23: 7.0, 24: 6.8, 25: 6.9, 26: 5.3, 27: 5.5}
-    dec = {13: 40, 14: 43, 15: 46, 16: 47, 17: 45, 18: 46, 19: 48, 20: 47, 21: 46, 22: 45, 23: 47, 24: 46, 25: 46, 26: 41}
+    dec = {13: 40, 14: 43, 15: 46, 16: 47, 17: 45, 18: 46, 19: 48, 20: 47, 21: 46, 22: 45, 23: 47, 24: 46, 25: 42, 26: 41}
     ids = {}
     for d in range(13, 28):
         b.sleep(d, sleep_h[d])
@@ -238,19 +281,19 @@ def s3():
         b.alertness(d, 7)
         if d in dec:
             ids[d] = b.decode(d, dec[d], eligible=d > 14)
-    elig = [dec[d] for d in range(15, 26)]
-    ref = b.add("personal_reference", b.base("personal_reference", b.rid("personal_reference", "decode-d26"), "application_generated") | {
-        "metric_code": "decode_correct_count", "reference_version": "ref-1.0", "reference_status": "usable_for_question",
-        "method": "Median of valid past sessions in a 14-day window, excluding the first two sessions",
-        "start_date": date(12), "end_date": date(25), "comparison_target_date": date(26),
-        "source_record_ids": [ids[d] for d in range(15, 26)], "valid_record_count": len(elig),
-        "reference_value": statistics.median(elig), "unit": "count",
-        "eligibility_notes": "Demonstration heuristic (5 valid sessions in 14 days), not a medical threshold.",
-        "range_low": min(elig), "range_high": max(elig), "frozen": False})["personal_reference_id"]
-    f = b.finding("dec-d27", "descriptive_change", [ids[26], ref, b.rid("sleep_record", "d26"), b.rid("sleep_record", "d27")],
-                  "Two observations: yesterday's Decode was below your personal range, and the last 2 nights were under 6 hours.",
+    ref = b.reference(25, frozen=True, freeze_reason="Frozen while the cognition follow-up opened on mission day 25 is open.")
+    watch_at = f"{date(25)}T08:00:00Z"
+    watch = b.finding("dec-d25", "descriptive_change", [ids[25], ref],
+                      "One Decode session was below your personal range (42 vs 45-48).",
+                      "One session describes performance on the Decode task.", created=watch_at)
+    b.b["finding"][-1]["review_id"] = b.rid("daily_review", "d25")
+    watch_action = b.action("dec-d25", watch, "observe", "One Decode session was below the personal range.",
+                            "Keep the daily check and watch the next sessions", "lib:cognition-battery", "astronaut", "in_progress", created=watch_at)
+    b.follow_up("dec-d25", watch_action, "watching", watch_at, "astronaut")
+    f = b.finding("dec-d27", "descriptive_change", [ids[25], ids[26], ref, b.rid("sleep_record", "d26"), b.rid("sleep_record", "d27")],
+                  "Two observations: 2 Decode sessions were below your personal range, and the last 2 nights were under 6 hours.",
                   "These happen together; this does not show that one caused the other.", rule="rule:R-PLAN-01")
-    a = b.action("rest-d27", f, "approved_plan_step", "Lower Decode result together with short recorded sleep.",
+    a = b.action("rest-d27", f, "observe", "Lower Decode results together with short recorded sleep; a demonstration workflow, not an approved medical plan.",
                  "Review tonight's rest window", "lib:nasa-sleep-risk", "astronaut", "proposed")
     b.schedule("rest-d27", "Rest window", "2026-11-14T23:00:00Z", "2026-11-15T06:00:00Z", True, "rest_window")
     b.schedule("debrief-d27", "Spacewalk debrief", "2026-11-14T22:00:00Z", "2026-11-14T23:30:00Z", True, "task", {"prep_minutes": 0, "travel_minutes": 0})
@@ -259,11 +302,17 @@ def s3():
     b.review("Recorded: sleep, resting pulse, alertness. Changed: yesterday's Decode below your range. Missing: today's Decode.",
              reading_ids=[b.rid("measurement", "hr-d27")], sleep_id=b.rid("sleep_record", "d27"), decode_id=ids[26],
              reports=[b.rid("self_report", "alert-d27")], findings=[f], action=a)
+    b.add("daily_review", b.base("daily_review", b.rid("daily_review", "d25"), "application_generated") | {
+        "created_at_utc": watch_at, "review_date": date(25), "reading_ids": [b.rid("measurement", "hr-d25")],
+        "sleep_record_id": b.rid("sleep_record", "d25"), "decode_session_id": ids[25],
+        "self_report_ids": [b.rid("self_report", "alert-d25")], "finding_ids": [watch], "selected_action_id": watch_action,
+        "review_explanation": "A first Decode observation below the personal range opens a descriptive follow-up.",
+    })
     sc = b.scenario("S3", seed, [
         "Rest-window review shows every evening item as fixed",
         "The screen says: No valid alternative within the current constraints",
         "The system never moves a fixed task itself; any change goes to the planner for approval",
-        "Rest opportunity tonight is shown as calculated (about 5 h 20 min), never as a promise of sleep"], [f, a])
+        "Rest opportunity tonight is shown as calculated (5 h 30 min), never as a promise of sleep"], [f, a])
     return b.bundle(sc, NOTE)
 
 
@@ -278,25 +327,26 @@ def s4():
         b.alertness(d, 7)
     for d, c in {20: 45, 21: 47, 22: 46, 23: 47, 24: 46, 25: 48, 26: 47, 27: 47}.items():
         dec27 = b.decode(d, c, eligible=d > 21)
+    ref = b.reference(27)
     sym = b.add("self_report", b.base("self_report", b.rid("self_report", "symptom-d27"), "application_generated") | {
         "report_kind": "symptom", "report_date": date(27), "submitted_at_utc": "2026-11-14T07:10:00Z",
         # TODO(question: contract needs symptom_onset_date and symptom_severity fields) - kept in the text for now.
         "symptom_text": "Onset 2026-11-14 · Severity: moderate · Headache and feeling hot since waking; felt warm to the touch (no thermometer reading taken)"})["self_report_id"]
     f = b.finding("symptom-d27", "review_request", [sym], "A reported symptom today: headache and feeling hot since waking.",
                   "A self-report with no temperature reading. The medical team decides what it means; a good Decode result does not change this.",
-                  owner="medical", rule="rule:R-REV-02")
+                  owner="medical", rule="rule:R-REV-02", created="2026-11-14T07:11:00Z")
     a = b.action("review-d27", f, "request_review", "A reported symptom needs a specialist's view.",
-                 "Request a review by the medical team", "lib:nasa-medops", "medical", "accepted", due="2026-11-14T12:00:00Z")
+                 "Request a review by the medical team", "lib:nasa-medops", "medical", "accepted", due="2026-11-14T12:00:00Z", created="2026-11-14T07:11:00Z")
     b.follow_up("symptom-d27", a, "review_requested", "2026-11-14T07:11:00Z", "medical", due="2026-11-14T12:00:00Z")
     perm = b.rid("sharing_permission", "consult-d27")
     pkg = b.add("share_package", b.base("share_package", b.rid("share_package", "consult-d27"), "application_generated") | {
-        "recipient_role": "medical", "previewed_record_ids": [sym, f, a, dec27, b.rid("measurement", "hr-d27"), b.rid("sleep_record", "d27")],
+        "recipient_role": "medical", "previewed_record_ids": [sym, f, a, dec27, ref, b.rid("measurement", "hr-d27"), b.rid("sleep_record", "d27")],
         "excluded_field_codes": ["self_report.private_note"],
-        "summary_text": "Sequence: symptom reported 07:10 (headache, feeling hot since waking; no thermometer reading). Measurements: resting pulse 62 bpm, sleep 7.0 h, Decode within the usual range. Actions tried: none yet. Question: please review the symptom.",
-        "permission_record_id": perm, "package_version": 1, "prepared_at_utc": "2026-11-14T07:12:00Z"})["share_package_id"]
+        "summary_text": "Sequence: symptom reported 07:10 (headache, feeling hot since waking; no thermometer reading); medical review requested 07:11; Decode completed 07:31:30. Measurements: resting pulse 62 bpm, recorded sleep 7.0 h, Decode 47 correct answers within the personal range 46-48 from 5 prior sessions (reference ref-1.0). The Decode result does not close the symptom review. Actions tried: none yet. Question: please review the symptom.",
+        "permission_record_id": perm, "package_version": 1, "prepared_at_utc": "2026-11-14T07:35:00Z"})["share_package_id"]
     b.add("sharing_permission", b.base("sharing_permission", perm, "application_generated") | {
         "actor_role": "astronaut", "resource_kind": "share_package", "resource_id": pkg, "permission_kind": "share", "allowed": True,
-        "policy_version": "share-0.1", "consent_basis": "Previewed and confirmed by the astronaut", "permission_time_utc": "2026-11-14T07:11:50Z"})
+        "policy_version": "share-0.1", "consent_basis": "Previewed and confirmed by the astronaut", "permission_time_utc": "2026-11-14T07:35:05Z"})
     b.review("Recorded: sleep, resting pulse, alertness, Decode, a reported symptom. Changed: a symptom needing review. A good Decode result does not close or delay the review.",
              reading_ids=[b.rid("measurement", "hr-d27")], sleep_id=b.rid("sleep_record", "d27"), decode_id=dec27,
              reports=[sym, b.rid("self_report", "alert-d27")], findings=[f], action=a)
@@ -325,7 +375,7 @@ def s5():
         "permission_record_id": perm, "package_version": 1, "prepared_at_utc": "2026-11-14T08:05:00Z"})
     b.add("sharing_permission", b.base("sharing_permission", perm, "application_generated") | {
         "actor_role": "astronaut", "resource_kind": "share_package", "resource_id": pkg, "permission_kind": "share", "allowed": True,
-        "policy_version": "share-0.1", "consent_basis": "Previewed and confirmed by the astronaut", "permission_time_utc": "2026-11-14T08:04:40Z"})
+        "policy_version": "share-0.1", "consent_basis": "Previewed and confirmed by the astronaut", "permission_time_utc": "2026-11-14T08:05:00Z"})
     b.add("sync_event", b.base("sync_event", "sim:sync_event:s5-consult-d27-saved", "application_generated") | {
         "share_package_id": pkg, "sync_status": "saved_locally", "occurred_at_utc": "2026-11-14T08:05:00Z",
         "message_id": "msg-s5-consult-d27", "connection_available": False, "retry_number": 0})

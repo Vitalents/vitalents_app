@@ -36,7 +36,7 @@ describe('record builders', () => {
     expect(r.action.finding_id).toBe(r.finding.finding_id)
   })
 
-  it('Report something builds a valid symptom self-report and a watching follow-up (FR-SH-05)', () => {
+  it('Report something requests medical review independently of Decode (FR-SH-05 / R-REV-02)', () => {
     const r = buildReportRecords({ ...ctx, text: 'Headache since the morning', onset: '2026-11-14', severity: 'mild', reportDate: '2026-11-14' })
     expectValid('self_report', r.self_report)
     expectValid('finding', r.finding)
@@ -44,7 +44,11 @@ describe('record builders', () => {
     expectValid('follow_up', r.follow_up)
     expect(r.self_report.report_kind).toBe('symptom')
     expect(r.finding.supporting_record_ids).toEqual([r.self_report.self_report_id])
-    expect(r.follow_up.followup_status).toBe('watching')
+    expect(r.follow_up.followup_status).toBe('review_requested')
+    expect(r.finding.rule_id).toBe('rule:R-REV-02')
+    expect(r.action.owner_role).toBe('medical')
+    expect(r.action.step_category).toBe('request_review')
+    expect(r.follow_up.assigned_role).toBe('medical')
     expect(r.self_report.private_note).toBeUndefined()
   })
 })

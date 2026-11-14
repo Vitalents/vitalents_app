@@ -8,6 +8,7 @@ import argparse
 import json
 import subprocess
 import sys
+import tempfile
 
 from science import contract_logic, decode, schedule, status
 from scripts.make_fixtures import Builder, OUT, ROOT, V, date
@@ -106,9 +107,10 @@ def build_statuses(b, verified):
                 context={"subject": subject, "events_verified": verified.get(rid)},
             )
             if rid == b.rid("measurement", "hr-d27"):
-                # D-6 carries the known capture limitation alongside the absent
-                # value. status.py returns no_reading and has no limited state.
-                info.update(status="limited", reason_codes=[WRIST_QUALITY], reference_eligible=False)
+                # D-3 preserves the absent value. D-6's limited state requires
+                # a usable reading, so keep the engine's no_reading state and
+                # retain the observed capture problem as its specific reason.
+                info.update(reason_codes=[WRIST_QUALITY], reference_eligible=False)
             elif kind == "decode_session" and record["session_state"] == "interrupted":
                 # Persist the specific P0 reason available in the capture.
                 info["reason_codes"] = ["interrupted_page_hidden"]
@@ -143,10 +145,15 @@ def schedule_comparison(bundle):
 
 def app_steps(bundle, day):
     """Run the same draft rule ordering the app uses on the generated records."""
-    result = subprocess.run(
-        ["node", str(ROOT / "app/scripts/fahim_s1_rules.mjs"), date(day)],
-        input=json.dumps(bundle), encoding="utf-8", stdout=subprocess.PIPE, check=True, cwd=ROOT / "app",
-    )
+    # The Node bridge reads fd 0 synchronously. A large pipe can transiently return
+    # EAGAIN before Python finishes writing, so give it a complete regular file.
+    with tempfile.TemporaryFile(mode="w+", encoding="utf-8") as payload:
+        json.dump(bundle, payload)
+        payload.seek(0)
+        result = subprocess.run(
+            ["node", str(ROOT / "app/scripts/fahim_s1_rules.mjs"), date(day)],
+            stdin=payload, encoding="utf-8", stdout=subprocess.PIPE, check=True, cwd=ROOT / "app",
+        )
     return json.loads(result.stdout)
 
 
@@ -242,7 +249,7 @@ def generate():
     )
     # Keep the scenario's current review first for fixture consumers.
     add_review(b, 27, DAY27_REVIEW_AT, [rest_finding], rest_action,
-               "Today's entries include sleep, alertness and a wrist check with limited contact. Today's Decode is missing.",
+               "Today's entries include sleep and alertness. The wrist check produced no pulse reading because of weak sensor contact. Today's Decode is missing.",
                decode_day=26)
     add_review(b, 20, day20, [pain_finding], pain_action, pain_step["explanation"], decode_day=20)
     add_review(b, 25, day25, [watch_finding], watch_action, watch_explanation, decode_day=25)
