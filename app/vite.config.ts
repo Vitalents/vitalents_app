@@ -1,7 +1,8 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
-// https://vite.dev/config/
+// content/ and contracts/ live at the repo root, outside app/.
 export default defineConfig({
   plugins: [react()],
+  server: { fs: { allow: ['..'] } },
 })
