@@ -53,7 +53,11 @@ export const assistantMode = (): AskMode => {
   const m = import.meta.env.VITE_ASSISTANT_MODE
   return m === 'live' || m === 'auto' ? m : 'cached'
 }
-export const assistantUrl = (): string => (import.meta.env.VITE_ASSISTANT_URL as string | undefined) ?? 'http://localhost:8008'
+/** Public tunnel to the team laptop (scripts/mac/start_assistant.sh). */
+export const PUBLIC_ASSISTANT_URL = 'https://ask.vitalents.life'
+export const assistantUrl = (): string =>
+  (import.meta.env.VITE_ASSISTANT_URL as string | undefined) ||
+  (assistantMode() === 'auto' ? PUBLIC_ASSISTANT_URL : 'http://localhost:8008')
 
 const LIVE_TIMEOUT_MS = 60_000
 const HEALTH_TIMEOUT_MS = 4_000
