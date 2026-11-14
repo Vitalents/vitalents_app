@@ -1,0 +1,431 @@
+{
+  "research_model_id": "sim:research_model:c2",
+  "model_version": "research-model-0.1",
+  "is_simulated": true,
+  "label": "Research prototype on simulated data — not used for any step or alert",
+  "subject_id": "sim:crew:c2",
+  "scenario_code": "S2",
+  "source_file": "app/public/data/fixtures/S2.json",
+  "source_sha256": "2b778c09410154c6c3d35abfb218ebddc7aee1a4ab561428649037eee08edbe5",
+  "inputs": [
+    {
+      "key": "sleep_h",
+      "label": "Recorded sleep the night before",
+      "unit": "h",
+      "source": "sleep_record.recorded_interval_ms (simulated wrist estimate)"
+    },
+    {
+      "key": "alertness",
+      "label": "Self-rated alertness that morning",
+      "unit": "1-10",
+      "source": "self_report.alertness_rating (daily_check_alertness)"
+    }
+  ],
+  "target": {
+    "key": "decode_correct_count",
+    "label": "Decode correct answers",
+    "unit": "count",
+    "source": "decode_session.correct_count"
+  },
+  "model": {
+    "name": "Bayesian linear regression (scikit-learn BayesianRidge)",
+    "settings": "Default non-informative hyperpriors; inputs standardised inside each training fold; an input that does not vary in a fold is dropped.",
+    "range": "80 % expected range: expected value ± 1.282 × predictive standard deviation.",
+    "baseline": "Personal median of the training days; its range is their 10th to 90th percentile."
+  },
+  "rows_used": [
+    {
+      "date": "2026-11-07",
+      "sleep_h": 7.0,
+      "alertness": 7.0,
+      "actual": 44.0,
+      "record_ids": [
+        "sim:decode_session:c2-d20",
+        "sim:sleep_record:c2-d20",
+        "sim:self_report:c2-alert-d20"
+      ]
+    },
+    {
+      "date": "2026-11-08",
+      "sleep_h": 6.8,
+      "alertness": 7.0,
+      "actual": 46.0,
+      "record_ids": [
+        "sim:decode_session:c2-d21",
+        "sim:sleep_record:c2-d21",
+        "sim:self_report:c2-alert-d21"
+      ]
+    },
+    {
+      "date": "2026-11-09",
+      "sleep_h": 7.2,
+      "alertness": 7.0,
+      "actual": 45.0,
+      "record_ids": [
+        "sim:decode_session:c2-d22",
+        "sim:sleep_record:c2-d22",
+        "sim:self_report:c2-alert-d22"
+      ]
+    },
+    {
+      "date": "2026-11-10",
+      "sleep_h": 6.9,
+      "alertness": 7.0,
+      "actual": 47.0,
+      "record_ids": [
+        "sim:decode_session:c2-d23",
+        "sim:sleep_record:c2-d23",
+        "sim:self_report:c2-alert-d23"
+      ]
+    },
+    {
+      "date": "2026-11-11",
+      "sleep_h": 7.1,
+      "alertness": 7.0,
+      "actual": 46.0,
+      "record_ids": [
+        "sim:decode_session:c2-d24",
+        "sim:sleep_record:c2-d24",
+        "sim:self_report:c2-alert-d24"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "sleep_h": 7.0,
+      "alertness": 7.0,
+      "actual": 45.0,
+      "record_ids": [
+        "sim:decode_session:c2-d25",
+        "sim:sleep_record:c2-d25",
+        "sim:self_report:c2-alert-d25"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "sleep_h": 6.8,
+      "alertness": 7.0,
+      "actual": 46.0,
+      "record_ids": [
+        "sim:decode_session:c2-d26",
+        "sim:sleep_record:c2-d26",
+        "sim:self_report:c2-alert-d26"
+      ]
+    }
+  ],
+  "excluded": [
+    {
+      "date": "2026-11-14",
+      "record_id": "sim:decode_session:c2-d27",
+      "reason": "Decode information status is not_comparable"
+    }
+  ],
+  "fit": {
+    "rows": 7,
+    "coefficients": [
+      {
+        "input": "sleep_h",
+        "used": true,
+        "per_unit": -0.894,
+        "per_unit_sd": 1.333,
+        "note": null
+      },
+      {
+        "input": "alertness",
+        "used": false,
+        "per_unit": null,
+        "per_unit_sd": null,
+        "note": "This input did not vary in the record, so it carries no information here."
+      }
+    ],
+    "input_correlation": null,
+    "noise_sd": 0.876,
+    "input_means": {
+      "sleep_h": 6.971,
+      "alertness": 7.0
+    },
+    "expected_at_input_means": 45.571
+  },
+  "evaluation": {
+    "leave_one_day_out": {
+      "held_out_days": 7,
+      "days": [
+        {
+          "date": "2026-11-07",
+          "record_ids": [
+            "sim:decode_session:c2-d20",
+            "sim:sleep_record:c2-d20",
+            "sim:self_report:c2-alert-d20"
+          ],
+          "sleep_h": 7.0,
+          "alertness": 7.0,
+          "actual": 44.0,
+          "train_days": 6,
+          "model": {
+            "expected": 45.79,
+            "low": 44.978,
+            "high": 46.602
+          },
+          "baseline": {
+            "expected": 46.0,
+            "low": 45.0,
+            "high": 46.5
+          },
+          "model_abs_error": 1.79,
+          "baseline_abs_error": 2.0,
+          "model_in_range": false,
+          "baseline_in_range": false
+        },
+        {
+          "date": "2026-11-08",
+          "record_ids": [
+            "sim:decode_session:c2-d21",
+            "sim:sleep_record:c2-d21",
+            "sim:self_report:c2-alert-d21"
+          ],
+          "sleep_h": 6.8,
+          "alertness": 7.0,
+          "actual": 46.0,
+          "train_days": 6,
+          "model": {
+            "expected": 45.526,
+            "low": 44.293,
+            "high": 46.76
+          },
+          "baseline": {
+            "expected": 45.5,
+            "low": 44.5,
+            "high": 46.5
+          },
+          "model_abs_error": 0.474,
+          "baseline_abs_error": 0.5,
+          "model_in_range": true,
+          "baseline_in_range": true
+        },
+        {
+          "date": "2026-11-09",
+          "record_ids": [
+            "sim:decode_session:c2-d22",
+            "sim:sleep_record:c2-d22",
+            "sim:self_report:c2-alert-d22"
+          ],
+          "sleep_h": 7.2,
+          "alertness": 7.0,
+          "actual": 45.0,
+          "train_days": 6,
+          "model": {
+            "expected": 45.654,
+            "low": 44.439,
+            "high": 46.87
+          },
+          "baseline": {
+            "expected": 46.0,
+            "low": 44.5,
+            "high": 46.5
+          },
+          "model_abs_error": 0.654,
+          "baseline_abs_error": 1.0,
+          "model_in_range": true,
+          "baseline_in_range": true
+        },
+        {
+          "date": "2026-11-10",
+          "record_ids": [
+            "sim:decode_session:c2-d23",
+            "sim:sleep_record:c2-d23",
+            "sim:self_report:c2-alert-d23"
+          ],
+          "sleep_h": 6.9,
+          "alertness": 7.0,
+          "actual": 47.0,
+          "train_days": 6,
+          "model": {
+            "expected": 45.343,
+            "low": 44.391,
+            "high": 46.295
+          },
+          "baseline": {
+            "expected": 45.5,
+            "low": 44.5,
+            "high": 46.0
+          },
+          "model_abs_error": 1.657,
+          "baseline_abs_error": 1.5,
+          "model_in_range": false,
+          "baseline_in_range": false
+        },
+        {
+          "date": "2026-11-11",
+          "record_ids": [
+            "sim:decode_session:c2-d24",
+            "sim:sleep_record:c2-d24",
+            "sim:self_report:c2-alert-d24"
+          ],
+          "sleep_h": 7.1,
+          "alertness": 7.0,
+          "actual": 46.0,
+          "train_days": 6,
+          "model": {
+            "expected": 45.162,
+            "low": 43.993,
+            "high": 46.331
+          },
+          "baseline": {
+            "expected": 45.5,
+            "low": 44.5,
+            "high": 46.5
+          },
+          "model_abs_error": 0.838,
+          "baseline_abs_error": 0.5,
+          "model_in_range": true,
+          "baseline_in_range": true
+        },
+        {
+          "date": "2026-11-12",
+          "record_ids": [
+            "sim:decode_session:c2-d25",
+            "sim:sleep_record:c2-d25",
+            "sim:self_report:c2-alert-d25"
+          ],
+          "sleep_h": 7.0,
+          "alertness": 7.0,
+          "actual": 45.0,
+          "train_days": 6,
+          "model": {
+            "expected": 45.653,
+            "low": 44.461,
+            "high": 46.844
+          },
+          "baseline": {
+            "expected": 46.0,
+            "low": 44.5,
+            "high": 46.5
+          },
+          "model_abs_error": 0.653,
+          "baseline_abs_error": 1.0,
+          "model_in_range": true,
+          "baseline_in_range": true
+        },
+        {
+          "date": "2026-11-13",
+          "record_ids": [
+            "sim:decode_session:c2-d26",
+            "sim:sleep_record:c2-d26",
+            "sim:self_report:c2-alert-d26"
+          ],
+          "sleep_h": 6.8,
+          "alertness": 7.0,
+          "actual": 46.0,
+          "train_days": 6,
+          "model": {
+            "expected": 45.526,
+            "low": 44.293,
+            "high": 46.76
+          },
+          "baseline": {
+            "expected": 45.5,
+            "low": 44.5,
+            "high": 46.5
+          },
+          "model_abs_error": 0.474,
+          "baseline_abs_error": 0.5,
+          "model_in_range": true,
+          "baseline_in_range": true
+        }
+      ],
+      "summary": {
+        "model_mae": 0.934,
+        "baseline_mae": 1.0,
+        "model_closer_days": 5,
+        "baseline_closer_days": 2,
+        "tied_days": 0,
+        "model_in_range_days": 5,
+        "baseline_in_range_days": 5,
+        "model_mean_range_width": 2.231,
+        "baseline_mean_range_width": 1.857,
+        "beats_baseline": true
+      },
+      "method": "Leave one day out: each day is held out in turn and its expected range comes from all other days, including later ones."
+    },
+    "forward_only": {
+      "held_out_days": 2,
+      "days": [
+        {
+          "date": "2026-11-12",
+          "record_ids": [
+            "sim:decode_session:c2-d25",
+            "sim:sleep_record:c2-d25",
+            "sim:self_report:c2-alert-d25"
+          ],
+          "sleep_h": 7.0,
+          "alertness": 7.0,
+          "actual": 45.0,
+          "train_days": 5,
+          "model": {
+            "expected": 45.6,
+            "low": 44.295,
+            "high": 46.905
+          },
+          "baseline": {
+            "expected": 46.0,
+            "low": 44.4,
+            "high": 46.6
+          },
+          "model_abs_error": 0.6,
+          "baseline_abs_error": 1.0,
+          "model_in_range": true,
+          "baseline_in_range": true
+        },
+        {
+          "date": "2026-11-13",
+          "record_ids": [
+            "sim:decode_session:c2-d26",
+            "sim:sleep_record:c2-d26",
+            "sim:self_report:c2-alert-d26"
+          ],
+          "sleep_h": 6.8,
+          "alertness": 7.0,
+          "actual": 46.0,
+          "train_days": 6,
+          "model": {
+            "expected": 45.526,
+            "low": 44.293,
+            "high": 46.76
+          },
+          "baseline": {
+            "expected": 45.5,
+            "low": 44.5,
+            "high": 46.5
+          },
+          "model_abs_error": 0.474,
+          "baseline_abs_error": 0.5,
+          "model_in_range": true,
+          "baseline_in_range": true
+        }
+      ],
+      "summary": {
+        "model_mae": 0.537,
+        "baseline_mae": 0.75,
+        "model_closer_days": 2,
+        "baseline_closer_days": 0,
+        "tied_days": 0,
+        "model_in_range_days": 2,
+        "baseline_in_range_days": 2,
+        "model_mean_range_width": 2.538,
+        "baseline_mean_range_width": 2.1,
+        "beats_baseline": true
+      },
+      "method": "Forward only: each day's expected range comes from earlier days only, starting once 5 earlier days exist."
+    }
+  },
+  "verdict": "better",
+  "verdict_rule": "Better: a lower average miss than the baseline in both checks, and closer on more than half of the held-out days in each. Mixed: a lower average miss when leaving one day out, but not in the forward-only check or not on most days. Not better: no lower average miss than the baseline when leaving one day out. Not checked: too few days.",
+  "limits": [
+    "Simulated data only: whoever wrote the simulated data decided how sleep and Decode relate, so this model can at best recover those assumptions.",
+    "Very few days (7 usable for this person); every number here is unstable.",
+    "Leave-one-day-out uses later days to explain earlier ones; the forward-only check does not.",
+    "Practice gains over the first sessions are not an input, so early days count against the model.",
+    "Two observations that happen together are a pattern in the record, not a cause.",
+    "An input that never changed in this record was left out of the model.",
+    "Not used for any step, alert, finding or reference. Needs independent validation."
+  ]
+}

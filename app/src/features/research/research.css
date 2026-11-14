@@ -1,0 +1,115 @@
+/* Research track (FR-RT-01) and pattern card (FR-PE-07). Tokens only (docs/DESIGN.md). */
+
+/* ---- Pattern card ------------------------------------------------------------------------------ */
+.pc { padding: 1.25rem 1.5rem; display: grid; gap: 0.9rem; max-width: 46rem; }
+.pc p { margin: 0; }
+.pc-head { display: grid; gap: 0.25rem; }
+.pc-head h3 { margin: 0; font-size: 1.125rem; }
+.pc-headline { display: flex; align-items: baseline; gap: 0.9rem; font-size: 1.0625rem; line-height: 1.45; max-width: 60ch; }
+.pc-count { flex: none; font-family: var(--font-head); font-weight: 600; font-size: 1.75rem; letter-spacing: -0.02em; line-height: 1; color: var(--ink); }
+.pc-of { color: var(--muted); font-weight: 500; }
+.pc-notes { display: grid; gap: 0.3rem; font-size: 0.9375rem; max-width: 64ch; }
+.pc-empty { color: var(--muted); max-width: 64ch; }
+.pc-caveat { background: var(--tint-soft); border-left: 4px solid var(--deep); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 0.65rem 0.9rem; font-weight: 500; max-width: 64ch; }
+
+.pc-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.9rem; }
+.pc-table caption { text-align: left; padding-bottom: 0.35rem; }
+.pc-table th, .pc-table td { text-align: left; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.pc-table thead th { font-size: 0.75rem; font-weight: 600; color: var(--muted); }
+.pc-table tbody th { font-weight: 500; white-space: nowrap; }
+.pc-table tbody tr:last-child > * { border-bottom: 0; }
+.pc-table td .num { font-weight: 600; }
+.pc-tag { display: inline-flex; align-items: center; gap: 0.3rem; margin-left: 0.6rem; font-size: 0.8125rem; color: var(--muted); }
+.pc-tag-short { color: var(--ink); font-weight: 600; }
+.pc-tag svg { flex: none; }
+.pc-short > * { background: color-mix(in srgb, var(--tint-soft) 70%, transparent); }
+.pc-none { color: var(--muted); }
+
+/* ---- Research page ---------------------------------------------------------------------------- */
+.rs-page { display: grid; gap: 1.25rem; }
+.rs-page .page-head { margin-bottom: 0; }
+.rs-page h2 { margin: 0; font-size: 1.375rem; }
+.rs-page h3 { margin: 0; font-size: 1rem; }
+.rs-page p { margin: 0; }
+.rs-lead { font-size: 1.0625rem; max-width: 66ch; }
+
+/* The research label: square-cornered, hatched edge like a data note, so it never reads as a health state. */
+.rs-label {
+  display: flex; align-items: center; gap: 0.55rem; padding: 0.6rem 0.9rem 0.6rem 1.1rem; font-weight: 600; font-size: 0.9375rem;
+  color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 4px; position: relative; overflow: hidden;
+}
+.rs-label::before {
+  content: ''; position: absolute; inset: 0 auto 0 0; width: 6px;
+  background: repeating-linear-gradient(135deg, var(--data-hatch) 0 2px, transparent 2px 5px);
+}
+.rs-label svg { flex: none; color: var(--deep); }
+
+.rs-empty { padding: 1.25rem 1.5rem; color: var(--muted); }
+
+.rs-verdict { padding: 1.25rem 1.5rem 1.5rem; display: grid; gap: 1.1rem; }
+.rs-verdict-text { font-size: 1.125rem; font-weight: 500; line-height: 1.45; max-width: 62ch; }
+
+.rs-checks { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 1rem 2rem; }
+.rs-check { display: grid; gap: 0.4rem; align-content: start; padding-top: 0.75rem; border-top: 1px solid var(--line); }
+.rs-n { font-weight: 400; font-size: 0.875rem; }
+.rs-check-label { font-size: 0.875rem; color: var(--muted); font-weight: 500; }
+.rs-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
+.rs-pair p { display: grid; gap: 0.1rem; }
+.rs-pair-k { font-size: 0.8125rem; color: var(--muted); }
+.rs-pair-v { font-family: var(--font-head); font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; }
+
+.rs-days { display: grid; gap: 0.6rem; padding-top: 0.75rem; border-top: 1px solid var(--line); }
+.rs-days-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem; }
+.rs-switch { display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2px; background: var(--paper); }
+.rs-switch-btn {
+  min-height: 40px; padding: 0 0.85rem; border: 0; border-radius: 7px; background: transparent; color: var(--muted);
+  font: inherit; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: background-color 0.15s ease-out, color 0.15s ease-out;
+}
+.rs-switch-btn[aria-pressed='true'] { background: var(--card); color: var(--ink); box-shadow: 0 1px 2px rgb(0 0 0 / 0.08); }
+.rs-switch-btn:disabled { cursor: not-allowed; opacity: 0.5; }
+.rs-switch-btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+.rs-figure { margin: 0; display: grid; gap: 0.5rem; }
+.rs-chart { position: relative; width: 100%; min-width: 0; }
+.rs-chart .recharts-surface:focus { outline: none; }
+.rs-chart .recharts-wrapper:has(.recharts-surface:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+.rs-axis-note { margin: -0.25rem 0 0 !important; font-size: 0.75rem; text-align: right; }
+.rs-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.35rem 1.1rem; font-size: 0.8125rem; }
+.rs-legend li { display: inline-flex; align-items: center; gap: 0.4rem; }
+.rs-tip { background: var(--card); color: var(--ink); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 0.5rem 0.7rem; box-shadow: var(--shadow); font-size: 0.8125rem; display: grid; gap: 0.1rem; max-width: 16rem; }
+.rs-tip p { margin: 0; }
+.rs-tip-date { font-weight: 600; }
+.rs-table { margin-top: 0; }
+
+.rs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: 1.25rem; align-items: start; }
+.rs-section { padding: 1.25rem 1.5rem; display: grid; gap: 0.75rem; }
+.rs-inputs { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
+.rs-inputs li { display: grid; gap: 0.15rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--line); }
+.rs-input-name { font-weight: 600; }
+.rs-inputs code, .rs-excluded code, .rs-limits code { font-size: 0.8em; overflow-wrap: anywhere; }
+.rs-excluded { margin: 0.25rem 0 0; padding-left: 1.1rem; }
+.rs-how { margin: 0; display: grid; gap: 0.2rem; font-size: 0.9rem; }
+.rs-how dt { font-weight: 600; margin-top: 0.5rem; }
+.rs-how dt:first-child { margin-top: 0; }
+.rs-how dd { margin: 0; color: var(--ink); max-width: 64ch; }
+.rs-limits ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.35rem; max-width: 72ch; }
+.rs-validation { font-weight: 600; }
+
+@media (max-width: 767px) {
+  .pc, .rs-verdict, .rs-section { padding: 1rem; }
+  .pc-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .pc-table, .pc-table tbody { display: block; }
+  .pc-table caption { display: block; }
+  .pc-table tr { display: grid; grid-template-columns: 1fr 1fr; gap: 0.15rem 0.75rem; padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--line); }
+  .pc-table tr:last-child { border-bottom: 0; }
+  .pc-table th, .pc-table td { padding: 0; border: 0; background: none !important; }
+  .pc-table tbody th { grid-column: 1 / -1; }
+  .pc-short { background: color-mix(in srgb, var(--tint-soft) 70%, transparent); }
+  .pc-tag { margin-left: 0.4rem; }
+  .rs-checks { grid-template-columns: 1fr; }
+  .rs-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rs-switch-btn { transition: none; }
+}

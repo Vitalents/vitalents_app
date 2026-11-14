@@ -1,0 +1,30 @@
+{
+  "index_version": "1.0",
+  "label": "Research prototype on simulated data — not used for any step or alert",
+  "models": [
+    {
+      "subject_id": "sim:crew:c2",
+      "file": "model_c2.json",
+      "model_version": "research-model-0.1",
+      "verdict": "better"
+    },
+    {
+      "subject_id": "sim:crew:c3",
+      "file": "model_c3.json",
+      "model_version": "research-model-0.1",
+      "verdict": "not_better"
+    },
+    {
+      "subject_id": "sim:crew:c4",
+      "file": "model_c4.json",
+      "model_version": "research-model-0.1",
+      "verdict": "not_better"
+    },
+    {
+      "subject_id": "sim:crew:fahim",
+      "file": "model_fahim.json",
+      "model_version": "research-model-0.1",
+      "verdict": "mixed"
+    }
+  ]
+}
