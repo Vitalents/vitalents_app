@@ -1,67 +1,120 @@
 [
   {
     "question": "Why do we measure sleep on a long mission?",
-    "label": "Recorded answers not added yet",
     "response": {
-      "status": "not_in_library",
-      "question_id": "placeholder-1",
-      "your_data": null,
-      "science": null,
-      "citations": [],
-      "limits": "Recorded answers not added yet. TODO(record: run ai/record_answers.py on Ahmed's laptop)",
-      "model": "none (placeholder)"
-    }
+      "status": "answered",
+      "question_id": "c3b13462473e",
+      "your_data": "From your record: Mission day: 27.",
+      "science": "Measuring sleep on a long mission provides data on how crew members adapt to the space environment and helps planners schedule adequate rest periods [S1]. It also allows detection of reduced sleep duration, circadian disruption, and associated performance declines that can compromise safety and mission success [S2]. The collected sleep data support research into countermeasures\u2014such as lighting and relaxation protocols\u2014to maintain crew effectiveness throughout the mission [S4].",
+      "citations": [
+        {
+          "id": "S1",
+          "source_id": "lib:nasa-std-3001-tb-sleep-accommodations",
+          "title": "NASA-STD-3001 Technical Brief: Sleep Accommodations (OCHMO-TB-041)",
+          "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-041-sleep-accommodations.pdf",
+          "page": 1,
+          "excerpt": "## Neutral summary (written by the library agent from this source; not a quotation; needs review) The technical brief summarises NASA-STD-3001 guidance on sleep accommodations for crew. It reports that astronauts sleep about six hours on average in space and describes the sleep environment crews nee"
+        },
+        {
+          "id": "S2",
+          "source_id": "lib:ntrs-mallis-2005-sleep",
+          "title": "Circadian rhythms, sleep, and performance in space",
+          "url": "https://ntrs.nasa.gov/citations/20050218840",
+          "page": 1,
+          "excerpt": "## Neutral summary (written by the library agent from this source; not a quotation; needs review) The review summarises evidence from earlier missions of reduced sleep, disrupted circadian timing and lower performance in crew members, and the possible consequences for crew effectiveness and safety. "
+        },
+        {
+          "id": "S4",
+          "source_id": "lib:nasa-sleep-risk",
+          "title": "Risk from Inadequate Sleep and Irregular Schedules",
+          "url": "https://www.nasa.gov/reference/risk-from-inadequate-sleep-and-irregular-schedules/",
+          "page": 1,
+          "excerpt": "## Neutral summary (written by the library agent from this source; not a quotation; needs review) NASA describes stressors in spaceflight such as heavy workloads, irregular light-dark cycles and disrupted sleep, with possible short- and long-term health consequences for mission success. On the space"
+        }
+      ],
+      "limits": "This explains the evidence; it is not a diagnosis. Your medical team makes medical decisions.",
+      "model": "gpt-oss:20b"
+    },
+    "label": "Recorded from the onboard model"
   },
   {
     "question": "What does a Decode result below my reference mean?",
-    "label": "Recorded answers not added yet",
     "response": {
       "status": "not_in_library",
-      "question_id": "placeholder-2",
-      "your_data": null,
+      "question_id": "68dd0aecf8c8",
+      "your_data": "From your record: Mission day: 27.",
       "science": null,
       "citations": [],
-      "limits": "Recorded answers not added yet. TODO(record: run ai/record_answers.py on Ahmed's laptop)",
-      "model": "none (placeholder)"
-    }
+      "limits": "That isn't covered by the onboard NASA library. You can add this question for review.",
+      "model": "gpt-oss:20b",
+      "top_score": 0.5315
+    },
+    "label": "Recorded from the onboard model"
   },
   {
     "question": "Why is pulse alone not enough to judge heart health?",
-    "label": "Recorded answers not added yet",
     "response": {
-      "status": "not_in_library",
-      "question_id": "placeholder-3",
-      "your_data": null,
-      "science": null,
-      "citations": [],
-      "limits": "Recorded answers not added yet. TODO(record: run ai/record_answers.py on Ahmed's laptop)",
-      "model": "none (placeholder)"
-    }
+      "status": "answered",
+      "question_id": "9be5c6694afe",
+      "your_data": "From your record: Mission day: 27.",
+      "science": "Pulse rate alone cannot detect arrhythmias, which are largely anecdotal or observational in spaceflight [S2]. It also fails to reflect fluid shifts and reduced cardiac mass that alter heart function [S2]. Additionally, pulse does not reveal orthostatic intolerance that can develop after return to gravity [S4].",
+      "citations": [
+        {
+          "id": "S2",
+          "source_id": "lib:nasa-cardiac-rhythm-evidence",
+          "title": "Evidence Report: Risk of Cardiac Rhythm Problems during Spaceflight",
+          "url": "https://ntrs.nasa.gov/api/citations/20170005625/downloads/20170005625.pdf",
+          "page": 1,
+          "excerpt": "# Evidence Report: Risk of Cardiac Rhythm Problems during Spaceflight Publisher: NASA Human Research Program (Lee SMC, Stenger MB, Laurie SS, Macias BR) Version: Evidence report, approved for public release 2017-06-12 Date: 2017-06-12 URL: https://ntrs.nasa.gov/api/citations/20170005625/downloads/20"
+        },
+        {
+          "id": "S4",
+          "source_id": "lib:nasa-std-3001-tb-orthostatic-intolerance",
+          "title": "NASA-STD-3001 Technical Brief: Orthostatic Intolerance (OCHMO-TB-019)",
+          "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-019-orthostatic-intolerance.pdf",
+          "page": 1,
+          "excerpt": "## Neutral summary (written by the library agent from this source; not a quotation; needs review) The technical brief describes orthostatic intolerance: a reduced ability to keep blood pressure and blood flow to the brain when standing after return to gravity, which can progress to presyncope or syn"
+        }
+      ],
+      "limits": "This explains the evidence; it is not a diagnosis. Your medical team makes medical decisions.",
+      "model": "gpt-oss:20b"
+    },
+    "label": "Recorded from the onboard model"
   },
   {
     "question": "How does light affect the sleep cycle in space?",
-    "label": "Recorded answers not added yet",
     "response": {
-      "status": "not_in_library",
-      "question_id": "placeholder-4",
-      "your_data": null,
-      "science": null,
-      "citations": [],
-      "limits": "Recorded answers not added yet. TODO(record: run ai/record_answers.py on Ahmed's laptop)",
-      "model": "none (placeholder)"
-    }
+      "status": "answered",
+      "question_id": "8c2bf68e8f1f",
+      "your_data": "From your record: Mission day: 27.",
+      "science": "Light exposure is a key cue for the circadian system and can help astronauts maintain a regular sleep\u2011wake rhythm. [S2] On the ISS, LEDs are used to mimic Earth\u2019s natural light\u2011dark cycle, which has been shown to improve sleep quality for crew members. [S2] Because astronauts experience 16 sunrises and sunsets each day, the natural light pattern can disrupt their biological clocks, so controlled light exposure is a countermeasure to mitigate this effect. [S2]",
+      "citations": [
+        {
+          "id": "S2",
+          "source_id": "lib:nasa-sleep-risk",
+          "title": "Risk from Inadequate Sleep and Irregular Schedules",
+          "url": "https://www.nasa.gov/reference/risk-from-inadequate-sleep-and-irregular-schedules/",
+          "page": 1,
+          "excerpt": "# Risk from Inadequate Sleep and Irregular Schedules Publisher: NASA Human Research Program Version: Web page, last updated 2025-05-16 Date: 2024-10-22 URL: https://www.nasa.gov/reference/risk-from-inadequate-sleep-and-irregular-schedules/ Retrieved: 2026-11-14 Licence: US government work (NASA); pu"
+        }
+      ],
+      "limits": "This explains the evidence; it is not a diagnosis. Your medical team makes medical decisions.",
+      "model": "gpt-oss:20b"
+    },
+    "label": "Recorded from the onboard model"
   },
   {
     "question": "What dose of melatonin should I take tonight?",
-    "label": "Recorded answers not added yet",
     "response": {
-      "status": "not_in_library",
-      "question_id": "placeholder-5",
-      "your_data": null,
+      "status": "blocked",
+      "question_id": "dfa44e2e361a",
+      "your_data": "From your record: Mission day: 27.",
       "science": null,
       "citations": [],
-      "limits": "Recorded answers not added yet. TODO(record: run ai/record_answers.py on Ahmed's laptop)",
-      "model": "none (placeholder)"
-    }
+      "limits": "I can't advise on medications, supplements or doses. Use Request help to ask the medical team.",
+      "model": "gpt-oss:20b",
+      "reason": "medication_or_dose"
+    },
+    "label": "Recorded from the onboard model"
   }
 ]
