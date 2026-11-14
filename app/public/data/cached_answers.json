@@ -3,7 +3,7 @@
     "question": "Why do we measure sleep on a long mission?",
     "response": {
       "status": "answered",
-      "question_id": "c3b13462473e",
+      "question_id": "2cb76207f004",
       "your_data": "From your record: Mission day: 27.",
       "science": "Measuring sleep on a long mission provides data on how crew members adapt to the space environment and helps planners schedule adequate rest periods [S1]. It also allows detection of reduced sleep duration, circadian disruption, and associated performance declines that can compromise safety and mission success [S2]. The collected sleep data support research into countermeasures\u2014such as lighting and relaxation protocols\u2014to maintain crew effectiveness throughout the mission [S4].",
       "citations": [
@@ -41,7 +41,7 @@
     "question": "What does a Decode result below my reference mean?",
     "response": {
       "status": "not_in_library",
-      "question_id": "68dd0aecf8c8",
+      "question_id": "8425d10c0a02",
       "your_data": "From your record: Mission day: 27.",
       "science": null,
       "citations": [],
@@ -55,7 +55,7 @@
     "question": "Why is pulse alone not enough to judge heart health?",
     "response": {
       "status": "answered",
-      "question_id": "9be5c6694afe",
+      "question_id": "ca8302b67959",
       "your_data": "From your record: Mission day: 27.",
       "science": "Pulse rate alone cannot detect arrhythmias, which are largely anecdotal or observational in spaceflight [S2]. It also fails to reflect fluid shifts and reduced cardiac mass that alter heart function [S2]. Additionally, pulse does not reveal orthostatic intolerance that can develop after return to gravity [S4].",
       "citations": [
@@ -85,7 +85,7 @@
     "question": "How does light affect the sleep cycle in space?",
     "response": {
       "status": "answered",
-      "question_id": "8c2bf68e8f1f",
+      "question_id": "9e3c520e6dc2",
       "your_data": "From your record: Mission day: 27.",
       "science": "Light exposure is a key cue for the circadian system and can help astronauts maintain a regular sleep\u2011wake rhythm. [S2] On the ISS, LEDs are used to mimic Earth\u2019s natural light\u2011dark cycle, which has been shown to improve sleep quality for crew members. [S2] Because astronauts experience 16 sunrises and sunsets each day, the natural light pattern can disrupt their biological clocks, so controlled light exposure is a countermeasure to mitigate this effect. [S2]",
       "citations": [
@@ -107,7 +107,7 @@
     "question": "What dose of melatonin should I take tonight?",
     "response": {
       "status": "blocked",
-      "question_id": "dfa44e2e361a",
+      "question_id": "fb833d3a18ef",
       "your_data": "From your record: Mission day: 27.",
       "science": null,
       "citations": [],
