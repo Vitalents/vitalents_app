@@ -51,3 +51,12 @@ The two engines order the daily next step differently:
 - `rules.py`: `request_review` (including any review already open) → `complete_measurement` → `approved_plan_step` → `observe`. Fahim day 27: his pain follow-up is already under specialist review, so the main step becomes **continue that review**, and the rest window drops below the missing-measurement steps.
 
 Choose one order and update either `rules.py` or the SRS and the app. Also: `rules.py` proposes a plan step only with an `ApprovedMatch` (a signed-off rule, evidence and decision owner). That needs Amr's reviewed `content/rules.json` and a medical owner's approval of each rule.
+
+## Decode validity: status.py vs the contract (added 14 Nov 2026)
+
+The app now marks a Decode round `not_comparable` for a device or input-method change (reason `device_change`) and for two or more visible pauses of 5 s or more (reason `pause`). Points for Shaimaa:
+
+1. `status.py` uses `device_method_mismatch`; SRS 7.3 and CONTRACT_P0 use `device_change`. Align `status.py` to the contract code.
+2. `status.py` has no pause rule; it maps any `interruption_reasons` to `not_comparable` / `session_interrupted`. Add `pause` as its own reason code.
+3. The SRS says unfinished sessions (including Request help) are `incomplete`; `status.py` and the app treat interrupted as `not_comparable` and only aborted as `incomplete`. Choose one and update the SRS or both engines.
+4. `follow_up` has no field for the records behind an outcome; the app writes them on a final "Data: …" line of `outcome_note`. Proposal: add `outcome_record_ids` to the contract.
