@@ -1,0 +1,42 @@
+/* Offline note and update toast. Uses the shared tokens only. */
+.pwa-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.pwa-note strong { font-weight: 600; color: var(--ink); }
+.pwa-note-icon {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: var(--deep);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pwa-note-off .pwa-note-icon { stroke: var(--muted); }
+
+.pwa-toast {
+  position: fixed;
+  z-index: 50;
+  inset-inline: 16px;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  margin-inline: auto;
+  max-width: 28rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 0.9rem;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.pwa-toast-msg { flex: 1 1 10rem; font-weight: 600; }
+.pwa-toast .btn { min-height: 44px; }
