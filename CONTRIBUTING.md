@@ -13,7 +13,7 @@ Start with the [architecture](docs/architecture.md), [data contract](docs/CONTRA
 7. **Keep the core independent of AI.** The assistant explains source material and drafts summaries; it does not decide statuses or actions. Retrieved text is data, never instructions.
 8. **Respect role boundaries.** Private notes stay with the astronaut; planners receive operational requests only. Browser role switching demonstrates policy and is not authentication.
 9. **Keep origins explicit.** Simulated histories, live Decode rounds, research records and derived records remain distinguishable. Practice and interrupted rounds cannot silently enter references.
-10. **Keep the public experience reproducible.** Preserve the reviewed cached assistant, raw recordings, hash-bound review policy, source verification records and media credits. New model output needs its own review.
+10. **Keep the public experience reproducible.** Preserve the reviewed cached assistant, raw recordings, hash-bound review policy, source verification records and media credits. Recorded output needs its own review before it is published as a recording. Live answers from the team laptop (public `auto` mode, decided by Ahmed on 14 Nov 2026) are always labelled "not reviewed by the team"; when the laptop is off, the site falls back to the reviewed recordings.
 
 ## Development and checks
 

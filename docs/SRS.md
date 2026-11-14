@@ -67,7 +67,7 @@ In the MVP, roles are switched with a **role switcher** in settings (no authenti
 ### 2.2 Operating environment
 
 - **Demo laptop** (32 GB unified memory): the web app served locally, the assistant service on `localhost:8008` with Ollama. Must work with the network **off**.
-- **Public link** (Cloudflare Pages at **vitalents.life**): the same app in **cached mode**: the assistant shows recorded answers labelled as such. Branch builds may have preview deployments.
+- **Public link** (Cloudflare Pages at **vitalents.life**): the same app in **auto mode**: when the team laptop's assistant answers through the tunnel (`ask.vitalents.life`), live answers are shown and labelled "not reviewed by the team"; otherwise the reviewed recorded answers are shown, labelled as such. Branch builds may have preview deployments.
 - Modern Chromium-based browser; screen widths from 390 px (phone) to 1440 px.
 
 ### 2.3 Constraints
@@ -129,7 +129,7 @@ See the [repository map](../README.md) and [architecture](architecture.md). Appl
 
 | Variable | Values | Effect |
 |---|---|---|
-| `VITE_ASSISTANT_MODE` | `live` · `cached` · `auto` | Cached reads reviewed recordings; live calls the configured API; auto probes API health before falling back. Cloudflare builds force cached mode. |
+| `VITE_ASSISTANT_MODE` | `live` · `cached` · `auto` | Cached reads reviewed recordings; live calls the configured API; auto probes API health before falling back. Cloudflare builds use `auto` (set in the Pages environment); set `cached` to publish recordings only. |
 | `VITE_ASSISTANT_URL` | URL | Explicit API endpoint; local live mode defaults to `http://localhost:8008`, auto to the configured public tunnel. |
 
 ### 3.5 Deployment (Cloudflare Pages)
@@ -142,7 +142,7 @@ See the [repository map](../README.md) and [architecture](architecture.md). Appl
 | Root directory | `app` |
 | Build command | `npm ci && npm run build` |
 | Output directory | `dist` |
-| Environment variables | `VITE_ASSISTANT_MODE=cached`, `NODE_VERSION=22` |
+| Environment variables | `VITE_ASSISTANT_MODE=auto`, `NODE_VERSION=22` |
 | SPA routing | `app/public/_redirects` containing `/* /index.html 200` |
 | Headers | `app/public/_headers`: a Content-Security-Policy allowing only same-origin scripts, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer` |
 | Analytics | Off (no tracking, NFR-09) |
@@ -150,7 +150,7 @@ See the [repository map](../README.md) and [architecture](architecture.md). Appl
 
 **Domain.** The public demo is linked from the repository README. A successful build alone does not verify the deployed revision.
 
-**Assistant deployment.** Public Cloudflare builds use reviewed cached answers. Local live/auto mode may use the separately running assistant API. Only that API may be exposed through the optional tunnel; Ollama remains private. See [assistant setup](../ai/README.md).
+**Assistant deployment.** Public Cloudflare builds run in `auto` mode: live answers from the team laptop through the tunnel, labelled "not reviewed by the team", and the reviewed cached answers when the laptop is off. Local live/auto mode may use the separately running assistant API. Only that API may be exposed through the optional tunnel; Ollama remains private. See [assistant setup](../ai/README.md).
 
 ## 4. Data requirements
 
@@ -380,7 +380,7 @@ Each requirement lists its acceptance criterion: the test or check that proves i
 | FR-AS-04 | When evidence is insufficient the assistant abstains and offers “Add this question for review”, creating DR-12 | M | Out-of-library question → gap logged |
 | FR-AS-05 | Guardrails: citations must match retrieved excerpts; every number must appear in the inputs; no diagnosis, medication or dose | M | Blocked answers in eval |
 | FR-AS-06 | When the service is down or the network is off with no local service, Understand tabs show fixed reviewed content marked “Assistant unavailable · reviewed content” | M | Stop the service; content still shown |
-| FR-AS-07 | Cached mode for the public link, labelled “Recorded from the onboard model” | M | Public build works |
+| FR-AS-07 | Public link: live answers labelled “not reviewed by the team” when the team laptop is online; otherwise cached answers labelled “Recorded from the onboard model” | M | Public build works with the laptop on and off |
 | FR-AS-08 | Evaluation: 15 independent questions (10 answerable with expected source, 5 not answerable); report correct-source, abstention and blocked counts for both models | S | `ai/eval.py` output saved |
 | FR-AS-09 | Consult-summary drafting (`/consult`) from structured data, five fixed sections, with the number check | S | Note contains only input numbers |
 

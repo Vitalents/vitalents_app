@@ -71,7 +71,10 @@ export function AnswerCard({ question, result }: { question: string; result: Ask
       <section className="ask-section ask-section--science">
         <h3>{S.science}</h3>
         {r.status === 'answered' && r.science ? (
-          <p>{r.science}</p>
+          <>
+            {result.source === 'live' && <p className="ask-note ask-note--live">{S.liveNote}</p>}
+            <p>{r.science}</p>
+          </>
         ) : (
           <>
             <p>{r.reason === 'publication_review' ? S.withheld : r.status === 'blocked' ? S.blocked : S.notInLibrary}</p>

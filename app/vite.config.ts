@@ -9,9 +9,9 @@ const vendor = (names: string) => new RegExp(`[\\\\/]node_modules[\\\\/](${names
 
 // content/ and contracts/ live at the repo root, outside app/.
 export default defineConfig({
-  // Public deployments use the reviewed recording artifact. Local live/auto demos remain
-  // available; a reachable old model service is not evidence that this corpus was reviewed.
-  define: process.env.CF_PAGES === '1' ? { 'import.meta.env.VITE_ASSISTANT_MODE': JSON.stringify('cached') } : {},
+  // Assistant mode comes from VITE_ASSISTANT_MODE (Cloudflare: auto). Decision (Ahmed, 14 Nov 2026): the public site
+  // uses the team laptop's onboard model when it answers /health, labels every live answer as not reviewed by the
+  // team, and falls back to the reviewed recordings otherwise. Set VITE_ASSISTANT_MODE=cached to publish recordings only.
   plugins: [
     react(),
     {

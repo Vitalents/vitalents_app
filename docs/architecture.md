@@ -40,6 +40,6 @@ The four-case scientific replay and the five app scenarios serve different demon
 
 The [assistant](../ai/README.md) exposes `/ask`, `/consult` and `/health` through FastAPI. Ollama provides local inference and embeddings. Source retrieval, citation and number checks constrain output but do not establish scientific accuracy.
 
-Cloudflare builds force `cached` mode in [`vite.config.ts`](../app/vite.config.ts). Published fallback answers are derived from immutable raw recordings and an entry-hash review policy. Local builds can optionally use `auto` or `live`; the assistant is never required for core functions.
+Cloudflare builds use `auto` mode (Pages environment variable): the site probes `https://ask.vitalents.life/health` and uses the team laptop's assistant when it answers, labelling each live answer "not reviewed by the team"; otherwise it uses the reviewed recordings. Published fallback answers are derived from immutable raw recordings and an entry-hash review policy. Local builds can optionally use `auto` or `live`; the assistant is never required for core functions.
 
 The production build is static. A service worker precaches the shell and selected assets after initial loading; first access still requires connectivity. Role switching and delayed delivery are local demonstrations, not authenticated accounts or communication with a medical team. See [validation and limitations](validation.md).
