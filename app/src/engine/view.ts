@@ -2,7 +2,7 @@
 // Data status, follow-up status and sync status stay separate (CLAUDE.md rule 2).
 import type { DomainContent, DomainId, IndicatorContent } from '../content/content'
 import type { Action, DecodeSession, Finding, FollowUp, Measurement, PersonalReference, SelfReport, SleepRecord } from '../data/contract'
-import { compareToReference, type ComparisonResult } from './reference'
+import { compareToReference, referenceForDate, type ComparisonResult } from './reference'
 
 export type InfoStatus = 'valid' | 'limited' | 'stale' | 'not_comparable' | 'incomplete' | 'no_reading'
 export type FollowStatus = FollowUp['followup_status']
@@ -25,6 +25,13 @@ export const FOLLOW_RANK: Record<FollowStatus, number> = {
 }
 
 export type AnyRecord = { entity: string; id: string; date: string; domain: DomainId | null; record: Record<string, unknown> }
+
+/** IDs are identities, not clocks. Use observation/submission time within a review day. */
+export function recordTime(r: AnyRecord): string {
+  return String(r.record.start_at_utc ?? r.record.observed_at_utc ?? r.record.submitted_at_utc ?? r.record.created_at_utc ?? `${r.date}T00:00:00Z`)
+}
+
+export const isMeasurementRecord = (r: AnyRecord): boolean => r.entity !== 'decode_session' || r.record.is_practice !== true
 
 const METRIC_DOMAIN: Record<string, DomainId> = {
   hr_daily_bpm: 'heart', hr_resting_bpm: 'heart', hr_hourly_bpm: 'heart',
@@ -66,7 +73,9 @@ export function infoStatusOf(d: DataSet, recordId: string): { status: InfoStatus
   const rows = d.information_status.filter((s) => s.record_ref === recordId).sort((a, b) => a.created_at_utc.localeCompare(b.created_at_utc))
   const last = rows[rows.length - 1]
   if (last) return { status: last.status as InfoStatus, reasons: last.reason_codes ?? [] }
-  return { status: 'valid', reasons: [] }
+  // A self-report describes what the person entered; device measurements require a quality record.
+  if (d.self_report.some((r) => r.self_report_id === recordId)) return { status: 'valid', reasons: [] }
+  return { status: 'incomplete', reasons: ['quality_not_evaluated'] }
 }
 
 /** The value an indicator shows for a record, never invented: null stays null. */
@@ -116,7 +125,7 @@ export function followUpDomains(d: DataSet, fu: FollowUp, idx: Map<string, AnyRe
   return out
 }
 
-export function buildDomainViews(d: DataSet, domains: DomainContent[], reviewDate: string): DomainView[] {
+export function buildDomainViews(d: DataSet, domains: DomainContent[], reviewDate: string, asOf?: string): DomainView[] {
   const all = indexRecords(d)
   const idx = new Map(all.map((r) => [r.id, r]))
   const openFUs = d.follow_up.filter((f) => f.followup_status !== 'closed' && f.followup_status !== 'no_open_follow_up')
@@ -124,8 +133,8 @@ export function buildDomainViews(d: DataSet, domains: DomainContent[], reviewDat
   return domains.map((content) => {
     const indicators: IndicatorView[] = content.indicators.map((ind) => {
       const recs = all
-        .filter((r) => r.domain === content.id && indicatorOf(r) === ind.id && r.date <= reviewDate)
-        .sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id))
+        .filter((r) => r.domain === content.id && indicatorOf(r) === ind.id && r.date <= reviewDate && isMeasurementRecord(r))
+        .sort((a, b) => a.date.localeCompare(b.date) || recordTime(a).localeCompare(recordTime(b)) || a.id.localeCompare(b.id))
       const latest = recs[recs.length - 1] ?? null
       const today = [...recs].reverse().find((r) => r.date === reviewDate) ?? null
       let status: InfoStatus
@@ -135,10 +144,9 @@ export function buildDomainViews(d: DataSet, domains: DomainContent[], reviewDat
       const counts = ind.frequency === 'daily' || today !== null
       const shown = today ?? latest
       const value = shown ? valueOf(shown) : null
-      const refs = d.personal_reference.filter((p) => p.metric_code === ind.id).sort((a, b) => a.created_at_utc.localeCompare(b.created_at_utc))
-      const reference = refs[refs.length - 1] ?? null
+      const reference = referenceForDate(d.personal_reference, ind.id, reviewDate, shown?.record.subject_id as string | undefined, asOf)
       const comparison =
-        reference && shown && infoStatusOf(d, shown.id).status === 'valid'
+        reference && shown && shown.date > reference.end_date && infoStatusOf(d, shown.id).status === 'valid'
           ? compareToReference({ value, reference: { ...reference, range_low: reference.range_low ?? null, range_high: reference.range_high ?? null } })
           : null
       return {
@@ -174,7 +182,7 @@ export function buildReview(d: DataSet, domains: DomainContent[], review: { dail
   const missing = domains
     .filter((dc) => dc.live)
     .flatMap((dc) => dc.indicators.filter((i) => i.frequency === 'daily').map((i) => ({ domain: dc, indicator: i })))
-    .filter(({ domain, indicator }) => !recorded.some((r) => r.record.domain === domain.id && indicatorOf(r.record) === indicator.id))
+    .filter(({ domain, indicator }) => !recorded.some((r) => r.record.domain === domain.id && indicatorOf(r.record) === indicator.id && isMeasurementRecord(r.record)))
   const nextStep = review.selected_action_id ? d.action.find((a) => a.action_id === review.selected_action_id) ?? null : null
   const otherFollowUps = d.follow_up
     .filter((f) => f.followup_status !== 'closed' && f.followup_status !== 'no_open_follow_up' && f.action_id !== nextStep?.action_id)

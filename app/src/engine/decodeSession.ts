@@ -162,7 +162,7 @@ export function buildRoundRecords(i: BuildInput): BuiltRecords {
   const { score, states } = finaliseRound(i.raw, i.plannedMs, i.state, i.interruptedAtMs)
   // A completed round lasted exactly the planned window; other rounds the measured time to the cut.
   // end_at_utc is derived from start + elapsed so the two clocks always agree (status-0.3.0 checks this).
-  const elapsed = i.state === 'completed' ? i.plannedMs : Math.max(0, Math.round(i.elapsedMs))
+  const elapsed = i.state === 'completed' ? i.plannedMs : Math.max(0, Math.ceil(i.elapsedMs))
   // SRS 7.3: pauses and device change are added as reasons; they never end the round or change the score.
   const pauses = findPauses(i.raw, i.state === 'completed' ? i.plannedMs : (i.interruptedAtMs ?? elapsed), i.hidden ?? [])
   const deviceChanged = deviceChange({ device_class: i.deviceClass ?? null, input_method: i.inputMethod }, i.baseline ?? [])

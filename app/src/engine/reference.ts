@@ -1,5 +1,15 @@
 // Personal reference v1 (contract D-10) and comparison. Pure functions, no UI imports.
 // Ported from the contract until science/reference.py lands; must reproduce contracts/vectors.
+import type { PersonalReference } from '../data/contract'
+
+/** A later revision must never change the reference displayed for an earlier review date. */
+export function referenceForDate(refs: PersonalReference[], metric: string, date: string, subjectId?: string, asOf?: string): PersonalReference | null {
+  return refs.filter((r) => r.metric_code === metric && (!subjectId || r.subject_id === subjectId)
+    && r.created_at_utc.slice(0, 10) <= date && (!asOf || Date.parse(r.created_at_utc) <= Date.parse(asOf)) && r.end_date < date
+    && (!r.comparison_target_date || r.comparison_target_date <= date))
+    .sort((a, b) => a.created_at_utc.localeCompare(b.created_at_utc) || a.reference_version.localeCompare(b.reference_version))
+    .at(-1) ?? null
+}
 
 export interface HistoryPoint {
   record_id: string

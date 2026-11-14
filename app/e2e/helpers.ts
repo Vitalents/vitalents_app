@@ -26,13 +26,13 @@ export const ROUTES = [
 
 /** Console errors and uncaught page errors seen during a test. */
 export const test = base.extend<{ consoleErrors: string[] }>({
-  consoleErrors: async ({ page }, use) => {
+  consoleErrors: async ({ page }, runTest) => {
     const errors: string[] = []
     page.on('console', (m) => {
       if (m.type() === 'error') errors.push(`console: ${m.text()}`)
     })
     page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`))
-    await use(errors)
+    await runTest(errors)
   },
 })
 export { expect }

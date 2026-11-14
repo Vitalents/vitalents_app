@@ -5,8 +5,7 @@ status.evaluate() with that record's subject context and compare with the fixtur
 information_status row. events_verified is True only when the session's decode_response_event
 rows exist and rescore (contract D-9) to exactly the stored summaries.
 
-Known, explained disagreements are listed in KNOWN with a reason and kept as an expected failure,
-so they stay visible and the suite fails loudly if one is fixed (or a new one appears).
+Every fixture status must agree with the evaluator; no scenario is exempted.
 
 Run: python3 -B -m unittest discover -s science/tests -t .
 """
@@ -18,18 +17,6 @@ from pathlib import Path
 from science.status import KINDS, evaluate
 
 FIXTURES = Path(__file__).resolve().parents[2] / "app/public/data/fixtures"
-
-# (file, record id) -> reason. Each is a real gap between the stand-in fixtures and status-0.3.0.
-KNOWN = {
-    ("S1.json", "sim:measurement:hr-d27"):
-        "fixture stores 'limited' (weak_sensor_contact, contract D-6); Python reports no_reading for the null value",
-    **{("S5.json", f"sim:decode_session:d{d:02d}"):
-       "S5 simulated sessions carry no decode_response_event rows, so events cannot be verified "
-       "(engine: incomplete/unverified_decode_events); Shaimaa's simulator will add the events"
-       for d in range(13, 27) if d != 23},
-}
-KNOWN[("S5.json", "sim:measurement:hr-d27")] = "legacy S5 stores limited; Python has no limited status"
-
 
 def rescore(events):
     """Contract D-9 summaries from the stored event ledger."""
@@ -91,27 +78,13 @@ class FixtureStatusTest(unittest.TestCase):
 
     def test_statuses_match_engine(self):
         bad = [(f, rid, st, r["status"], r.get("reason_codes")) for f, rid, _, st, r in self.rows
-               if (f, rid) not in KNOWN and st != r["status"]]
+               if st != r["status"]]
         self.assertEqual(bad, [], "fixture information_status disagrees with status.py")
 
-    def test_known_list_is_current(self):
-        """Every KNOWN entry still disagrees; drop it once the engine or fixture is aligned."""
-        seen = {(f, rid) for f, rid, *_ in self.rows}
-        stale = [k for k in KNOWN if k not in seen]
-        self.assertEqual(stale, [])
-        now_match = [(f, rid) for f, rid, _, st, r in self.rows if (f, rid) in KNOWN and st == r["status"]]
-        self.assertEqual(now_match, [], "these KNOWN entries now match; remove them from KNOWN")
-
-    @unittest.expectedFailure
-    def test_known_disagreements(self):
-        """xfail: see KNOWN for the reason of each one."""
-        bad = [(f, rid) for f, rid, _, st, r in self.rows if (f, rid) in KNOWN and st != r["status"]]
-        self.assertEqual(bad, [])
-
     def test_new_scenarios_verify_their_events(self):
-        """S1-S4 completed sessions carry verifiable event ledgers."""
+        """All five scenarios preserve their verifiable event ledgers."""
         for f, rid, kind, st, r in self.rows:
-            if kind == "decode_session" and f in ("S1.json", "S2.json", "S3.json", "S4.json"):
+            if kind == "decode_session":
                 with self.subTest(file=f, record=rid):
                     self.assertNotIn("unverified_decode_events", r.get("reason_codes", []))
 

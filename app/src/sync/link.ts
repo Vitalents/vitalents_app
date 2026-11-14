@@ -5,7 +5,7 @@ import { create } from 'zustand'
 import { useStore } from '../store/store'
 import { assertWrite, type AccessContext } from '../store/permissions'
 import type { Role } from '../store/role'
-import { DEFAULT_LINK, nextEvents, reviewEvent, type LinkSettings } from './engine'
+import { DEFAULT_LINK, reviewEvent, type LinkSettings } from './engine'
 import { operationalDraft, shareRecords, type ShareDraft } from './share'
 import type { Action, SharePackage } from '../data/contract'
 
@@ -41,10 +41,8 @@ export async function tickOutbox(nowMs = Date.now()) {
   if (ticking) return
   ticking = true
   try {
-    const { data, put } = useStore.getState()
     const { link } = useLink.getState()
-    const fresh = data.share_package.flatMap((p) => nextEvents(p, data.sync_event, link, nowMs))
-    if (fresh.length) await put('sync_event', fresh)
+    await useStore.getState().advanceOutbox(link, nowMs)
   } finally {
     ticking = false
   }
@@ -69,7 +67,7 @@ export function confirmShare(draft: ShareDraft, role: Role): Promise<SharePackag
   const running = inflight.get(draft.packageId)
   if (running) return running
   const job = (async () => {
-    const { data, put } = useStore.getState()
+    const { data, putMany } = useStore.getState()
     const ctx: AccessContext = { subjectId: draft.subjectId }
     const w = shareRecords(draft, data, useLink.getState().link, Date.now())
     if (w.permission) {
@@ -77,11 +75,10 @@ export function confirmShare(draft: ShareDraft, role: Role): Promise<SharePackag
       assertWrite(role, 'share_package', [w.pkg], ctx, data)
     }
     assertWrite(role, 'sync_event', w.events, ctx, data)
-    if (w.permission) {
-      await put('sharing_permission', [w.permission])
-      await put('share_package', [w.pkg])
-    }
-    if (w.events.length) await put('sync_event', w.events)
+    await putMany({
+      ...(w.permission ? { sharing_permission: [w.permission], share_package: [w.pkg] } : {}),
+      ...(w.events.length ? { sync_event: w.events } : {}),
+    })
     await tickOutbox()
     return w.pkg
   })()

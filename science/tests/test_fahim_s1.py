@@ -78,11 +78,11 @@ def test_s1_ledgers_and_frozen_reference():
 def test_s1_day27_status_and_schedule():
     bundle = read_bundle()
     by_ref = {r["record_ref"]: r for r in bundle["information_status"]}
-    assert Counter(r["status"] for r in by_ref.values()) == {"valid": 42, "limited": 1, "not_comparable": 1}
+    assert Counter(r["status"] for r in by_ref.values()) == {"valid": 42, "no_reading": 1, "not_comparable": 1}
     pulse = bundle["measurement"][-1]
     wrist = by_ref[pulse["measurement_id"]]
     assert pulse["value"] is None
-    assert wrist["status"] == "limited" and wrist["reason_codes"] == ["weak_sensor_contact"]
+    assert wrist["status"] == "no_reading" and wrist["reason_codes"] == ["weak_sensor_contact"]
     assert wrist["reference_eligible"] is False
     profile, = bundle["subject_profile"]
     assert status.evaluate("measurement", pulse, context={"subject": profile})["status"] == "no_reading"

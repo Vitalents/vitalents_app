@@ -28,7 +28,8 @@
     "license_status": "not_verified",
     "approval_status": "draft",
     "needs_review": true,
-    "review_status": "TODO(review: confirm fragments against the live page; one top-risks sentence was left out because it uses the word 'healthy')"
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance.",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance."
   },
   {
     "id": "lib:source:x-ochmo-tb-food-nutrition",
@@ -38,7 +39,7 @@
     "domain": "nutrition",
     "source_kind": "NASA_resource",
     "publication_date": "2023-12-07",
-    "source_version": "OCHMO-TB-013 Rev D",
+    "source_version": "OCHMO-TB-013: Rev E on cover; quoted pages carry Rev D, 2023-12-07 (mixed source PDF)",
     "retrieval_date": "2026-11-14",
     "excerpts": [
       {
@@ -59,7 +60,8 @@
     "license_status": "not_verified",
     "approval_status": "draft",
     "needs_review": true,
-    "review_status": "TODO(review: confirm page numbers against the PDF; the brief has numeric intake requirements that are deliberately not excerpted)"
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance.",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance."
   },
   {
     "id": "lib:source:x-nasa-nutritional-biochemistry",
@@ -90,7 +92,8 @@
     "license_status": "not_verified",
     "approval_status": "draft",
     "needs_review": true,
-    "review_status": "TODO(review: the page's operational-goal sentence uses the word 'healthy' and was left out; check the '4 to 6-month' wording)"
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance.",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance."
   },
   {
     "id": "lib:source:x-hrp-fn-risk-strategy",
@@ -121,7 +124,8 @@
     "license_status": "not_verified",
     "approval_status": "draft",
     "needs_review": true,
-    "review_status": "TODO(review: slide bullets, not prose; publication date is not printed on the slides, take it from the NTRS record 20240010162)"
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance.",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance."
   },
   {
     "id": "lib:source:x-ochmo-tb-bone-loss",
@@ -152,7 +156,8 @@
     "license_status": "not_verified",
     "approval_status": "draft",
     "needs_review": true,
-    "review_status": "TODO(review: the URL says tb-030 but the PDF header reads OCHMO-MTB-013 Rev D dated 11-Feb-26; confirm the identifier; numeric loading and post-flight schedule lines deliberately not excerpted)"
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance.",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance."
   },
   {
     "id": "lib:source:x-nasa-fitness-risk",
@@ -183,7 +188,8 @@
     "license_status": "not_verified",
     "approval_status": "draft",
     "needs_review": true,
-    "review_status": "TODO(review: the page gives an average strength/aerobic loss figure, deliberately not excerpted until checked by hand; formal risk title may be longer than the fragment)"
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance.",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance."
   },
   {
     "id": "lib:source:x-nasa-astronaut-exercise",
@@ -210,7 +216,8 @@
     "license_status": "not_verified",
     "approval_status": "draft",
     "needs_review": true,
-    "review_status": "TODO(review: a sentence on weekly exercise hours is deliberately not excerpted until its figure is checked by hand)"
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance.",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance."
   },
   {
     "id": "lib:source:x-ochmo-tb-ionizing-radiation",
@@ -241,7 +248,8 @@
     "license_status": "not_verified",
     "approval_status": "draft",
     "needs_review": true,
-    "review_status": "TODO(review: quote only; the [V2 6101] monitoring requirement was left out because it uses the word 'dose', which the assistant guardrail blocks)"
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance.",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance."
   },
   {
     "id": "lib:source:x-nasa-radiation-cancer-risk",
@@ -272,7 +280,8 @@
     "license_status": "not_verified",
     "approval_status": "draft",
     "needs_review": true,
-    "review_status": "TODO(review: quote only; confirm fragments against the live page)"
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance.",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance."
   },
   {
     "id": "lib:source:x-nasa-space-radiation-element",
@@ -303,7 +312,8 @@
     "license_status": "not_verified",
     "approval_status": "draft",
     "needs_review": true,
-    "review_status": "TODO(review: quote only; confirm fragments against the live page)"
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance.",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance."
   },
   {
     "id": "lib:source:x-ntrs-comm-bandwidth-medical",
@@ -331,10 +341,11 @@
     ],
     "file": "x-ntrs-comm-bandwidth-medical.md",
     "scope": "general",
-    "license_status": "not_verified",
+    "license_status": "public_use_permitted_per_ntrs",
     "approval_status": "draft",
     "needs_review": true,
-    "review_status": "TODO(review: NTRS lists 'Public Use Permitted'; abstract fragments only, full PDF at ntrs.nasa.gov/api/citations/20200001702/downloads/20200001702.pdf)"
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance.",
+    "license": "NTRS record: PUBLIC_USE_PERMITTED. This is the recorded rights determination, not a blanket public-domain claim."
   },
   {
     "id": "lib:source:x-nasa-hera-comm-delay",
@@ -365,6 +376,7 @@
     "license_status": "not_verified",
     "approval_status": "draft",
     "needs_review": true,
-    "review_status": "TODO(review: describes a ground analog (HERA), not spaceflight; fragments only)"
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance.",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance."
   }
 ]

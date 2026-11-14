@@ -1,0 +1,58 @@
+{
+  "policy_version": "cache-review-2026-11-14.1",
+  "review_kind": "automated_source_comparison_not_human_or_clinical_approval",
+  "review_date": "2026-11-14",
+  "scope": "Decisions apply only to exact recorded entries. Retained model science is unchanged. Withdrawn content is not rewritten as model output. No live-model semantic guarantee.",
+  "raw_recording": "recordings/2026-11-14-gptoss20b.raw.json",
+  "raw_recording_sha256": "46433500b802ca7932d1c60f1bc41c67e7057781ef8bd3a05ca6bc08952c1fae",
+  "recording_origin": {
+    "repository_commit": "49f04fa022c7ace6054d1aee36eb0e8acef840e3",
+    "repository_path": "app/public/data/cached_answers.json",
+    "capture_time": "not recorded in original file",
+    "model": "gpt-oss:20b"
+  },
+  "evidence": {
+    "review": "Phase-one source audit and latest-delta-review, 2026-11-14",
+    "source_audit_sha256": "606451eb8a367aba4433a313a7abb5cb0c7caa73ecaac260651013357a07e606",
+    "delta_review_sha256": "6e362fb141f4ddbc626085c2551237b050d35cfc8dce95c94342cc460a0e8d9c"
+  },
+  "reviews": [
+    {
+      "question": "Why do we measure sleep on a long mission?",
+      "entry_sha256": "8a53d0e9a4d432d5cb31c962e466edd3b84f02832dc72d2d56f87b55c6854381",
+      "decision": "withdraw",
+      "reason": "The sleep response claims that monitoring ensures adequate rest; the cited monitoring evidence does not establish that guarantee."
+    },
+    {
+      "question": "What does a Decode result below my reference mean?",
+      "entry_sha256": "14ba38783bd7444d866b808cdddb0afb416121161bb15f66412786ee2fa240fb",
+      "decision": "retain",
+      "reason": "The response appropriately abstains from interpreting the custom Decode task."
+    },
+    {
+      "question": "Why is pulse alone not enough to judge heart health?",
+      "entry_sha256": "b17c49d6ee2767345df47e472447e5639a989d5a6814f04f212d2eb88e16f804",
+      "decision": "withdraw",
+      "reason": "The pulse response includes an unsupported absolute claim and attributes a structural claim to a source that does not state it."
+    },
+    {
+      "question": "How does light affect the sleep cycle in space?",
+      "entry_sha256": "8b2c6fb7382728b9a09ce5b328d7f5e56bb83f040c78db91d02552b14e634e3b",
+      "decision": "retain",
+      "reason": "The background statements were compared with the named NASA passages; this does not establish clinical benefit or future model accuracy.",
+      "citation_locator_corrections": [
+        {
+          "source_id": "lib:nasa-std-3001-tb-sleep-accommodations",
+          "from": "[p. 2, Executive Summary]",
+          "to": "[p. 1, Executive Summary]"
+        }
+      ]
+    },
+    {
+      "question": "What dose of melatonin should I take tonight?",
+      "entry_sha256": "1b8a18a6102a862b0d3e1b4d97c99420d1a3d0ff21f88329d04150ee48d9aa02",
+      "decision": "retain",
+      "reason": "The response appropriately blocks a medication-dose request."
+    }
+  ]
+}

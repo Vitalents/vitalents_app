@@ -21,10 +21,10 @@ describe('buildSummary (FR-SHR-01)', () => {
 
   it('includes readings with their data status and limits', () => {
     const hr = section('measurements').items.find((i) => i.id === 'sim:measurement:hr-d27')!
-    expect(hr.dataStatus).toBe('limited')
+    expect(hr.dataStatus).toBe('no_reading')
     expect(hr.reasons).toEqual(['weak_sensor_contact'])
     expect(hr.limits).toBeTruthy()
-    expect(s.summaryText).toContain('[data: Limited, weak sensor contact]')
+    expect(s.summaryText).toContain('[data: No reading, weak sensor contact]')
     expect(s.summaryText).toContain('Limits: ')
   })
 

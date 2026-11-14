@@ -66,9 +66,9 @@ describe('dueFromView on the S1 fixture (mission day 27)', () => {
   it('sample domains show no marker', () => {
     for (const id of ['nutrition', 'movement', 'radiation']) expect(due(id)).toBeNull()
   })
-  it('sleep and heart are done: today has a record, whatever its data status (heart is limited)', () => {
+  it('sleep is done, while a failed pulse acquisition remains due', () => {
     expect(due('sleep')).toBe('done')
-    expect(due('heart')).toBe('done')
+    expect(due('heart')).toBe('due')
   })
   it('a record marked no_reading today does not count as done', () => {
     const d = fixture as unknown as DataSet

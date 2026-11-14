@@ -8,6 +8,13 @@ export const S = {
   loading: 'Loading the mission record…',
   loadError: 'The mission record could not be loaded.',
   retry: 'Try again',
+  access: {
+    title: 'This view belongs to another role',
+    unavailable: 'Your current role cannot open this record. Use your role’s view to see the information shared with you.',
+    openRole: 'Open my role’s view',
+    chooseRole: 'Choose a demo role',
+  },
+  fixtureUpdate: 'Updated demo scenarios are available. Your saved record has been kept. Loading a scenario below replaces that record only after you confirm.',
 
   nav: {
     map: { full: 'Today & map', short: 'Map' },
@@ -58,7 +65,7 @@ export const S = {
     explanation: (text: string) => `You reported: ${text}`,
     limitations: 'A self-report; it is kept and followed, not interpreted as a diagnosis.',
     reason: 'You reported something new.',
-    actionText: 'Keep an eye on it and add details if it changes',
+    actionText: 'Medical team reviews your report',
   },
 
   follow: {

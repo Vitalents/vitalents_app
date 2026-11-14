@@ -337,11 +337,14 @@ def build(corpus: pathlib.Path | None = None, index: pathlib.Path | None = None)
             text = quoted_sections(path.read_text(encoding="utf-8"))
             if not text.strip():
                 continue
-            pages = [Document(page_content=text, metadata={"page": 0})]
+            # Markdown/text notes may quote several original pages. Their file
+            # position is not a page locator in the linked source.
+            pages = [Document(page_content=text, metadata={})]
         else:
             continue
         for p in pages:
-            p.metadata = {**info, "page": p.metadata.get("page", 0) + 1}
+            page = p.metadata.get("page") if path.suffix.lower() == ".pdf" else None
+            p.metadata = {**info, "page": page + 1 if page is not None else None}
         docs.extend(pages)
     chunks = RecursiveCharacterTextSplitter(chunk_size=1200, chunk_overlap=150).split_documents(docs)
     for n, c in enumerate(chunks):

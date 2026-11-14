@@ -5,7 +5,7 @@ Version: OCHMO-MTB-004 Rev A
 Date: 2025-09-25
 URL: https://www.nasa.gov/wp-content/uploads/2025/09/ochmo-mtb-004-space-adaptation-sickness-sas.pdf
 Retrieved: 2026-11-14
-Licence: US government work (NASA); public domain in the US
+Licence: NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.
 Library ID: lib:nasa-std-3001-mtb-sas
 
 ## Verbatim excerpts (NASA, US government work)

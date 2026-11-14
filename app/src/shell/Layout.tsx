@@ -13,6 +13,7 @@ import { ThemeToggle } from './ThemeToggle'
 import { HELP_EVENT } from '../features/decode/useRound'
 import { useOutboxTicker } from '../sync/link'
 import { OfflineNote } from '../pwa'
+import { useRole } from '../store/role'
 
 export const NAV = [
   { to: '/', key: 'map', end: true },
@@ -26,6 +27,7 @@ export const NAV = [
 
 export function Layout() {
   const { ready, error, init } = useStore()
+  const role = useRole((s) => s.role)
   const subject = useSubject()
   const date = useReviewDate()
   const waiting = useWaitingToSend()
@@ -38,10 +40,10 @@ export function Layout() {
 
   // The Decode round asks for help through an event so it never imports the shell (FR-DEC-06).
   useEffect(() => {
-    const open = () => setDialog('help')
+    const open = () => { if (role === 'astronaut') setDialog('help') }
     window.addEventListener(HELP_EVENT, open)
     return () => window.removeEventListener(HELP_EVENT, open)
-  }, [])
+  }, [role])
 
   return (
     <div className="app">
@@ -60,8 +62,8 @@ export function Layout() {
           <span className="sync" title={S.header.syncNone}>{waiting ? S.header.syncWaiting(waiting) : S.header.syncNone}</span>
         </div>
         <div className="top-actions">
-          <button className="btn danger tb-help" onClick={() => setDialog('help')}><Icon name="help" /><span>{S.header.help}</span></button>
-          <button className="btn tb-report" onClick={() => setDialog('report')}><Icon name="report" /><span>{S.header.report}</span></button>
+          {role === 'astronaut' && <button className="btn danger tb-help" onClick={() => setDialog('help')}><Icon name="help" /><span>{S.header.help}</span></button>}
+          {role === 'astronaut' && <button className="btn tb-report" onClick={() => setDialog('report')}><Icon name="report" /><span>{S.header.report}</span></button>}
           <span className="tb-tools"><ThemeToggle /><NavLink to="/settings" className="icon-btn tb-settings" aria-label={S.nav.settings} title={S.nav.settings}><Icon name="settings" /></NavLink></span>
         </div>
       </header>
@@ -92,8 +94,8 @@ export function Layout() {
         </main>
       </div>
 
-      {dialog === 'help' && <HelpDialog onClose={() => setDialog(null)} />}
-      {dialog === 'report' && <ReportDialog onClose={() => setDialog(null)} />}
+      {role === 'astronaut' && dialog === 'help' && <HelpDialog onClose={() => setDialog(null)} />}
+      {role === 'astronaut' && dialog === 'report' && <ReportDialog onClose={() => setDialog(null)} />}
     </div>
   )
 }

@@ -6,7 +6,7 @@
   "subject_id": "sim:crew:c2",
   "scenario_code": "S2",
   "source_file": "app/public/data/fixtures/S2.json",
-  "source_sha256": "2b778c09410154c6c3d35abfb218ebddc7aee1a4ab561428649037eee08edbe5",
+  "source_sha256": "b35157f7aeb28440faeecc5d1fb537da7f34280014c8d17c346eacf1faf05b8e",
   "inputs": [
     {
       "key": "sleep_h",

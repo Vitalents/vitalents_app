@@ -64,10 +64,12 @@ jobs:
           cache: pip
           cache-dependency-path: science/requirements.txt
       - run: pip install -r science/requirements.txt pytest
-      - name: Science tests
-        run: pytest -q science
+      - name: Science, research and fixture regression tests
+        run: pytest -q science scripts/tests research/tests
       - name: Validate data against contracts/
         run: python scripts/validate_data.py
+      - name: Validate rule provenance
+        run: python scripts/check_rules.py
       - name: Forbidden wording check
         run: python scripts/check_language.py
 

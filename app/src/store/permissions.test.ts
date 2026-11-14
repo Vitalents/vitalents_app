@@ -34,6 +34,17 @@ beforeEach(() => {
   auditLog.length = 0
 })
 
+it('medical cannot gain visibility by creating or relinking a follow-up to an unshared action', () => {
+  const data = loadS1WithPrivate()
+  const hidden = data.action.find((a) => a.action_id === 'sim:action:rest-d27')!
+  const own = data.follow_up.find((f) => f.assigned_role === 'medical')!
+  expect(readRecord('medical', 'action', hidden.action_id, data, ctx)).toBeNull()
+  const forged = { ...own, follow_up_id: 'sim:follow_up:forged', action_id: hidden.action_id }
+  expect(canWrite('medical', 'follow_up', forged, ctx, data)).toBe(false)
+  expect(canWrite('medical', 'follow_up', { ...own, action_id: hidden.action_id }, ctx, data)).toBe(false)
+  expect(canWrite('medical', 'follow_up', { ...own, specialist_note: 'Review note' }, ctx, data)).toBe(true)
+})
+
 describe('planner (SRS 9, FR-SHR-04)', () => {
   it('refuses a Decode session and logs ids only', () => {
     const data = loadS1WithPrivate()

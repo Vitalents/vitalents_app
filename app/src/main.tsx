@@ -13,7 +13,8 @@ import { registerPwa, UpdateToast } from './pwa'
 import { applyStoredTheme } from './store/preferences'
 import { MapPage } from './features/map/MapPage'
 import { S } from './content/strings'
-import { useSubject } from './store/selectors'
+import { useActiveSubjectId } from './store/selectors'
+import { RequireRole } from './shell/RequireRole'
 
 const pick = <M,>(load: () => Promise<M>, name: keyof M) =>
   lazy(async () => ({ default: (await load())[name] as unknown as ComponentType<Record<string, unknown>> }))
@@ -35,10 +36,11 @@ const ProofPage = pick(() => import('./features/proof/ProofPage'), 'ProofPage')
 const ResearchPage = pick(() => import('./features/research/ResearchPage'), 'ResearchPage')
 
 const page = (node: ReactNode) => <Suspense fallback={<p className="muted pad" role="status">{S.loading}</p>}>{node}</Suspense>
+const astronautPage = (node: ReactNode) => <RequireRole roles={['astronaut']}>{page(node)}</RequireRole>
 
 // Role screens follow the loaded scenario's subject.
 function WithSubject({ C }: { C: ComponentType<Record<string, unknown>> }) {
-  const id = useSubject()?.subject_profile_id
+  const id = useActiveSubjectId()
   return id ? page(<C subjectId={id} />) : null
 }
 
@@ -47,22 +49,22 @@ const router = createBrowserRouter([
     path: '/',
     element: <Layout />,
     children: [
-      { index: true, element: <MapPage /> },
-      { path: 'check', element: page(<CheckPage />) },
-      { path: 'review', element: page(<ReviewPage />) },
-      { path: 'record', element: page(<RecordPage />) },
-      { path: 'plan', element: page(<><FollowUpList scheduleHref="/rest-window" /><div className="page"><TriedActionsLog /></div></>) },
-      { path: 'rest-window', element: page(<RestWindowPage backHref="/plan" />) },
+      { index: true, element: astronautPage(<MapPage />) },
+      { path: 'check', element: astronautPage(<CheckPage />) },
+      { path: 'review', element: astronautPage(<ReviewPage />) },
+      { path: 'record', element: astronautPage(<RecordPage />) },
+      { path: 'plan', element: <RequireRole roles={['astronaut', 'medical']}>{page(<><FollowUpList scheduleHref="/rest-window" /><div className="page"><TriedActionsLog /></div></>)}</RequireRole> },
+      { path: 'rest-window', element: astronautPage(<RestWindowPage backHref="/plan" />) },
       { path: 'share', element: <WithSubject C={SharePage} /> },
-      { path: 'medical', element: <WithSubject C={MedicalView} /> },
-      { path: 'planner', element: <WithSubject C={PlannerView} /> },
-      { path: 'domain/:id', element: page(<DomainPage />) },
+      { path: 'medical', element: <RequireRole roles={['medical']}><WithSubject C={MedicalView} /></RequireRole> },
+      { path: 'planner', element: <RequireRole roles={['planner']}><WithSubject C={PlannerView} /></RequireRole> },
+      { path: 'domain/:id', element: astronautPage(<DomainPage />) },
       { path: 'settings', element: page(<SettingsPage />) },
-      { path: 'ask', element: page(<AskPage />) },
-      { path: 'profile', element: page(<ProfilePage />) },
+      { path: 'ask', element: astronautPage(<AskPage />) },
+      { path: 'profile', element: astronautPage(<ProfilePage />) },
       { path: 'proof', element: page(<ProofPage />) },
-      { path: 'research', element: page(<ResearchPage />) },
-      { path: '*', element: <MapPage /> },
+      { path: 'research', element: astronautPage(<ResearchPage />) },
+      { path: '*', element: astronautPage(<MapPage />) },
     ],
   },
 ])

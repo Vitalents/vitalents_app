@@ -23,11 +23,13 @@ CATEGORY_ATTENTION = {
     "MEASUREMENT_ISSUE": {"missing"},
     "PLAN_NEED": {"change"},
     "INSUFFICIENT_REFERENCE": {"reference"},
+    "DESCRIPTIVE_OBSERVATION": {"change"},
 }
 ATTENTION_ORDER = ["urgent", "due_follow_up", "change", "missing", "reference"]
 STEP_CATEGORY = {  # rules.ts STEP_CATEGORY
     "REVIEW_REQUEST": "request_review", "MEASUREMENT_ISSUE": "complete_measurement",
     "PLAN_NEED": "approved_plan_step", "INSUFFICIENT_REFERENCE": "observe",
+    "DESCRIPTIVE_OBSERVATION": "observe",
 }
 OPS = {"==", "!=", ">", ">=", "<", "<=", "in"}
 OWNERS = {"astronaut", "medical", "planner"}
@@ -87,7 +89,8 @@ def to_rule_definition(rule, created_at):
         "required_quality": rule.get("required_quality"),
         "condition_description": rule["condition_description"],
         "observation_template": rule["finding"],
-        "allowed_next_step": STEP_CATEGORY.get(rule["category"]),
+        "allowed_next_step": ("observe" if rule["category"] == "PLAN_NEED" and rule.get("approval_state") != "approved"
+                              else STEP_CATEGORY.get(rule["category"])),
         "owner_role": rule["step"]["decision_owner"],
         "evidence_source_id": rule["source_id"],
         "approval_state": rule["approval_state"],

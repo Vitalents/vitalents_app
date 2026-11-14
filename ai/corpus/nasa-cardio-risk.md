@@ -5,7 +5,7 @@ Version: Web page, last updated 2025-05-16
 Date: 2024-10-23
 URL: https://www.nasa.gov/reference/risk-of-cardiovascular-adaptations/
 Retrieved: 2026-11-14
-Licence: US government work (NASA); public domain in the US
+Licence: NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.
 Library ID: lib:nasa-cardio-risk
 
 ## Verbatim excerpts (NASA, US government work)

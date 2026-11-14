@@ -51,7 +51,7 @@ describe('Fahim, mission day 27 (S1 fixture)', () => {
     expect(facts['sleep.last_night_h']).toBe(5.2)
     expect(facts['decode.below_reference_consecutive']).toBe(2)
     expect(facts['decode.info_status']).toBe('no_reading')
-    expect(facts['pulse.info_status']).toBe('limited')
+    expect(facts['pulse.info_status']).toBe('no_reading')
     expect(facts['help.requested']).toBe(false)
     expect(facts['limits.any_exceeded']).toBeNull()
   })
@@ -60,7 +60,7 @@ describe('Fahim, mission day 27 (S1 fixture)', () => {
     const steps = evaluateRules(facts, STARTER_RULES)
     expect(steps[0].rule_id).toBe('R-PLAN-01')
     expect(steps[0].opens).toBe('schedule_alternatives')
-    expect(steps[0].step_category).toBe('approved_plan_step')
+    expect(steps[0].step_category).toBe('observe') // draft team workflow, not an approved medical plan
     expect(steps[0].explanation).toContain('2 sessions in a row below your personal range (41–44)')
     expect(steps.map((s) => s.rule_id)).toEqual(expect.arrayContaining(['R-MEAS-03', 'R-MEAS-04']))
     expect(steps.map((s) => s.rule_id)).not.toContain('R-PLAN-02')

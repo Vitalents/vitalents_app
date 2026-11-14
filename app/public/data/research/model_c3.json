@@ -6,7 +6,7 @@
   "subject_id": "sim:crew:c3",
   "scenario_code": "S3",
   "source_file": "app/public/data/fixtures/S3.json",
-  "source_sha256": "cf343c5ecd075922739701bfc50ceddd21910d1d41a05b928f2c1771b4ea2ce7",
+  "source_sha256": "dff6e3a2450e43e607d7329185fb287c4e71eae2cd04ecbc914bcc82cbc887e8",
   "inputs": [
     {
       "key": "sleep_h",
@@ -170,7 +170,7 @@
       "date": "2026-11-12",
       "sleep_h": 6.9,
       "alertness": 7.0,
-      "actual": 46.0,
+      "actual": 42.0,
       "record_ids": [
         "sim:decode_session:c3-d25",
         "sim:sleep_record:c3-d25",
@@ -196,8 +196,8 @@
       {
         "input": "sleep_h",
         "used": true,
-        "per_unit": 1.799,
-        "per_unit_sd": 1.04,
+        "per_unit": 1.646,
+        "per_unit_sd": 1.085,
         "note": null
       },
       {
@@ -209,12 +209,12 @@
       }
     ],
     "input_correlation": null,
-    "noise_sd": 2.035,
+    "noise_sd": 2.2,
     "input_means": {
       "sleep_h": 6.871,
       "alertness": 7.0
     },
-    "expected_at_input_means": 45.214
+    "expected_at_input_means": 44.929
   },
   "evaluation": {
     "leave_one_day_out": {
@@ -232,16 +232,16 @@
           "actual": 40.0,
           "train_days": 13,
           "model": {
-            "expected": 45.953,
-            "low": 44.262,
-            "high": 47.645
+            "expected": 45.618,
+            "low": 43.478,
+            "high": 47.759
           },
           "baseline": {
             "expected": 46.0,
-            "low": 43.4,
+            "low": 42.2,
             "high": 47.0
           },
-          "model_abs_error": 5.953,
+          "model_abs_error": 5.618,
           "baseline_abs_error": 6.0,
           "model_in_range": false,
           "baseline_in_range": false
@@ -258,16 +258,16 @@
           "actual": 43.0,
           "train_days": 13,
           "model": {
-            "expected": 46.203,
-            "low": 43.711,
-            "high": 48.694
+            "expected": 45.819,
+            "low": 43.034,
+            "high": 48.603
           },
           "baseline": {
             "expected": 46.0,
-            "low": 41.8,
+            "low": 41.2,
             "high": 47.0
           },
-          "model_abs_error": 3.203,
+          "model_abs_error": 2.819,
           "baseline_abs_error": 3.0,
           "model_in_range": false,
           "baseline_in_range": true
@@ -284,16 +284,16 @@
           "actual": 46.0,
           "train_days": 13,
           "model": {
-            "expected": 45.208,
-            "low": 42.507,
-            "high": 47.908
+            "expected": 44.895,
+            "low": 41.985,
+            "high": 47.805
           },
           "baseline": {
             "expected": 46.0,
-            "low": 41.4,
+            "low": 41.2,
             "high": 47.0
           },
-          "model_abs_error": 0.792,
+          "model_abs_error": 1.105,
           "baseline_abs_error": 0.0,
           "model_in_range": true,
           "baseline_in_range": true
@@ -310,16 +310,16 @@
           "actual": 47.0,
           "train_days": 13,
           "model": {
-            "expected": 45.475,
-            "low": 42.783,
-            "high": 48.167
+            "expected": 45.12,
+            "low": 42.226,
+            "high": 48.014
           },
           "baseline": {
             "expected": 46.0,
-            "low": 41.4,
+            "low": 41.2,
             "high": 47.0
           },
-          "model_abs_error": 1.525,
+          "model_abs_error": 1.88,
           "baseline_abs_error": 1.0,
           "model_in_range": true,
           "baseline_in_range": true
@@ -336,16 +336,16 @@
           "actual": 45.0,
           "train_days": 13,
           "model": {
-            "expected": 45.477,
-            "low": 42.764,
-            "high": 48.191
+            "expected": 45.144,
+            "low": 42.204,
+            "high": 48.085
           },
           "baseline": {
             "expected": 46.0,
-            "low": 41.4,
+            "low": 41.2,
             "high": 47.0
           },
-          "model_abs_error": 0.477,
+          "model_abs_error": 0.144,
           "baseline_abs_error": 1.0,
           "model_in_range": true,
           "baseline_in_range": true
@@ -362,16 +362,16 @@
           "actual": 46.0,
           "train_days": 13,
           "model": {
-            "expected": 45.016,
-            "low": 42.325,
-            "high": 47.707
+            "expected": 44.719,
+            "low": 41.821,
+            "high": 47.618
           },
           "baseline": {
             "expected": 46.0,
-            "low": 41.4,
+            "low": 41.2,
             "high": 47.0
           },
-          "model_abs_error": 0.984,
+          "model_abs_error": 1.281,
           "baseline_abs_error": 0.0,
           "model_in_range": true,
           "baseline_in_range": true
@@ -388,18 +388,18 @@
           "actual": 48.0,
           "train_days": 13,
           "model": {
-            "expected": 45.512,
-            "low": 42.873,
-            "high": 48.15
+            "expected": 45.127,
+            "low": 42.296,
+            "high": 47.959
           },
           "baseline": {
             "expected": 46.0,
-            "low": 41.4,
+            "low": 41.2,
             "high": 47.0
           },
-          "model_abs_error": 2.488,
+          "model_abs_error": 2.873,
           "baseline_abs_error": 2.0,
-          "model_in_range": true,
+          "model_in_range": false,
           "baseline_in_range": false
         },
         {
@@ -414,16 +414,16 @@
           "actual": 47.0,
           "train_days": 13,
           "model": {
-            "expected": 45.31,
-            "low": 42.649,
-            "high": 47.97
+            "expected": 44.978,
+            "low": 42.117,
+            "high": 47.84
           },
           "baseline": {
             "expected": 46.0,
-            "low": 41.4,
+            "low": 41.2,
             "high": 47.0
           },
-          "model_abs_error": 1.69,
+          "model_abs_error": 2.022,
           "baseline_abs_error": 1.0,
           "model_in_range": true,
           "baseline_in_range": true
@@ -440,16 +440,16 @@
           "actual": 46.0,
           "train_days": 13,
           "model": {
-            "expected": 45.208,
-            "low": 42.507,
-            "high": 47.908
+            "expected": 44.895,
+            "low": 41.985,
+            "high": 47.805
           },
           "baseline": {
             "expected": 46.0,
-            "low": 41.4,
+            "low": 41.2,
             "high": 47.0
           },
-          "model_abs_error": 0.792,
+          "model_abs_error": 1.105,
           "baseline_abs_error": 0.0,
           "model_in_range": true,
           "baseline_in_range": true
@@ -466,16 +466,16 @@
           "actual": 45.0,
           "train_days": 13,
           "model": {
-            "expected": 45.681,
-            "low": 42.961,
-            "high": 48.4
+            "expected": 45.324,
+            "low": 42.373,
+            "high": 48.275
           },
           "baseline": {
             "expected": 46.0,
-            "low": 41.4,
+            "low": 41.2,
             "high": 47.0
           },
-          "model_abs_error": 0.681,
+          "model_abs_error": 0.324,
           "baseline_abs_error": 1.0,
           "model_in_range": true,
           "baseline_in_range": true
@@ -492,16 +492,16 @@
           "actual": 47.0,
           "train_days": 13,
           "model": {
-            "expected": 45.31,
-            "low": 42.649,
-            "high": 47.97
+            "expected": 44.978,
+            "low": 42.117,
+            "high": 47.84
           },
           "baseline": {
             "expected": 46.0,
-            "low": 41.4,
+            "low": 41.2,
             "high": 47.0
           },
-          "model_abs_error": 1.69,
+          "model_abs_error": 2.022,
           "baseline_abs_error": 1.0,
           "model_in_range": true,
           "baseline_in_range": true
@@ -518,16 +518,16 @@
           "actual": 46.0,
           "train_days": 13,
           "model": {
-            "expected": 45.016,
-            "low": 42.325,
-            "high": 47.707
+            "expected": 44.719,
+            "low": 41.821,
+            "high": 47.618
           },
           "baseline": {
             "expected": 46.0,
-            "low": 41.4,
+            "low": 41.2,
             "high": 47.0
           },
-          "model_abs_error": 0.984,
+          "model_abs_error": 1.281,
           "baseline_abs_error": 0.0,
           "model_in_range": true,
           "baseline_in_range": true
@@ -541,7 +541,7 @@
           ],
           "sleep_h": 6.9,
           "alertness": 7.0,
-          "actual": 46.0,
+          "actual": 42.0,
           "train_days": 13,
           "model": {
             "expected": 45.208,
@@ -553,9 +553,9 @@
             "low": 41.4,
             "high": 47.0
           },
-          "model_abs_error": 0.792,
-          "baseline_abs_error": 0.0,
-          "model_in_range": true,
+          "model_abs_error": 3.208,
+          "baseline_abs_error": 4.0,
+          "model_in_range": false,
           "baseline_in_range": true
         },
         {
@@ -570,31 +570,31 @@
           "actual": 41.0,
           "train_days": 13,
           "model": {
-            "expected": 45.545,
-            "low": 42.942,
-            "high": 48.149
+            "expected": 45.223,
+            "low": 42.269,
+            "high": 48.176
           },
           "baseline": {
             "expected": 46.0,
-            "low": 43.4,
+            "low": 42.2,
             "high": 47.0
           },
-          "model_abs_error": 4.545,
+          "model_abs_error": 4.223,
           "baseline_abs_error": 5.0,
           "model_in_range": false,
           "baseline_in_range": false
         }
       ],
       "summary": {
-        "model_mae": 1.9,
-        "baseline_mae": 1.5,
-        "model_closer_days": 4,
-        "baseline_closer_days": 10,
+        "model_mae": 2.136,
+        "baseline_mae": 1.786,
+        "model_closer_days": 6,
+        "baseline_closer_days": 8,
         "tied_days": 0,
-        "model_in_range_days": 11,
+        "model_in_range_days": 9,
         "baseline_in_range_days": 11,
-        "model_mean_range_width": 5.194,
-        "baseline_mean_range_width": 5.286,
+        "model_mean_range_width": 5.648,
+        "baseline_mean_range_width": 5.643,
         "beats_baseline": false
       },
       "method": "Leave one day out: each day is held out in turn and its expected range comes from all other days, including later ones."
@@ -793,7 +793,7 @@
           ],
           "sleep_h": 6.9,
           "alertness": 7.0,
-          "actual": 46.0,
+          "actual": 42.0,
           "train_days": 12,
           "model": {
             "expected": 45.5,
@@ -805,10 +805,10 @@
             "low": 43.2,
             "high": 47.0
           },
-          "model_abs_error": 0.5,
-          "baseline_abs_error": 0.0,
-          "model_in_range": true,
-          "baseline_in_range": true
+          "model_abs_error": 3.5,
+          "baseline_abs_error": 4.0,
+          "model_in_range": false,
+          "baseline_in_range": false
         },
         {
           "date": "2026-11-13",
@@ -822,31 +822,31 @@
           "actual": 41.0,
           "train_days": 13,
           "model": {
-            "expected": 45.545,
-            "low": 42.942,
-            "high": 48.149
+            "expected": 45.223,
+            "low": 42.269,
+            "high": 48.176
           },
           "baseline": {
             "expected": 46.0,
-            "low": 43.4,
+            "low": 42.2,
             "high": 47.0
           },
-          "model_abs_error": 4.545,
+          "model_abs_error": 4.223,
           "baseline_abs_error": 5.0,
           "model_in_range": false,
           "baseline_in_range": false
         }
       ],
       "summary": {
-        "model_mae": 1.742,
-        "baseline_mae": 1.278,
-        "model_closer_days": 2,
-        "baseline_closer_days": 7,
+        "model_mae": 2.039,
+        "baseline_mae": 1.722,
+        "model_closer_days": 3,
+        "baseline_closer_days": 6,
         "tied_days": 0,
-        "model_in_range_days": 7,
-        "baseline_in_range_days": 7,
-        "model_mean_range_width": 5.849,
-        "baseline_mean_range_width": 4.644,
+        "model_in_range_days": 6,
+        "baseline_in_range_days": 6,
+        "model_mean_range_width": 5.927,
+        "baseline_mean_range_width": 4.778,
         "beats_baseline": false
       },
       "method": "Forward only: each day's expected range comes from earlier days only, starting once 5 earlier days exist."

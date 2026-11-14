@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 import { formatNumber, sourceTitle } from '../../content/format'
 import { formatDay } from '../../engine/mission'
 import { sleepDecodePattern, type PatternPair, type SleepDecodePattern } from '../../engine/patterns'
-import { useDataSet, useReviewDate } from '../../store/selectors'
+import { useCurrentReview, useDataSet, useReviewDate } from '../../store/selectors'
 import { WhyRecords } from '../record/WhyRecords'
 import { P } from './strings'
 import './research.css'
@@ -13,8 +13,10 @@ import './research.css'
 export function PatternCard({ to }: { to?: string } = {}) {
   const data = useDataSet()
   const reviewDate = useReviewDate()
+  const review = useCurrentReview()
   const date = to ?? reviewDate
-  const p = useMemo(() => sleepDecodePattern(data, { to: date }), [data, date])
+  const asOf = date === review?.review_date ? review.created_at_utc : undefined
+  const p = useMemo(() => sleepDecodePattern(data, { to: date, asOf }), [data, date, asOf])
   return <PatternCardView pattern={p} />
 }
 

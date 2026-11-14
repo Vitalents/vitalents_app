@@ -31,7 +31,7 @@ describe('domain views (S1, mission day 27)', () => {
     }
     const noLimited = { ...data, information_status: data.information_status.filter((s) => s.record_ref !== 'sim:measurement:hr-d27') }
     const [v] = buildDomainViews(noLimited, [synthetic], DATE)
-    expect(v.indicators[0].status).toBe('valid')
+    expect(v.indicators[0].status).toBe('incomplete') // no quality record is not an implicit pass
     expect(v.indicators[1].status).toBe('no_reading')
     expect(v.dataStatus).toBe('no_reading')
   })
@@ -42,9 +42,9 @@ describe('domain views (S1, mission day 27)', () => {
     expect(s.followUps.map((f) => f.follow_up_id)).toContain('sim:follow_up:pain-d20')
   })
 
-  it('cognition shows watching; heart shows limited data with no open follow-up', () => {
+  it('cognition shows watching; failed pulse acquisition stays no_reading with no open follow-up', () => {
     expect(byId('cognition').followStatus).toBe('watching')
-    expect(byId('heart').dataStatus).toBe('limited')
+    expect(byId('heart').dataStatus).toBe('no_reading')
     expect(byId('heart').indicators[0].value).toBeNull()
     expect(byId('heart').followStatus).toBe('no_open_follow_up')
     expect(byId('heart').indicators[0].reasons).toContain('weak_sensor_contact')

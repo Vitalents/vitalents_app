@@ -1,10 +1,10 @@
 // Rules evaluator (SRS section 6) and fact computation (SRS 6.3). Pure: no UI imports.
 // Rules state observations only; templates are filled from computed facts and nothing else.
 import type { Action, DecodeSession, FollowUp, PersonalReference, SelfReport, SleepRecord, Measurement } from '../data/contract'
-import { compareToReference } from './reference'
+import { compareToReference, referenceForDate } from './reference'
 import { infoStatusOf, type InfoStatus } from './view'
 
-export type RuleCategory = 'REVIEW_REQUEST' | 'MEASUREMENT_ISSUE' | 'PLAN_NEED' | 'INSUFFICIENT_REFERENCE'
+export type RuleCategory = 'REVIEW_REQUEST' | 'MEASUREMENT_ISSUE' | 'PLAN_NEED' | 'INSUFFICIENT_REFERENCE' | 'DESCRIPTIVE_OBSERVATION'
 /** Attention order: 1 help/urgent → 2 due follow-ups → 3 changes needing review → 4 missing information → 5 reference building. */
 export type Attention = 'urgent' | 'due_follow_up' | 'change' | 'missing' | 'reference'
 export const ATTENTION_ORDER: Record<Attention, number> = { urgent: 1, due_follow_up: 2, change: 3, missing: 4, reference: 5 }
@@ -27,6 +27,7 @@ export interface Rule {
   source_id: string
   source_type?: 'nasa' | 'research' | 'team_rule'
   limits: string
+  approval_state?: string
 }
 
 export type StepCategory = Action['step_category']
@@ -35,6 +36,7 @@ export const STEP_CATEGORY: Record<RuleCategory, StepCategory> = {
   MEASUREMENT_ISSUE: 'complete_measurement',
   PLAN_NEED: 'approved_plan_step',
   INSUFFICIENT_REFERENCE: 'observe',
+  DESCRIPTIVE_OBSERVATION: 'observe',
 }
 export type FindingKind = 'missing_data' | 'descriptive_change' | 'context_conflict' | 'approved_plan_step' | 'review_request'
 const FINDING_KIND: Record<RuleCategory, FindingKind> = {
@@ -42,6 +44,7 @@ const FINDING_KIND: Record<RuleCategory, FindingKind> = {
   MEASUREMENT_ISSUE: 'missing_data',
   PLAN_NEED: 'descriptive_change',
   INSUFFICIENT_REFERENCE: 'descriptive_change',
+  DESCRIPTIVE_OBSERVATION: 'descriptive_change',
 }
 
 export interface Step {
@@ -97,7 +100,7 @@ export function evaluateRules(facts: Facts, rules: Rule[]): Step[] {
     .sort((a, b) => ATTENTION_ORDER[a.attention] - ATTENTION_ORDER[b.attention] || a.priority - b.priority || a.id.localeCompare(b.id))
     .map((r) => ({
       rule_id: r.id, rule_version: r.version, category: r.category, attention: r.attention,
-      step_category: STEP_CATEGORY[r.category], finding_kind: r.category === 'PLAN_NEED' && r.step.opens ? 'descriptive_change' : FINDING_KIND[r.category],
+      step_category: r.category === 'PLAN_NEED' && r.approval_state === 'draft' ? 'observe' : STEP_CATEGORY[r.category], finding_kind: r.category === 'PLAN_NEED' && r.step.opens ? 'descriptive_change' : FINDING_KIND[r.category],
       title: r.step.title, explanation: fill(r.finding, facts), limitations: r.limits, owner_role: r.step.decision_owner,
       followup_days: r.step.followup_days, source_id: r.source_id, opens: r.step.opens ?? null, facts_used: factsIn(r.when),
     }))
@@ -114,14 +117,18 @@ export interface FactData {
   personal_reference: PersonalReference[]
   follow_up: FollowUp[]
   action: Action[]
+  finding?: { finding_id: string; rule_id: string }[]
 }
 
 const shiftDay = (d: string, n: number) => new Date(Date.parse(`${d}T00:00:00Z`) + n * 86_400_000).toISOString().slice(0, 10)
 
 /** Facts for one review date (SRS 6.3). Unknown values are null, never 0. */
-export function computeFacts(d: FactData, reviewDate: string): Facts {
+export function computeFacts(d: FactData, reviewDate: string, asOf?: string): Facts {
   const status = (id: string): InfoStatus => infoStatusOf(d as never, id).status
-  const sleeps = d.sleep_record.filter((s) => s.observation_date <= reviewDate).sort((a, b) => a.observation_date.localeCompare(b.observation_date))
+  const byNight = new Map<string, SleepRecord>()
+  for (const s of d.sleep_record.filter((s) => s.observation_date <= reviewDate).sort((a, b) => a.created_at_utc.localeCompare(b.created_at_utc) || a.sleep_record_id.localeCompare(b.sleep_record_id)))
+    byNight.set(s.observation_date, s)
+  const sleeps = [...byNight.values()].sort((a, b) => a.observation_date.localeCompare(b.observation_date))
   const lastNight = sleeps.find((s) => s.observation_date === reviewDate) ?? null
   const hours = (s: SleepRecord) => (s.recorded_interval_ms === null ? null : s.recorded_interval_ms / 3_600_000)
   const last3 = [0, 1, 2].map((n) => shiftDay(reviewDate, -n))
@@ -131,8 +138,7 @@ export function computeFacts(d: FactData, reviewDate: string): Facts {
     .filter((s) => !s.is_practice && s.start_at_utc.slice(0, 10) <= reviewDate)
     .sort((a, b) => a.start_at_utc.localeCompare(b.start_at_utc))
   const today = [...sessions].reverse().find((s) => s.start_at_utc.slice(0, 10) === reviewDate) ?? null
-  const refs = d.personal_reference.filter((p) => p.metric_code === 'decode_correct_count').sort((a, b) => a.created_at_utc.localeCompare(b.created_at_utc))
-  const ref = refs[refs.length - 1] ?? null
+  const ref = referenceForDate(d.personal_reference, 'decode_correct_count', reviewDate, undefined, asOf)
   let below = 0
   if (ref) {
     for (const s of [...sessions].reverse()) {
@@ -142,10 +148,13 @@ export function computeFacts(d: FactData, reviewDate: string): Facts {
       else break
     }
   }
-  const comparable = sessions.filter((s) => status(s.decode_session_id) === 'valid').length
+  const comparable = ref?.valid_record_count ?? 0
+  const comparison = today && status(today.decode_session_id) === 'valid' && ref
+    ? compareToReference({ value: today.correct_count, reference: { ...ref, range_low: ref.range_low ?? null, range_high: ref.range_high ?? null } }) : null
 
   const symptomsToday = d.self_report.filter((r) => r.report_kind === 'symptom' && r.report_date === reviewDate)
-  const pulseToday = d.measurement.find((m) => m.metric_code.startsWith('hr_') && m.observation_date === reviewDate) ?? null
+  const pulseToday = d.measurement.filter((m) => m.metric_code.startsWith('hr_') && m.observation_date === reviewDate)
+    .sort((a, b) => (a.observed_at_utc ?? a.created_at_utc).localeCompare(b.observed_at_utc ?? b.created_at_utc)).at(-1) ?? null
   const open = d.follow_up.filter((f) => f.followup_status !== 'closed' && f.followup_status !== 'no_open_follow_up')
   const overdue = open.filter((f) => f.next_review_due_utc && f.next_review_due_utc.slice(0, 10) < reviewDate).length
 
@@ -158,10 +167,17 @@ export function computeFacts(d: FactData, reviewDate: string): Facts {
     'decode.reference_range': ref && ref.range_low !== null && ref.range_high !== null ? `${ref.range_low}–${ref.range_high}` : null,
     'decode.below_reference_consecutive': ref ? below : null,
     'decode.session_count_comparable': comparable,
+    'decode.reference_eligible_count': comparable,
+    'decode.correct_count': today?.correct_count ?? null,
+    'decode.reference_position': comparison ? ({ within_range: 'within your range', below_range: 'below your range', above_range: 'above your range', not_comparable: 'not comparable' })[comparison.position] : null,
     'symptom.reported_today': symptomsToday.length > 0,
     'pulse.info_status': pulseToday ? status(pulseToday.measurement_id) : 'no_reading',
     'followup.overdue_count': overdue,
-    'help.requested': open.some((f) => f.followup_status === 'review_requested'),
+    'help.requested': open.some((f) => {
+      if (f.followup_status !== 'review_requested') return false
+      const a = d.action.find((x) => x.action_id === f.action_id)
+      return !!a && (d.finding ?? []).some((x) => x.finding_id === a.finding_id && x.rule_id === 'rule:R-REV-01')
+    }),
     // Not computable yet: no severity field, no temperature reference, no approved limits file. Kept null on purpose.
     'symptom.severity_max': null,
     'temperature.change_from_reference_c': null,

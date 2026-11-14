@@ -94,7 +94,10 @@ function decide(role: Role, entity: EntityName, rec: unknown, ctx: AccessContext
     if (entity === 'share_package') return v.plannerPackageIds.has(id)
     if (entity === 'sync_event') return v.plannerPackageIds.has(String((rec as SyncEvent).share_package_id ?? ''))
     if (PLANNER_NEVER.includes(entity)) return false
-    if (entity === 'action') return (rec as EntityMap['action']).owner_role === 'planner'
+    if (entity === 'action') {
+      const a = rec as EntityMap['action']
+      return a.owner_role === 'planner' && a.finding_id == null
+    }
     if (entity === 'mission_schedule') return true
     return subject === undefined && entity !== 'rule_definition' // shared reference data only (scenario, library)
   }
@@ -157,6 +160,16 @@ export function canWrite(role: Role, entity: EntityName, rec: unknown, ctx: Acce
   const subject = subjectOf(rec)
   if (subject !== undefined && subject !== ctx.subjectId) return false
   if (role === 'astronaut') {
+    if (entity === 'action') {
+      const a = rec as EntityMap['action']
+      const before = data.action.find((x) => x.action_id === a.action_id)
+      if (before) return before.owner_role === 'astronaut' && a.owner_role === before.owner_role
+    }
+    if (entity === 'follow_up') {
+      const f = rec as EntityMap['follow_up']
+      const before = data.follow_up.find((x) => x.follow_up_id === f.follow_up_id)
+      if (before) return before.assigned_role === 'astronaut' && f.assigned_role === before.assigned_role
+    }
     if (entity === 'sync_event') return (rec as SyncEvent).sync_status !== 'reviewed'
     if (entity === 'feedback_entry') {
       const f = rec as FeedbackEntry
@@ -175,7 +188,7 @@ export function canWrite(role: Role, entity: EntityName, rec: unknown, ctx: Acce
     if (entity === 'action') {
       const a = rec as EntityMap['action']
       const before = data.action.find((x) => x.action_id === a.action_id)
-      return a.owner_role === 'planner' && (!before || before.owner_role === 'planner')
+      return a.owner_role === 'planner' && a.finding_id == null && (!before || (before.owner_role === 'planner' && before.finding_id == null))
     }
     return false
   }
@@ -186,6 +199,9 @@ export function canWrite(role: Role, entity: EntityName, rec: unknown, ctx: Acce
   }
   if (entity === 'action') {
     const a = rec as EntityMap['action']
+    const before = data.action.find((x) => x.action_id === a.action_id)
+    if (before?.owner_role === 'medical') return a.owner_role === 'medical' && before.subject_id === a.subject_id
+    if (before) return false
     const fromPackage = !!a.approval_record_id && v.sharedIds.has(a.approval_record_id)
     if (a.step_category === 'complete_measurement') return a.owner_role === 'astronaut' && fromPackage
     if (a.step_category === 'request_review') return a.owner_role === 'medical' && fromPackage
@@ -193,9 +209,14 @@ export function canWrite(role: Role, entity: EntityName, rec: unknown, ctx: Acce
   }
   if (entity === 'follow_up') {
     const f = rec as EntityMap['follow_up']
-    if (f.assigned_role === 'medical') return true
-    // a follow-up for the astronaut on a reading the medical team requested
+    const before = data.follow_up.find((x) => x.follow_up_id === f.follow_up_id)
+    if (before && before.action_id !== f.action_id) return false
     const a = data.action.find((x) => x.action_id === f.action_id)
+    if (f.assigned_role === 'medical') {
+      if (before) return before.assigned_role === 'medical'
+      return !!a && a.owner_role === 'medical' && !!a.approval_record_id && v.sharedIds.has(a.approval_record_id)
+    }
+    // a follow-up for the astronaut on a reading the medical team requested
     return f.assigned_role === 'astronaut' && !!a && a.step_category === 'complete_measurement' && !!a.approval_record_id && v.sharedIds.has(a.approval_record_id)
   }
   return false

@@ -4,7 +4,7 @@
 // Missing stays missing: a night with no valid Decode round the morning after is listed, never counted as below or within.
 import type { DecodeSession, PersonalReference, SleepRecord } from '../data/contract'
 import { addDays } from './mission'
-import { compareToReference } from './reference'
+import { compareToReference, referenceForDate } from './reference'
 import { STARTER_RULES } from './rules.starter'
 import { infoStatusOf, type DataSet } from './view'
 
@@ -64,14 +64,11 @@ export interface SleepDecodePattern {
   recordIds: string[]
 }
 
-const latest = <T extends { created_at_utc: string }>(rows: T[]) =>
-  [...rows].sort((a, b) => a.created_at_utc.localeCompare(b.created_at_utc)).at(-1) ?? null
-
 const hoursOf = (s: SleepRecord) => (s.recorded_interval_ms === null ? null : s.recorded_interval_ms / 3_600_000)
 
 /** What counts as a short night for this person: below their own sleep reference range, else the rule threshold. */
-export function shortNightBasis(d: DataSet): ShortNightBasis {
-  const ref = latest((d.personal_reference ?? []).filter((p) => p.metric_code === 'sleep_duration'))
+export function shortNightBasis(d: DataSet, to = '9999-12-31', asOf?: string): ShortNightBasis {
+  const ref = referenceForDate(d.personal_reference ?? [], 'sleep_duration', to, undefined, asOf)
   if (ref && ref.reference_status === 'usable_for_question' && typeof ref.range_low === 'number') {
     return { hours: ref.range_low, basis: 'sleep_reference', referenceId: ref.personal_reference_id, ruleId: null, ruleVersion: null, sourceId: null }
   }
@@ -93,9 +90,9 @@ function group(kind: NightKind, pairs: PatternPair[]): PatternGroup {
  * round of the morning after. Only valid sleep records count as nights; a Decode round is compared only when its
  * data status is valid, exactly as Record & trends does.
  */
-export function sleepDecodePattern(d: DataSet, opts: { to: string }): SleepDecodePattern {
-  const basis = shortNightBasis(d)
-  const ref = latest((d.personal_reference ?? []).filter((p) => p.metric_code === 'decode_correct_count'))
+export function sleepDecodePattern(d: DataSet, opts: { to: string; asOf?: string }): SleepDecodePattern {
+  const basis = shortNightBasis(d, opts.to, opts.asOf)
+  const ref = referenceForDate(d.personal_reference ?? [], 'decode_correct_count', opts.to, undefined, opts.asOf)
   const empty = (kind: NightKind): PatternGroup => ({ kind, nights: 0, compared: 0, below: 0, pairs: [] })
   if (!ref || ref.reference_status !== 'usable_for_question' || ref.range_low == null || ref.range_high == null) {
     return { state: 'no_decode_reference', shortNight: basis, decodeReference: ref, from: null, to: opts.to, short: empty('short'), other: empty('other'), recordIds: ref ? [ref.personal_reference_id] : [] }
@@ -104,7 +101,7 @@ export function sleepDecodePattern(d: DataSet, opts: { to: string }): SleepDecod
   const status = (id: string) => infoStatusOf(d, id).status
 
   const nights = new Map<string, SleepRecord>()
-  for (const s of [...(d.sleep_record ?? [])].sort((a, b) => a.sleep_record_id.localeCompare(b.sleep_record_id))) {
+  for (const s of [...(d.sleep_record ?? [])].sort((a, b) => a.created_at_utc.localeCompare(b.created_at_utc) || a.sleep_record_id.localeCompare(b.sleep_record_id))) {
     if (s.observation_date < from || s.observation_date > opts.to) continue
     if (status(s.sleep_record_id) !== 'valid' || hoursOf(s) === null) continue
     nights.set(s.observation_date, s)

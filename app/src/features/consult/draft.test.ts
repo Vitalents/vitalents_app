@@ -28,7 +28,7 @@ describe('templateSections', () => {
     expect(s.trend).toContain('37 vs 41-44')
     const dates = s.trend.split('\n').map((l) => l.slice(0, 10)).filter((d) => /^\d{4}/.test(d))
     expect(dates).toEqual([...dates].sort())
-    expect(s.trend).toContain('(data: Limited, weak sensor contact)')
+    expect(s.trend).toContain('(data: No reading, weak sensor contact)')
     expect(s.context).toContain('Lower back pain after exercise')
     expect(s.context).toContain('Limits: ')
     expect(s.what_was_tried).toContain('Send your report to the medical team')

@@ -54,7 +54,7 @@ describe('buildTrend', () => {
   it('leaves a gap when weak wrist contact yields no pulse value on day 27', () => {
     const hr = ind('heart', 'hr_resting_bpm')
     const p = buildTrend(hr.history, { to: DATE, daily: true }).at(-1)!
-    expect(hr.status).toBe('limited')
+    expect(hr.status).toBe('no_reading')
     expect(p.kind).toBe('no_reading')
     expect(p.value).toBeNull()
     expect(p.valid).toBeNull()

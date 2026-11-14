@@ -5,7 +5,7 @@ Version: Web page, last updated 2026-02-24
 Date: 2024-10-22
 URL: https://www.nasa.gov/reference/risk-of-behavioral-changes-and-psychiatric-disorders/
 Retrieved: 2026-11-14
-Licence: US government work (NASA); public domain in the US
+Licence: NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.
 Library ID: lib:nasa-behavioral-risk
 
 ## Verbatim excerpts (NASA, US government work)
