@@ -62,6 +62,23 @@ Response:
 | `limits` | What the answer is not (or why it was refused) |
 | `model` | Model name |
 
+## The `/consult` contract (FR-AS-09)
+
+Request: `{"summary": {"events": [...], "measurements": [...], "symptoms": [...], "actions": [...], "question": "..." | null}}`.
+Each item is a labelled value `{label, date, data_status, reasons, limits}`, built from the share preview the astronaut sees
+(`app/src/assistant/consult.ts` `toConsultInput`). Any other field (for example a private note) is rejected with 422.
+
+Response: `{status: "drafted" | "blocked", consult_id, sections: {trend, context, what_was_tried, crew_question, requested_decision} | null, note, unsupported_numbers: [], reason, limits, model}`.
+
+- `crew_question` is the astronaut's question restated in code (or "No question added."), never model-written.
+- Blocked, with no text returned, when a section is missing, a number is absent from the summary, or the wording is forbidden (negated restatements such as "not a diagnosis" are allowed).
+- The app re-checks the numbers, and builds the same five sections from the record when the service is down, in cached mode, or when the draft is blocked ("Drafted without the assistant").
+
+```bash
+curl -s localhost:8008/consult -H 'Content-Type: application/json' \
+  -d '{"summary":{"measurements":[{"label":"Recorded sleep: 5.2 h","date":"2026-11-14"}],"question":"Should I change my exercise plan?"}}'
+```
+
 ## Guardrails
 
 1. Medication, supplement and dose questions are refused **before** retrieval.
