@@ -5,6 +5,7 @@ import type { DecodeSession } from '../../data/contract'
 import {
   DEMO_MS, MEASURE_MS, PRACTICE_MS, buildRoundRecords, makeDifferentKey, makeKey, makeSequence, newSeed, type Quality,
 } from '../../engine/decodeSession'
+import { baselineSessions } from '../../engine/decodeValidity'
 import { useStore } from '../../store/store'
 import { DecodeRound } from '../decode/DecodeRound'
 import { DataBadge, ResultView } from '../decode/ResultView'
@@ -61,6 +62,8 @@ export function CheckPage() {
       subjectId: ctx.subjectId, seed, raw: end.raw, plannedMs: durationMs, isPractice: demo, state: end.state,
       interruptionReasons: [...end.interruptionReasons, ...extraReasons], interruptedAtMs: end.cutMs,
       startedAt: end.startedAt, elapsedMs: end.elapsedMs, inputMethod: end.inputMethod,
+      // SRS 7.3: pauses (page visible, no response) and a device change against the reference sessions
+      hidden: end.hidden, deviceClass: end.deviceClass, baseline: baselineSessions(data, ctx.subjectId),
     })
     await put('decode_session', [built.session])
     await put('decode_response_event', built.events)

@@ -80,6 +80,8 @@ export const S = {
     interrupted_help: 'Request help was used',
     reported_interruption: 'you reported an interruption',
     random_pressing: 'answers looked like random pressing',
+    pause: 'two or more pauses of 5 s or more without an answer',
+    device_change: 'a different device or input than your reference rounds',
     aborted: 'the round was stopped early',
     quit_early: 'the round was stopped early',
   } as Record<string, string>,
