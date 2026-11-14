@@ -1,6 +1,6 @@
 // Role-based visibility, enforced in the data layer (SRS section 9, CLAUDE.md rule 9 and 12).
 // Screens must read through filterData() or readRecord(); hiding a button is never the control.
-import { ENTITY_NAMES, type EntityMap, type EntityName, type SelfReport, type SharePackage, type SyncEvent } from '../data/contract'
+import { ENTITY_NAMES, type EntityMap, type EntityName, type FeedbackEntry, type Finding, type SelfReport, type SharePackage, type SyncEvent } from '../data/contract'
 import type { Data } from './store'
 import type { Role } from './role'
 
@@ -35,6 +35,14 @@ const PLANNER_NEVER: EntityName[] = [
   'information_status', 'personal_reference', 'daily_review', 'follow_up', 'share_package', 'sync_event',
   'knowledge_gap', 'feedback_entry', 'sharing_permission',
 ]
+
+/** Feedback the medical team sees: ratings only (FR-PE-02). Display preferences and source problems stay with the astronaut. */
+const MEDICAL_FEEDBACK: FeedbackEntry['feedback_kind'][] = ['action_usefulness', 'alert_usefulness']
+
+/** Feedback the astronaut may write. Every kind is a log entry; none of them changes a reference, limit or rule (FR-PE-03). */
+const ASTRONAUT_FEEDBACK: FeedbackEntry['feedback_kind'][] = ['action_usefulness', 'alert_usefulness', 'display_preference', 'source_problem']
+
+const realmOf = (id: string) => id.split(':')[0]
 
 /** Latest sync status per share package, from its sync_event records. */
 export function packageStatus(events: SyncEvent[], packageId: string): SyncEvent['sync_status'] | null {
@@ -91,6 +99,7 @@ function decide(role: Role, entity: EntityName, rec: unknown, ctx: AccessContext
     return subject === undefined && entity !== 'rule_definition' // shared reference data only (scenario, library)
   }
   // medical
+  if (entity === 'feedback_entry') return MEDICAL_FEEDBACK.includes((rec as FeedbackEntry).feedback_kind)
   if (entity === 'follow_up') return (rec as EntityMap['follow_up']).assigned_role === 'medical' || v.sharedIds.has(id)
   if (entity === 'action') return v.medicalActionIds.has(id) || v.sharedIds.has(id)
   if (entity === 'sync_event') return v.sharedIds.has(String((rec as SyncEvent).share_package_id ?? ''))
@@ -138,18 +147,24 @@ export function readRecord<K extends EntityName>(role: Role, entity: K, id: stri
 
 /**
  * May this role create or update this record? Pure; does not log.
- * astronaut: own record, except marking a package reviewed.
+ * astronaut: own record, except marking a package reviewed. Feedback targets a record in the same realm.
  * medical: mark a delivered package reviewed; comment on its own follow-ups; request a reading
  *   (complete_measurement action for the astronaut, linked to a delivered package, plus its follow-up).
  * planner: actions it owns and schedule items. Nothing else.
+ * Feedback (FR-PE-02/03) is written by the astronaut only; medical and planner never write it.
  */
 export function canWrite(role: Role, entity: EntityName, rec: unknown, ctx: AccessContext, data: Data): boolean {
   const subject = subjectOf(rec)
   if (subject !== undefined && subject !== ctx.subjectId) return false
   if (role === 'astronaut') {
     if (entity === 'sync_event') return (rec as SyncEvent).sync_status !== 'reviewed'
+    if (entity === 'feedback_entry') {
+      const f = rec as FeedbackEntry
+      return ASTRONAUT_FEEDBACK.includes(f.feedback_kind) && realmOf(f.target_record_id) === realmOf(ctx.subjectId)
+    }
     return true
   }
+  if (entity === 'feedback_entry') return false
   const v = visibility(data, ctx)
   if (role === 'planner') {
     if (entity === 'mission_schedule') return true
@@ -202,6 +217,52 @@ export function assertWrite<K extends EntityName>(role: Role, entity: K, records
       throw new PermissionError(role, entity, id)
     }
   }
+}
+
+/** One alert rating as the rule-review queue sees it: rule metadata, the rating and its reason. Nothing else of the finding. */
+export interface RuleReviewItem {
+  feedback_entry_id: string
+  finding_id: string
+  rule_id: string
+  rule_version: string
+  finding_kind: Finding['finding_kind']
+  rated_at_utc: string
+  rating: number | null
+  reason: string | null
+}
+
+/**
+ * The rule-review queue's input (FR-PE-02). Medical and astronaut only; the planner gets nothing and the refusal is logged.
+ * Reads the rated finding for its rule id and version only, so an unshared finding's text and evidence stay hidden.
+ * Only the latest rating per finding counts.
+ */
+export function ruleReviewItems(role: Role, data: Data, ctx: AccessContext): RuleReviewItem[] {
+  if (role === 'planner') {
+    refuse(role, 'read', 'feedback_entry', 'rule-review-queue')
+    return []
+  }
+  const latest = new Map<string, FeedbackEntry>()
+  for (const f of filterData(role, data, ctx).feedback_entry) {
+    if (f.feedback_kind !== 'alert_usefulness') continue
+    const prev = latest.get(f.target_record_id)
+    if (!prev || f.created_at_utc > prev.created_at_utc) latest.set(f.target_record_id, f)
+  }
+  const out: RuleReviewItem[] = []
+  for (const f of latest.values()) {
+    const finding = data.finding.find((x) => x.finding_id === f.target_record_id)
+    if (!finding || finding.subject_id !== ctx.subjectId) continue
+    out.push({
+      feedback_entry_id: f.feedback_entry_id,
+      finding_id: finding.finding_id,
+      rule_id: finding.rule_id,
+      rule_version: finding.rule_version,
+      finding_kind: finding.finding_kind,
+      rated_at_utc: f.created_at_utc,
+      rating: f.rating ?? null,
+      reason: f.comment ?? null,
+    })
+  }
+  return out
 }
 
 /** Private note text is visible to the astronaut only, everywhere. */

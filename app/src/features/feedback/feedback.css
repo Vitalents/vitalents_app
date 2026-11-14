@@ -1,0 +1,89 @@
+/* Feedback and personalization (FR-PE-01..04). Only .fb-* classes; tokens from styles/tokens.css and app.css,
+   shared .card/.btn/.kicker/.callout/.why from the shell. Light and dark come from the tokens. */
+.fb { color: var(--ink); }
+.fb *, .fb *::before, .fb *::after { box-sizing: border-box; }
+.fb p { margin: 0; }
+.fb :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.fb-num { font-variant-numeric: tabular-nums; }
+.fb code { font-family: inherit; font-variant-numeric: tabular-nums; font-size: 0.92em; overflow-wrap: anywhere; }
+
+/* section cards (log, queue, gaps) */
+.fb.card { padding: 20px 24px; display: grid; gap: 16px; width: 100%; max-width: 1120px; margin: 24px auto 0; }
+.fb-head { display: grid; gap: 6px; }
+.fb-head h2 { font-size: 1.375rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; margin: 0; }
+.fb-head .muted { max-width: 66ch; }
+.fb-foot { padding-top: 12px; border-top: 1px solid var(--line); }
+.fb-label { font-size: 0.75rem; font-weight: 600; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+.fb-label-sub { font-weight: 500; }
+.fb-link { background: none; border: 0; padding: 0; color: var(--deep); font: inherit; font-weight: 600; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- FR-PE-01 tried-actions log ---------- */
+.fb-tried-list { list-style: none; margin: 0; padding: 0; display: grid; }
+.fb-tried {
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.5fr) minmax(0, 0.55fr); gap: 12px 28px;
+  padding: 18px 0; border-top: 1px solid var(--line);
+}
+.fb-tried:first-child { border-top: 0; padding-top: 4px; }
+.fb-tried-step, .fb-tried-after, .fb-tried-rating { display: grid; gap: 6px; align-content: start; min-width: 0; }
+.fb-kind { font-size: 0.875rem; font-weight: 600; color: var(--deep); }
+.fb-step-text { font-size: 1.0625rem; font-weight: 600; line-height: 1.3; }
+.fb-chips { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+.fb-status { font-size: 0.875rem; }
+.fb-readings { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.fb-reading { display: grid; gap: 0; border-left: 3px solid var(--line); padding-left: 12px; }
+.fb-reading-main { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding-top: 4px; }
+.fb-reading-what { font-weight: 500; }
+.fb-why { margin-top: 0; border-top: 0; }
+.fb-why summary { min-height: 36px; font-size: 0.875rem; }
+.fb-outcome { display: grid; gap: 2px; margin-top: 6px; max-width: 60ch; }
+.fb-rated { font-weight: 600; }
+
+/* ---------- FR-PE-02 alert rating (inside a finding) ---------- */
+.fb-alert { display: grid; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--line); }
+.fb-alert-q { font-weight: 600; font-size: 0.9375rem; }
+.fb-alert-btns { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.fb-alert-form { display: grid; gap: 8px; max-width: 460px; }
+.fb-alert-form .field { margin: 0; }
+.fb-alert-done { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
+.fb-alert-done p { font-weight: 500; }
+.fb-alert-done .fb-link { min-height: 44px; }
+.fb-alert-note { max-width: 60ch; }
+
+/* ---------- FR-PE-02 rule-review queue ---------- */
+.fb-callout { font-weight: 500; }
+.fb-groups { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.fb-group { border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 14px 16px; display: grid; gap: 10px; background: var(--paper); }
+.fb-group-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; }
+.fb-rule { margin: 0; font-size: 1rem; font-weight: 600; }
+.fb-counts { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.875rem; }
+.fb-count { font-weight: 600; color: var(--deep); }
+.fb-items { list-style: none; margin: 0; padding: 0; display: grid; }
+.fb-item {
+  display: grid; grid-template-columns: 11rem 13rem minmax(0, 1fr); gap: 2px 16px; padding: 8px 0;
+  border-top: 1px solid var(--line); font-size: 0.9375rem;
+}
+.fb-item-date { color: var(--muted); font-size: 0.875rem; }
+.fb-item-kind { font-weight: 500; }
+.fb-item-reason { overflow-wrap: anywhere; }
+.fb-review { padding-top: 10px; border-top: 1px solid var(--line); }
+
+/* ---------- FR-PE-04 knowledge gaps ---------- */
+.fb-gap-list { list-style: none; margin: 0; padding: 0; display: grid; }
+.fb-gap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 8px 28px; padding: 14px 0; border-top: 1px solid var(--line); }
+.fb-gap:first-child { border-top: 0; padding-top: 0; }
+.fb-gap-q { font-weight: 500; max-width: 60ch; overflow-wrap: anywhere; }
+.fb-gap-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 16px; margin: 0; }
+.fb-gap-facts div { display: grid; gap: 2px; min-width: 0; align-content: start; }
+.fb-gap-facts dt { font-size: 0.75rem; font-weight: 600; color: var(--muted); }
+.fb-gap-facts dd { margin: 0; font-size: 0.9375rem; overflow-wrap: anywhere; }
+
+/* ---------- phones ---------- */
+@media (max-width: 760px) {
+  .fb.card { padding: 16px; margin-top: 16px; }
+  .fb-head h2 { font-size: 1.25rem; }
+  .fb-tried { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .fb-tried-rating { grid-auto-flow: column; justify-content: start; align-items: baseline; gap: 10px; }
+  .fb-item { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .fb-gap { grid-template-columns: minmax(0, 1fr); }
+  .fb-gap-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

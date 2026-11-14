@@ -1,5 +1,6 @@
 // Medical team view (route /medical, FR-SHR-03): delivered packages only, then mark reviewed,
-// request a reading, or add a comment. Reads through filterData; writes through assertWrite.
+// request a reading, or add a comment (a comment never changes a follow-up status). Then the rule-review queue
+// (FR-PE-02) and the knowledge-gap log (FR-PE-04). Reads through filterData; writes through assertWrite.
 import '../sharing/share.css'
 import { useId, useState } from 'react'
 import { DOMAINS } from '../../content/content'
@@ -12,6 +13,8 @@ import { markReviewed } from '../../sync/link'
 import { SyncStatusRow } from '../sharing/SyncStatusRow'
 import { parseSummaryText } from '../sharing/summary'
 import { T, utcDateTime, utcTime } from '../sharing/strings'
+import { KnowledgeGapList } from '../feedback/KnowledgeGapList'
+import { RuleReviewQueue } from '../feedback/RuleReviewQueue'
 import { addComment, requestMeasurement } from './actions'
 import { useVisibleData } from './hooks'
 
@@ -178,6 +181,9 @@ export function MedicalView({ subjectId }: { subjectId: string }) {
           </ul>
         )}
       </section>
+
+      <RuleReviewQueue subjectId={subjectId} />
+      <KnowledgeGapList subjectId={subjectId} />
     </div>
   )
 }

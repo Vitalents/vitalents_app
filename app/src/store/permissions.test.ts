@@ -132,18 +132,33 @@ describe('medical (SRS 9, FR-SHR-03)', () => {
     expect(canWrite('medical', 'action', req.action, ctx, data)).toBe(true)
     expect(canWrite('medical', 'follow_up', req.followUp, ctx, { ...data, action: [...data.action, req.action] })).toBe(true)
     expect(req.followUp.followup_status).toBe('action_open')
+    // "Request a reading" stays a proposed step for the astronaut (product default): the astronaut accepts or declines it
+    expect(req.action).toMatchObject({ owner_role: 'astronaut', execution_status: 'proposed', step_category: 'complete_measurement' })
 
     const c = commentRecords(pkg, data.follow_up, 'Please keep the daily check.', now)
     expect(c.action).toBeNull() // the open medical follow-up is updated
     expect(c.followUp.follow_up_id).toBe('sim:follow_up:pain-d20')
     expect(c.followUp.specialist_note).toContain('Please keep the daily check.')
+    // a comment never changes the follow-up status (product default)
+    const before = data.follow_up.find((f) => f.follow_up_id === 'sim:follow_up:pain-d20')!
+    expect(c.followUp.followup_status).toBe(before.followup_status)
+    expect({ ...c.followUp, specialist_note: before.specialist_note }).toEqual(before)
     expect(schemaErrors('follow_up', c.followUp)).toBeNull()
     expect(canWrite('medical', 'follow_up', c.followUp, ctx, data)).toBe(true)
 
     const fresh = commentRecords(pkg, [], 'First comment', now)
+    expect(fresh.followUp.followup_status).toBe('no_open_follow_up')
     expect(schemaErrors('action', fresh.action)).toBeNull()
     expect(schemaErrors('follow_up', fresh.followUp)).toBeNull()
     expect(canWrite('medical', 'action', fresh.action!, ctx, data)).toBe(true)
+  })
+
+  it('a comment keeps whatever status the open follow-up has (product default)', () => {
+    const { data, pkgId } = withPackage('delivered')
+    const pkg = data.share_package.find((p) => p.share_package_id === pkgId)!
+    const watching = data.follow_up.map((f) => (f.follow_up_id === 'sim:follow_up:pain-d20' ? { ...f, followup_status: 'watching' as const } : f))
+    const c = commentRecords(pkg, watching, 'Noted.', '2026-11-14T10:06:00.000Z')
+    expect(c.followUp.followup_status).toBe('watching')
   })
 
   it('cannot request a reading from a package that is not delivered', () => {

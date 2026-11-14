@@ -40,8 +40,10 @@ export function measurementRequest(pkg: SharePackage, indicatorName: string, now
 }
 
 /**
- * Pure: the comment as a follow_up specialist_note. Updates the open follow-up assigned to the
- * medical team, or opens one (with its request_review action) when there is none.
+ * Pure: the comment as a follow_up specialist_note. Appends to the open follow-up assigned to the
+ * medical team, or records one (with its request_review action) when there is none.
+ * A comment never changes a follow-up status (product default, Ahmed): the open follow-up keeps its
+ * status, and a new record starts as no_open_follow_up. Opening a review is a separate, explicit step.
  */
 export function commentRecords(pkg: SharePackage, existing: FollowUp[], text: string, now: string): { action: Action | null; followUp: FollowUp } {
   const note = `${now.slice(0, 10)} ${now.slice(11, 16)}Z: ${text.trim()}`
@@ -53,7 +55,6 @@ export function commentRecords(pkg: SharePackage, existing: FollowUp[], text: st
       action: null,
       followUp: {
         ...open,
-        followup_status: 'under_specialist_review',
         specialist_note: open.specialist_note ? `${open.specialist_note}\n${note}` : note,
       },
     }
@@ -76,7 +77,7 @@ export function commentRecords(pkg: SharePackage, existing: FollowUp[], text: st
       ...base(pkg, now),
       follow_up_id: newId(pkg.subject_id, 'follow_up'),
       action_id: action.action_id,
-      followup_status: 'under_specialist_review',
+      followup_status: 'no_open_follow_up',
       opened_at_utc: now,
       assigned_role: 'medical',
       specialist_note: note,
