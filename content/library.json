@@ -1,14 +1,628 @@
 {
-  "content_version": "0.1-draft",
-  "review_status": "TODO(review: Amr adds URL, date and excerpts for each source; titles come from the team's source list)",
+  "content_version": "0.2-draft",
+  "review_status": "TODO(review: Amr checks every excerpt word for word against its URL, confirms page/section and licence, then sets approval_status per entry. Entries added by the WP-04 library agent on 2026-11-14; nutrition, movement, radiation and general context live in library.extra.json)",
   "sources": [
-    { "id": "lib:nasa-hrp-hazards", "title": "5 Hazards of Human Spaceflight", "publisher": "NASA Human Research Program", "url": null },
-    { "id": "lib:nasa-hrp-risks", "title": "Risks of Human Spaceflight", "publisher": "NASA Human Research Program", "url": null },
-    { "id": "lib:nasa-sleep-risk", "title": "Risk from Inadequate Sleep and Irregular Schedules", "publisher": "NASA Human Research Program", "url": null },
-    { "id": "lib:nasa-behavioral-risk", "title": "Risk of Behavioral Changes and Psychiatric Disorders", "publisher": "NASA Human Research Program", "url": null },
-    { "id": "lib:nasa-standard-measures", "title": "Standard Measures", "publisher": "NASA", "url": null },
-    { "id": "lib:nasa-medops", "title": "Medical Operations", "publisher": "NASA", "url": null },
-    { "id": "lib:cognition-battery", "title": "Cognition test battery", "publisher": "University of Pennsylvania", "url": null },
-    { "id": "lib:esa-radiation", "title": "Radiation and magnetic fields", "publisher": "ESA", "url": null }
+    {
+      "id": "lib:nasa-hrp-hazards",
+      "title": "5 Hazards of Human Spaceflight",
+      "publisher": "NASA Human Research Program",
+      "url": "https://www.nasa.gov/hrp/hazards/",
+      "source_kind": "NASA_resource",
+      "version": "Web page, last updated 2026-06-12",
+      "date": "2023-10-26",
+      "retrieved": "2026-11-14",
+      "domain": "general",
+      "license": "US government work (NASA); public domain in the US",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "Behavioral responses occur among groups of people isolated and confined in a small space over a long period of time.",
+          "location": "Isolation and Confinement"
+        },
+        {
+          "text": "Instructions, new supplies, medical care, and more become increasingly challenging to receive from Earth",
+          "location": "Distance from Earth (fragment)"
+        },
+        {
+          "text": "A spacecraft is not only a home, it’s also a machine.",
+          "location": "Hostile/Closed Environments"
+        }
+      ],
+      "corpus_file": "nasa-hrp-hazards.md",
+      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+    },
+    {
+      "id": "lib:nasa-hrp-risks",
+      "title": "Risks of Human Spaceflight",
+      "publisher": "NASA Human Research Program",
+      "url": "https://www.nasa.gov/hrp/risks/",
+      "source_kind": "NASA_resource",
+      "version": "Web page, last updated 2026-07-21",
+      "date": null,
+      "retrieved": "2026-11-14",
+      "domain": "general",
+      "license": "US government work (NASA); public domain in the US",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "The effects of these risks vary depending on whether humans are traveling to low Earth orbit, the Moon, or Mars.",
+          "location": "About Human Spaceflight Risks"
+        },
+        {
+          "text": "Risk of Cardiovascular Adaptations",
+          "location": "Risks Involving Human Physiology (list item)"
+        },
+        {
+          "text": "Risk of Inadequate Sleep and Irregular Schedules",
+          "location": "Risks Involving Behavioral Performance and Human Factors (list item)"
+        }
+      ],
+      "corpus_file": "nasa-hrp-risks.md",
+      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+    },
+    {
+      "id": "lib:nasa-behavioral-risk",
+      "title": "Risk of Behavioral Changes and Psychiatric Disorders",
+      "publisher": "NASA Human Research Program",
+      "url": "https://www.nasa.gov/reference/risk-of-behavioral-changes-and-psychiatric-disorders/",
+      "source_kind": "NASA_resource",
+      "version": "Web page, last updated 2026-02-24",
+      "date": "2024-10-22",
+      "retrieved": "2026-11-14",
+      "domain": "cognition",
+      "license": "US government work (NASA); public domain in the US",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "The prolonged isolation and confinement that astronauts face in space can increase risks of behavioral issues",
+          "location": "What are the top risks?"
+        },
+        {
+          "text": "These factors may impact a crew member’s sleep, morale, and decision making",
+          "location": "What are the top risks?"
+        },
+        {
+          "text": "NASA encourages astronauts to explore self-care options including keeping a regular journal",
+          "location": "What can be done about it?"
+        }
+      ],
+      "corpus_file": "nasa-behavioral-risk.md",
+      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+    },
+    {
+      "id": "lib:nasa-std-3001-tb-behavioral-health",
+      "title": "NASA-STD-3001 Technical Brief: Behavioral Health and Performance (OCHMO-TB-016)",
+      "publisher": "NASA Office of the Chief Health and Medical Officer",
+      "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-016-behavioral-health.pdf",
+      "source_kind": "NASA_resource",
+      "version": "OCHMO-TB-016 Rev B",
+      "date": "2023-10-24",
+      "retrieved": "2026-11-14",
+      "domain": "cognition",
+      "license": "US government work (NASA); public domain in the US",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "A preflight baseline is obtained for each astronaut and is then compared using a monthly in-flight test.",
+          "location": "p. 6, Application: In-Flight Psychological and Neurobehavioral Monitoring"
+        },
+        {
+          "text": "additional minimally obtrusive measures that objectively evaluate psychological and behavioral states",
+          "location": "p. 6, Application: In-Flight Psychological and Neurobehavioral Monitoring"
+        },
+        {
+          "text": "Crew behavioral health and performance are affected by missions in isolated, confined, and extreme (ICE) environments.",
+          "location": "p. 2, Executive Summary"
+        }
+      ],
+      "corpus_file": "nasa-std-3001-tb-016-behavioral-health.md",
+      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+    },
+    {
+      "id": "lib:cognition-battery",
+      "title": "Cognition test battery",
+      "publisher": "University of Pennsylvania, Perelman School of Medicine, Unit for Experimental Psychiatry",
+      "url": "https://www.med.upenn.edu/uep/cognition.html",
+      "source_kind": "published_research",
+      "version": "Web page (no date shown)",
+      "date": null,
+      "retrieved": "2026-11-14",
+      "domain": "cognition",
+      "license": "not verified: third-party web page; short quotes with attribution only",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "Cognition is a battery of 10 brief cognitive tests",
+          "location": "Development and Validation of the Cognition Test Battery"
+        },
+        {
+          "text": "After familiarization, it typically takes less than 20 minutes to administer the full Cognition battery.",
+          "location": "Development and Validation of the Cognition Test Battery"
+        },
+        {
+          "text": "The Cognition battery is part of NASA’s Behavioral Health and Performance Standard Measures",
+          "location": "Cognition in Spaceflight"
+        }
+      ],
+      "corpus_file": "upenn-cognition-battery.md",
+      "review_status": "TODO(review: non-NASA source; Amr confirms licence and that excerpts stay short quotes, checks each excerpt word for word, then sets approval_status)"
+    },
+    {
+      "id": "lib:basner-2015-cognition",
+      "title": "Development and Validation of the Cognition Test Battery for Spaceflight",
+      "publisher": "Basner M, Savitt A, Moore TM, et al. Aerospace Medicine and Human Performance 86(11):942-952 (doi:10.3357/AMHP.4343.2015)",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4691281/",
+      "source_kind": "published_research",
+      "version": "Author manuscript in PMC (PMC4691281)",
+      "date": "2015-11-01",
+      "retrieved": "2026-11-14",
+      "domain": "cognition",
+      "license": "not verified: author manuscript, no open licence stated; short quotes with attribution only",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "Cognition consists of 15 unique forms of 10 neuropsychological tests that cover a range of cognitive domains",
+          "location": "Abstract, Methods"
+        },
+        {
+          "text": "Administering the same version of each test across multiple time points is a suboptimal strategy",
+          "location": "Discussion"
+        }
+      ],
+      "corpus_file": "basner-2015-cognition.md",
+      "review_status": "TODO(review: non-NASA source; Amr confirms licence and that excerpts stay short quotes, checks each excerpt word for word, then sets approval_status)"
+    },
+    {
+      "id": "lib:dev-2024-cognition-iss",
+      "title": "Cognitive performance in ISS astronauts on 6-month low earth orbit missions",
+      "publisher": "Dev SI, Khader AM, Begerowski SR, Anderson SR, Clément G, Bell ST. Frontiers in Physiology 15:1451269 (doi:10.3389/fphys.2024.1451269)",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11614644/",
+      "source_kind": "published_research",
+      "version": "Published article, PMC11614644",
+      "date": "2024-11-20",
+      "retrieved": "2026-11-14",
+      "domain": "cognition",
+      "license": "CC BY (as stated on the PMC page)",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "There was no evidence for a systematic decline in cognitive performance",
+          "location": "Abstract, Conclusion"
+        },
+        {
+          "text": "There was slowed performance observed in early flight on tasks of processing speed",
+          "location": "Abstract, Results"
+        },
+        {
+          "text": "performance was not characterized during what may be the most acute transitional phases of a mission",
+          "location": "Discussion, Limitations"
+        }
+      ],
+      "corpus_file": "dev-2024-cognition-iss.md",
+      "review_status": "TODO(review: non-NASA source; Amr confirms licence and that excerpts stay short quotes, checks each excerpt word for word, then sets approval_status)"
+    },
+    {
+      "id": "lib:nasa-standard-measures",
+      "title": "Spaceflight Standard Measures: Characterizing How Humans Adapt in Space",
+      "publisher": "NASA Human Research Program",
+      "url": "https://www.nasa.gov/humans-in-space/spaceflight-standard-measures-characterizing-how-humans-adapt-in-space/",
+      "source_kind": "NASA_resource",
+      "version": "Web article, last updated 2024-11-15",
+      "date": "2021-01-11",
+      "retrieved": "2026-11-14",
+      "domain": "cognition",
+      "license": "US government work (NASA); public domain in the US",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "NASA is collecting a set of consistent core measurements, called Spaceflight Standard Measures,",
+          "location": "Introduction"
+        },
+        {
+          "text": "Astronauts take 10 computer-based tests that measure different aspects of cognition",
+          "location": "Cognition"
+        },
+        {
+          "text": "Astronauts complete a questionnaire after they wake up that measures sleep quality and quantity",
+          "location": "Sleep quality/team questionnaire"
+        }
+      ],
+      "corpus_file": "nasa-standard-measures.md",
+      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+    },
+    {
+      "id": "lib:nasa-sleep-risk",
+      "title": "Risk from Inadequate Sleep and Irregular Schedules",
+      "publisher": "NASA Human Research Program",
+      "url": "https://www.nasa.gov/reference/risk-from-inadequate-sleep-and-irregular-schedules/",
+      "source_kind": "NASA_resource",
+      "version": "Web page, last updated 2025-05-16",
+      "date": "2024-10-22",
+      "retrieved": "2026-11-14",
+      "domain": "sleep",
+      "license": "US government work (NASA); public domain in the US",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "Astronauts witness 16 sunrises and sunsets per day aboard the space station, which can disrupt their sleep-wake cycle.",
+          "location": "Did you know?"
+        },
+        {
+          "text": "can lead to short- and long-term health consequences that can affect mission success.",
+          "location": "What are the top risks?"
+        },
+        {
+          "text": "light-emitting diodes, or LEDs, simulate Earth’s light-dark cycle to help astronauts sleep better.",
+          "location": "What can be done about it?"
+        }
+      ],
+      "corpus_file": "nasa-sleep-risk.md",
+      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+    },
+    {
+      "id": "lib:nasa-std-3001-tb-sleep-accommodations",
+      "title": "NASA-STD-3001 Technical Brief: Sleep Accommodations (OCHMO-TB-041)",
+      "publisher": "NASA Office of the Chief Health and Medical Officer",
+      "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-041-sleep-accommodations.pdf",
+      "source_kind": "NASA_resource",
+      "version": "OCHMO-TB-041 Rev B",
+      "date": "2023-10-23",
+      "retrieved": "2026-11-14",
+      "domain": "sleep",
+      "license": "US government work (NASA); public domain in the US",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "astronauts sleep an average of about six hours while in space",
+          "location": "p. 5, Reference Data"
+        },
+        {
+          "text": "Mission task analysis should plan for a reasonable rest-work schedule to allow enough time for sleep.",
+          "location": "p. 9, Design Considerations"
+        },
+        {
+          "text": "For long-duration missions (>30 days), crewmembers should have dedicated quarters that provide privacy",
+          "location": "p. 9, Design Considerations"
+        }
+      ],
+      "corpus_file": "nasa-std-3001-tb-041-sleep-accommodations.md",
+      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+    },
+    {
+      "id": "lib:nasa-std-3001-mtb-circadian-desynchrony",
+      "title": "NASA-STD-3001 Medical Technical Brief: Circadian Desynchrony (OCHMO-MTB-009)",
+      "publisher": "NASA Office of the Chief Health and Medical Officer",
+      "url": "https://www.nasa.gov/wp-content/uploads/2026/03/ochmo-mtb-009-circadian-desynchrony.pdf",
+      "source_kind": "NASA_resource",
+      "version": "OCHMO-MTB-009 (no revision letter printed)",
+      "date": "2026-03-04",
+      "retrieved": "2026-11-14",
+      "domain": "sleep",
+      "license": "US government work (NASA); public domain in the US",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "an individual can experience 'circadian desynchrony.'",
+          "location": "p. 2, Overview: What is Circadian Desynchrony?"
+        },
+        {
+          "text": "altered light-dark cycles; irregular work schedules; confinement",
+          "location": "p. 2, Overview: Spaceflight Considerations"
+        },
+        {
+          "text": "cognitive impairment (e.g., inattention; distraction; slowed reaction time; poor decision making)",
+          "location": "p. 1, Executive Summary"
+        }
+      ],
+      "corpus_file": "nasa-std-3001-mtb-009-circadian-desynchrony.md",
+      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+    },
+    {
+      "id": "lib:ntrs-mallis-2005-sleep",
+      "title": "Circadian rhythms, sleep, and performance in space",
+      "publisher": "Mallis MM, DeRoshia CW (NASA Ames Research Center). Aviation, Space, and Environmental Medicine 76(6 Suppl); NTRS 20050218840",
+      "url": "https://ntrs.nasa.gov/citations/20050218840",
+      "source_kind": "published_research",
+      "version": "NTRS record 20050218840 (journal reprint)",
+      "date": "2005-06-01",
+      "retrieved": "2026-11-14",
+      "domain": "sleep",
+      "license": "not verified: NTRS lists copyright as Other; short quotes with attribution only",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "Field data have demonstrated that sleep times and performance of crewmembers can be compromised",
+          "location": "Abstract"
+        },
+        {
+          "text": "This paper documents evidence of significant sleep loss and disruption of circadian rhythms in astronauts",
+          "location": "Abstract"
+        }
+      ],
+      "corpus_file": "ntrs-mallis-2005-sleep.md",
+      "review_status": "TODO(review: non-NASA source; Amr confirms licence and that excerpts stay short quotes, checks each excerpt word for word, then sets approval_status)"
+    },
+    {
+      "id": "lib:nasa-cardio-risk",
+      "title": "Risk of Cardiovascular Adaptations",
+      "publisher": "NASA Human Research Program",
+      "url": "https://www.nasa.gov/reference/risk-of-cardiovascular-adaptations/",
+      "source_kind": "NASA_resource",
+      "version": "Web page, last updated 2025-05-16",
+      "date": "2024-10-23",
+      "retrieved": "2026-11-14",
+      "domain": "heart",
+      "license": "US government work (NASA); public domain in the US",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "Low-gravity conditions and other spaceflight stressors can alter the heart and blood vessels",
+          "location": "What are the top risks?"
+        },
+        {
+          "text": "Low gravity can also physically change the shape of the human heart, making it become more spherical.",
+          "location": "Did you know?"
+        },
+        {
+          "text": "Lower-body compression garments and drinking lots of fluids prior to landing can help to prevent low blood pressure",
+          "location": "What can be done about it?"
+        }
+      ],
+      "corpus_file": "nasa-cardio-risk.md",
+      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+    },
+    {
+      "id": "lib:nasa-std-3001-tb-orthostatic-intolerance",
+      "title": "NASA-STD-3001 Technical Brief: Orthostatic Intolerance (OCHMO-TB-019)",
+      "publisher": "NASA Office of the Chief Health and Medical Officer",
+      "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-019-orthostatic-intolerance.pdf",
+      "source_kind": "NASA_resource",
+      "version": "OCHMO-TB-019 Rev B",
+      "date": "2023-12-01",
+      "retrieved": "2026-11-14",
+      "domain": "heart",
+      "license": "US government work (NASA); public domain in the US",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "It can result in presyncope and, ultimately, syncope (i.e., loss of consciousness).",
+          "location": "p. 1, Executive Summary"
+        },
+        {
+          "text": "reducing circulating (intravascular) fluid volume by around 15%",
+          "location": "p. 2, Orthostatic Intolerance"
+        },
+        {
+          "text": "the main strategy being increasing venous return or intravascular fluid volume.",
+          "location": "p. 3, Background"
+        }
+      ],
+      "corpus_file": "nasa-std-3001-tb-019-orthostatic-intolerance.md",
+      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+    },
+    {
+      "id": "lib:nasa-cardiac-rhythm-evidence",
+      "title": "Evidence Report: Risk of Cardiac Rhythm Problems during Spaceflight",
+      "publisher": "NASA Human Research Program (Lee SMC, Stenger MB, Laurie SS, Macias BR)",
+      "url": "https://ntrs.nasa.gov/api/citations/20170005625/downloads/20170005625.pdf",
+      "source_kind": "NASA_resource",
+      "version": "Evidence report, approved for public release 2017-06-12",
+      "date": "2017-06-12",
+      "retrieved": "2026-11-14",
+      "domain": "heart",
+      "license": "US government work (NASA); public domain in the US",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "Thus, evidence of arrhythmias during spaceflight largely has been anecdotal or observational",
+          "location": "p. 6, IV.A Spaceflight Evidence"
+        },
+        {
+          "text": "Heart rhythm is not monitored by ECG during routine exercise before, during, or after spaceflight",
+          "location": "p. 12, IV.A.4 Exercise"
+        },
+        {
+          "text": "Entry into weightlessness causes cephalad fluid shift",
+          "location": "p. 16, IV.C.3 Fluid Shifts"
+        }
+      ],
+      "corpus_file": "nasa-cardiac-rhythm-evidence.md",
+      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+    },
+    {
+      "id": "lib:nasa-sans-risk",
+      "title": "Risk of Spaceflight Associated Neuro-ocular Syndrome (SANS)",
+      "publisher": "NASA Human Research Program",
+      "url": "https://www.nasa.gov/reference/risk-of-spaceflight-associated-neuro-ocular-syndrome-sans/",
+      "source_kind": "NASA_resource",
+      "version": "Web page, last updated 2025-05-16",
+      "date": "2024-10-23",
+      "retrieved": "2026-11-14",
+      "domain": "symptoms",
+      "license": "US government work (NASA); public domain in the US",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "This collection of eye and brain changes is called “spaceflight associated neuro-ocular syndrome,” or SANS.",
+          "location": "What are the top risks?"
+        },
+        {
+          "text": "Chronic weightlessness can cause bodily fluids such as blood and cerebrospinal fluid to move toward the head,",
+          "location": "What are the top risks?"
+        },
+        {
+          "text": "Some astronauts only experience mild changes in space, while others have clinically significant outcomes.",
+          "location": "What are the top risks?"
+        }
+      ],
+      "corpus_file": "nasa-sans-risk.md",
+      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+    },
+    {
+      "id": "lib:nasa-std-3001-mtb-sans",
+      "title": "NASA-STD-3001 Technical Brief: Spaceflight Associated Neuro-ocular Syndrome (SANS) (OCHMO-MTB-001)",
+      "publisher": "NASA Office of the Chief Health and Medical Officer",
+      "url": "https://www.nasa.gov/wp-content/uploads/2024/02/ochmo-mtb-001-sans.pdf?emrc=d4c581",
+      "source_kind": "NASA_resource",
+      "version": "OCHMO-MTB-001 (no revision letter printed; derived from NASA-STD-3001 Vol 1 Rev C and Vol 2 Rev D)",
+      "date": "2024-02-21",
+      "retrieved": "2026-11-14",
+      "domain": "symptoms",
+      "license": "US government work (NASA); public domain in the US",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "Spaceflight Associated Neuro-ocular Syndrome (SANS) refers to a constellation of ocular findings",
+          "location": "p. 1, Executive Summary"
+        },
+        {
+          "text": "29% of short duration crewmembers and 60% of long duration crew have reported vision degradation.",
+          "location": "p. 5, Pathophysiology: Hyperopic vision shifts"
+        },
+        {
+          "text": "Additional testing can be performed as clinically indicated at any point during mission",
+          "location": "p. 8, Monitoring: Equipment Training, In-flight"
+        }
+      ],
+      "corpus_file": "nasa-std-3001-mtb-001-sans.md",
+      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+    },
+    {
+      "id": "lib:nasa-sensorimotor-risk",
+      "title": "Risk of Altered Sensorimotor and Vestibular Function",
+      "publisher": "NASA Human Research Program",
+      "url": "https://www.nasa.gov/reference/risk-of-altered-sensorimotor-and-vestibular-function/",
+      "source_kind": "NASA_resource",
+      "version": "Web page, last updated 2025-12-02",
+      "date": "2024-10-23",
+      "retrieved": "2026-11-14",
+      "domain": "symptoms",
+      "license": "US government work (NASA); public domain in the US",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "The majority of astronauts experience motion sickness during spaceflight.",
+          "location": "Did you know?"
+        },
+        {
+          "text": "Altered gravity and shifts between different types of gravity may trigger motion sickness",
+          "location": "What are the top risks?"
+        },
+        {
+          "text": "Those issues are particularly concerning because ill crew members may have trouble with mission tasks",
+          "location": "What are the top risks?"
+        }
+      ],
+      "corpus_file": "nasa-sensorimotor-risk.md",
+      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+    },
+    {
+      "id": "lib:nasa-std-3001-mtb-sas",
+      "title": "NASA-STD-3001 Medical Technical Brief: Space Adaptation Sickness (SAS) and Space Readaptation Syndrome (OCHMO-MTB-004)",
+      "publisher": "NASA Office of the Chief Health and Medical Officer",
+      "url": "https://www.nasa.gov/wp-content/uploads/2025/09/ochmo-mtb-004-space-adaptation-sickness-sas.pdf",
+      "source_kind": "NASA_resource",
+      "version": "OCHMO-MTB-004 Rev A",
+      "date": "2025-09-25",
+      "retrieved": "2026-11-14",
+      "domain": "symptoms",
+      "license": "US government work (NASA); public domain in the US",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "SAS symptoms include congestion, facial fullness, headache, back pain, drowsiness, constipation, urinary retention,",
+          "location": "p. 2, Physiology (Space Adaptation Sickness)"
+        },
+        {
+          "text": "Headaches are reported by up to 90% of astronauts during the first few days.",
+          "location": "p. 3, Symptoms and Medical Issues Associated with SAS"
+        },
+        {
+          "text": "Training to minimize head and provocative movements",
+          "location": "p. 8, Non-Pharmacological Countermeasures and Treatments"
+        }
+      ],
+      "corpus_file": "nasa-std-3001-mtb-004-space-adaptation-sickness.md",
+      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+    },
+    {
+      "id": "lib:nasa-immune-risk",
+      "title": "Risk of Altered Immune System Responses",
+      "publisher": "NASA Human Research Program",
+      "url": "https://www.nasa.gov/reference/risk-of-altered-immune-system-responses/",
+      "source_kind": "NASA_resource",
+      "version": "Web page, last updated 2025-05-16",
+      "date": "2024-10-23",
+      "retrieved": "2026-11-14",
+      "domain": "symptoms",
+      "license": "US government work (NASA); public domain in the US",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "Radiation, microgravity, poor sleep and other spaceflight stressors can alter the immune system of astronauts.",
+          "location": "What are the top risks?"
+        },
+        {
+          "text": "Some astronauts aboard the International Space Station have reported cold sores, rashes, atypical allergies",
+          "location": "Did you know?"
+        },
+        {
+          "text": "one area of research involves monitoring blood, saliva, and urine samples.",
+          "location": "What can be done about it?"
+        }
+      ],
+      "corpus_file": "nasa-immune-risk.md",
+      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+    },
+    {
+      "id": "lib:nasa-medops",
+      "title": "NASA-STD-3001 Technical Brief: Medical Operations Spaceflight Considerations (OCHMO-TB-044)",
+      "publisher": "NASA Office of the Chief Health and Medical Officer",
+      "url": "https://www.nasa.gov/wp-content/uploads/2025/08/ochmo-tb-044-medical-operations.pdf?emrc=69583461d2c7e",
+      "source_kind": "NASA_resource",
+      "version": "OCHMO-TB-044 (no revision letter printed; references NASA-STD-3001 Vol 1 Rev C and Vol 2 Rev E)",
+      "date": "2025-08-13",
+      "retrieved": "2026-11-14",
+      "domain": "symptoms",
+      "license": "US government work (NASA); public domain in the US",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "Medical operations encompass everything related to crew health",
+          "location": "p. 3, Reference Data"
+        },
+        {
+          "text": "Ensure private (visual and auditory) location for FS to conduct PMCs with access to voice loops.",
+          "location": "p. 6, Private Medical/Psychological Conference (PMC/PPC)"
+        },
+        {
+          "text": "medical decision-making lies with the CS",
+          "location": "p. 16, Mission Medical Authority"
+        }
+      ],
+      "corpus_file": "nasa-std-3001-tb-044-medical-operations.md",
+      "review_status": "TODO(review: Amr checks each excerpt word for word against the URL and confirms section/page, then sets approval_status to reviewed)"
+    },
+    {
+      "id": "lib:esa-radiation",
+      "title": "Radiation and magnetic fields",
+      "publisher": "European Space Agency (ESA)",
+      "url": "https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/Proxima/Radiation_and_magnetic_fields",
+      "source_kind": "published_research",
+      "version": "Web page (Proxima mission)",
+      "date": "2016-09-09",
+      "retrieved": "2026-11-14",
+      "domain": "radiation",
+      "license": "not verified: ESA terms and conditions apply; short quotes with attribution only",
+      "approval_status": "draft",
+      "excerpts": [
+        {
+          "text": "Astronauts in orbit receive still more radiation – they are officially classed as radiation workers.",
+          "location": "Main article"
+        }
+      ],
+      "corpus_file": "esa-radiation.md",
+      "review_status": "TODO(review: URL fetched by the WP-04 agent; quote only, no summary (same convention as the radiation entries in library.extra.json); Amr confirms ESA reuse terms)"
+    }
   ]
 }

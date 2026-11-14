@@ -306,68 +306,6 @@
     "review_status": "TODO(review: quote only; confirm fragments against the live page)"
   },
   {
-    "id": "lib:source:x-nasa-five-hazards",
-    "title": "5 Hazards of Human Spaceflight",
-    "publisher": "NASA Human Research Program",
-    "url": "https://www.nasa.gov/hrp/hazards",
-    "domain": "general",
-    "source_kind": "NASA_resource",
-    "publication_date": "2023-10-26",
-    "source_version": "web page, last updated 2026-06-12",
-    "retrieval_date": "2026-11-14",
-    "excerpts": [
-      {
-        "text": "Astronauts encounter five hazards as they journey through space.",
-        "locator": "Introduction"
-      },
-      {
-        "text": "Behavioral responses occur among groups of people isolated and confined in a small space over a long period of time.",
-        "locator": "Watch Videos: Isolation and Confinement"
-      },
-      {
-        "text": "Rather than a three-day lunar trip, astronauts would be leaving our planet for roughly three years.",
-        "locator": "Watch Videos: Distance from Earth"
-      }
-    ],
-    "file": "x-nasa-five-hazards.md",
-    "scope": "general",
-    "license_status": "not_verified",
-    "approval_status": "draft",
-    "needs_review": true,
-    "review_status": "TODO(review: same page as lib:nasa-hrp-hazards in content/library.json (url null there); merge the two IDs or keep one)"
-  },
-  {
-    "id": "lib:source:x-ochmo-tb-behavioral-health",
-    "title": "NASA-STD-3001 Technical Brief: Behavioral Health and Performance",
-    "publisher": "NASA Office of the Chief Health and Medical Officer (OCHMO)",
-    "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-016-behavioral-health.pdf",
-    "domain": "general",
-    "source_kind": "NASA_resource",
-    "publication_date": "2023-10-24",
-    "source_version": "OCHMO-TB-016 Rev B",
-    "retrieval_date": "2026-11-14",
-    "excerpts": [
-      {
-        "text": "Crew behavioral health and performance are affected by missions in isolated, confined, and extreme (ICE) environments.",
-        "locator": "p. 2, Executive Summary"
-      },
-      {
-        "text": "Space flight occurs in an extreme environment that has unique stressors.",
-        "locator": "p. 3, Background"
-      },
-      {
-        "text": "It should be noted that current behavioral health support is provided before, during, and after the mission.",
-        "locator": "p. 6, Application: Behavioral Health Support"
-      }
-    ],
-    "file": "x-ochmo-tb-behavioral-health.md",
-    "scope": "general",
-    "license_status": "not_verified",
-    "approval_status": "draft",
-    "needs_review": true,
-    "review_status": "TODO(review: the brief does not cover communication delay or crew autonomy; those come from the two sources below)"
-  },
-  {
     "id": "lib:source:x-ntrs-comm-bandwidth-medical",
     "title": "Communication Bandwidth Considerations for Exploration Medical Care During Space Missions",
     "publisher": "NASA (Krihak, Middour, Reyes, Nusbaum, Antonsen), NTRS",

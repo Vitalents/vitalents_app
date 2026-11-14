@@ -1,0 +1,76 @@
+# Library sources (draft)
+
+Machine-readable entries: `content/library.json` (cognition, sleep, heart, symptoms and the general entries) and `content/library.extra.json` (nutrition, movement, radiation and general context, `lib:source:x-*`). Corpus files for the onboard assistant: `ai/corpus/*.md`, registered in `ai/corpus/sources.json` (34 files). Every URL below was fetched on 2026-11-14. Every entry is `approval_status: draft` and needs a human word-for-word check of its excerpts before it is marked reviewed.
+
+Corpus format: each file holds the citation header, short verbatim excerpts with section or page, and (except quote-only entries) a neutral summary labelled as written by the library agent, not a quotation. NASA documents are US government works. Non-NASA sources (University of Pennsylvania page, Basner et al. 2015, Dev et al. 2024, Mallis and DeRoshia 2005, ESA) carry short quotes only.
+
+## Core library (`content/library.json`)
+
+| Domain | ID | Title | Publisher | Date (version) | URL | Use |
+|---|---|---|---|---|---|---|
+| general | `lib:nasa-hrp-hazards` | 5 Hazards of Human Spaceflight | NASA Human Research Program | 2023-10-26 (Web page, last updated 2026-06-12) | <https://www.nasa.gov/hrp/hazards/> | Body-map frame and context for Ask NASA |
+| general | `lib:nasa-hrp-risks` | Risks of Human Spaceflight | NASA Human Research Program | not shown (Web page, last updated 2026-07-21) | <https://www.nasa.gov/hrp/risks/> | Body-map frame and context for Ask NASA |
+| cognition | `lib:nasa-behavioral-risk` | Risk of Behavioral Changes and Psychiatric Disorders | NASA Human Research Program | 2024-10-22 (Web page, last updated 2026-02-24) | <https://www.nasa.gov/reference/risk-of-behavioral-changes-and-psychiatric-disorders/> | Cognition card, Decode limits, Ask NASA |
+| cognition | `lib:nasa-std-3001-tb-behavioral-health` | NASA-STD-3001 Technical Brief: Behavioral Health and Performance (OCHMO-TB-016) | NASA Office of the Chief Health and Medical Officer | 2023-10-24 (OCHMO-TB-016 Rev B) | <https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-016-behavioral-health.pdf> | Cognition card, Decode limits, Ask NASA |
+| cognition | `lib:cognition-battery` | Cognition test battery | University of Pennsylvania, Perelman School of Medicine, Unit for Experimental Psychiatry | not shown (Web page (no date shown)) | <https://www.med.upenn.edu/uep/cognition.html> | Cognition card, Decode limits, Ask NASA |
+| cognition | `lib:basner-2015-cognition` | Development and Validation of the Cognition Test Battery for Spaceflight | Basner M, Savitt A, Moore TM, et al. Aerospace Medicine and Human Performance 86(11):942-952 (doi:10.3357/AMHP.4343.2015) | 2015-11-01 (Author manuscript in PMC (PMC4691281)) | <https://pmc.ncbi.nlm.nih.gov/articles/PMC4691281/> | Cognition card, Decode limits, Ask NASA |
+| cognition | `lib:dev-2024-cognition-iss` | Cognitive performance in ISS astronauts on 6-month low earth orbit missions | Dev SI, Khader AM, Begerowski SR, Anderson SR, Clément G, Bell ST. Frontiers in Physiology 15:1451269 (doi:10.3389/fphys.2024.1451269) | 2024-11-20 (Published article, PMC11614644) | <https://pmc.ncbi.nlm.nih.gov/articles/PMC11614644/> | Cognition card, Decode limits, Ask NASA |
+| cognition | `lib:nasa-standard-measures` | Spaceflight Standard Measures: Characterizing How Humans Adapt in Space | NASA Human Research Program | 2021-01-11 (Web article, last updated 2024-11-15) | <https://www.nasa.gov/humans-in-space/spaceflight-standard-measures-characterizing-how-humans-adapt-in-space/> | Cognition card, Decode limits, Ask NASA |
+| sleep | `lib:nasa-sleep-risk` | Risk from Inadequate Sleep and Irregular Schedules | NASA Human Research Program | 2024-10-22 (Web page, last updated 2025-05-16) | <https://www.nasa.gov/reference/risk-from-inadequate-sleep-and-irregular-schedules/> | Sleep card, rest-opportunity wording, Ask NASA |
+| sleep | `lib:nasa-std-3001-tb-sleep-accommodations` | NASA-STD-3001 Technical Brief: Sleep Accommodations (OCHMO-TB-041) | NASA Office of the Chief Health and Medical Officer | 2023-10-23 (OCHMO-TB-041 Rev B) | <https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-041-sleep-accommodations.pdf> | Sleep card, rest-opportunity wording, Ask NASA |
+| sleep | `lib:nasa-std-3001-mtb-circadian-desynchrony` | NASA-STD-3001 Medical Technical Brief: Circadian Desynchrony (OCHMO-MTB-009) | NASA Office of the Chief Health and Medical Officer | 2026-03-04 (OCHMO-MTB-009 (no revision letter printed)) | <https://www.nasa.gov/wp-content/uploads/2026/03/ochmo-mtb-009-circadian-desynchrony.pdf> | Sleep card, rest-opportunity wording, Ask NASA |
+| sleep | `lib:ntrs-mallis-2005-sleep` | Circadian rhythms, sleep, and performance in space | Mallis MM, DeRoshia CW (NASA Ames Research Center). Aviation, Space, and Environmental Medicine 76(6 Suppl); NTRS 20050218840 | 2005-06-01 (NTRS record 20050218840 (journal reprint)) | <https://ntrs.nasa.gov/citations/20050218840> | Sleep card, rest-opportunity wording, Ask NASA |
+| heart | `lib:nasa-cardio-risk` | Risk of Cardiovascular Adaptations | NASA Human Research Program | 2024-10-23 (Web page, last updated 2025-05-16) | <https://www.nasa.gov/reference/risk-of-cardiovascular-adaptations/> | Heart card, Ask NASA |
+| heart | `lib:nasa-std-3001-tb-orthostatic-intolerance` | NASA-STD-3001 Technical Brief: Orthostatic Intolerance (OCHMO-TB-019) | NASA Office of the Chief Health and Medical Officer | 2023-12-01 (OCHMO-TB-019 Rev B) | <https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-019-orthostatic-intolerance.pdf> | Heart card, Ask NASA |
+| heart | `lib:nasa-cardiac-rhythm-evidence` | Evidence Report: Risk of Cardiac Rhythm Problems during Spaceflight | NASA Human Research Program (Lee SMC, Stenger MB, Laurie SS, Macias BR) | 2017-06-12 (Evidence report, approved for public release 2017-06-12) | <https://ntrs.nasa.gov/api/citations/20170005625/downloads/20170005625.pdf> | Heart card, Ask NASA |
+| symptoms | `lib:nasa-sans-risk` | Risk of Spaceflight Associated Neuro-ocular Syndrome (SANS) | NASA Human Research Program | 2024-10-23 (Web page, last updated 2025-05-16) | <https://www.nasa.gov/reference/risk-of-spaceflight-associated-neuro-ocular-syndrome-sans/> | Symptoms card, Request help path, Ask NASA |
+| symptoms | `lib:nasa-std-3001-mtb-sans` | NASA-STD-3001 Technical Brief: Spaceflight Associated Neuro-ocular Syndrome (SANS) (OCHMO-MTB-001) | NASA Office of the Chief Health and Medical Officer | 2024-02-21 (OCHMO-MTB-001 (no revision letter printed; derived from NASA-STD-3001 Vol 1 Rev C and Vol 2 Rev D)) | <https://www.nasa.gov/wp-content/uploads/2024/02/ochmo-mtb-001-sans.pdf?emrc=d4c581> | Symptoms card, Request help path, Ask NASA |
+| symptoms | `lib:nasa-sensorimotor-risk` | Risk of Altered Sensorimotor and Vestibular Function | NASA Human Research Program | 2024-10-23 (Web page, last updated 2025-12-02) | <https://www.nasa.gov/reference/risk-of-altered-sensorimotor-and-vestibular-function/> | Symptoms card, Request help path, Ask NASA |
+| symptoms | `lib:nasa-std-3001-mtb-sas` | NASA-STD-3001 Medical Technical Brief: Space Adaptation Sickness (SAS) and Space Readaptation Syndrome (OCHMO-MTB-004) | NASA Office of the Chief Health and Medical Officer | 2025-09-25 (OCHMO-MTB-004 Rev A) | <https://www.nasa.gov/wp-content/uploads/2025/09/ochmo-mtb-004-space-adaptation-sickness-sas.pdf> | Symptoms card, Request help path, Ask NASA |
+| symptoms | `lib:nasa-immune-risk` | Risk of Altered Immune System Responses | NASA Human Research Program | 2024-10-23 (Web page, last updated 2025-05-16) | <https://www.nasa.gov/reference/risk-of-altered-immune-system-responses/> | Symptoms card, Request help path, Ask NASA |
+| symptoms | `lib:nasa-medops` | NASA-STD-3001 Technical Brief: Medical Operations Spaceflight Considerations (OCHMO-TB-044) | NASA Office of the Chief Health and Medical Officer | 2025-08-13 (OCHMO-TB-044 (no revision letter printed; references NASA-STD-3001 Vol 1 Rev C and Vol 2 Rev E)) | <https://www.nasa.gov/wp-content/uploads/2025/08/ochmo-tb-044-medical-operations.pdf?emrc=69583461d2c7e> | Symptoms card, Request help path, Ask NASA |
+| radiation | `lib:esa-radiation` | Radiation and magnetic fields | European Space Agency (ESA) | 2016-09-09 (Web page (Proxima mission)) | <https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/Proxima/Radiation_and_magnetic_fields> | Radiation sample card, Ask NASA |
+
+## Extra library (`content/library.extra.json`)
+
+| Domain | ID | Title | Publisher | Date (version) | URL | Use |
+|---|---|---|---|---|---|---|
+| nutrition | `lib:source:x-nasa-food-nutrition-risk` | Risk of Inadequate Food and Nutrition | NASA Human Research Program | 2024-10-23 (web page, last updated 2025-05-16) | <https://www.nasa.gov/reference/risk-of-inadequate-food-and-nutrition/> | Nutrition sample card, Ask NASA |
+| nutrition | `lib:source:x-ochmo-tb-food-nutrition` | NASA-STD-3001 Technical Brief: Food and Nutrition | NASA Office of the Chief Health and Medical Officer (OCHMO) | 2023-12-07 (OCHMO-TB-013 Rev D) | <https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-013-food-and-nutrition.pdf> | Nutrition sample card, Ask NASA |
+| nutrition | `lib:source:x-nasa-nutritional-biochemistry` | Nutritional Biochemistry | NASA Human Health and Performance | 2023-03-10 (web page, last updated 2026-03-13) | <https://www.nasa.gov/directorates/esdmd/hhp/nutritional-biochemistry/> | Nutrition sample card, Ask NASA |
+| nutrition | `lib:source:x-hrp-fn-risk-strategy` | NASA HRP Food and Nutrition Risk Strategy (presentation) | NASA Human Research Program (B. Brocato), via NTRS | not shown (slide deck, HRP Research Strategy 2024) | <https://ntrs.nasa.gov/api/citations/20240010162/downloads/FN%20Risk%20Strategy%20ISLSWG%20Sep%202024.pdf> | Nutrition sample card, Ask NASA |
+| movement | `lib:source:x-ochmo-tb-bone-loss` | NASA-STD-3001 Technical Brief: Bone Loss | NASA Office of the Chief Health and Medical Officer (OCHMO) | 2026-02-11 (OCHMO-MTB-013 Rev D) | <https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-030-bone-loss.pdf> | Movement sample card, Ask NASA |
+| movement | `lib:source:x-nasa-fitness-risk` | Risk of Reduced Cardiorespiratory and Musculoskeletal Fitness | NASA Human Research Program | 2024-10-23 (web page, last updated 2025-05-16) | <https://www.nasa.gov/reference/risk-of-reduced-cardiorespiratory-and-musculoskeletal-fitness> | Movement sample card, Ask NASA |
+| movement | `lib:source:x-nasa-astronaut-exercise` | Astronaut Exercise | NASA International Space Station Research | 2024-05-20 (web page (Science in Space: May 2024), last updated 2025-02-03) | <https://www.nasa.gov/missions/station/iss-research/astronaut-exercise/> | Movement sample card, Ask NASA |
+| radiation | `lib:source:x-ochmo-tb-ionizing-radiation` | NASA-STD-3001 Technical Brief: Design for Ionizing Radiation Protection | NASA Office of the Chief Health and Medical Officer (OCHMO) | 2022-12-27 (OCHMO-TB-020 Rev E) | <https://www.nasa.gov/wp-content/uploads/2023/03/radiation-protection-technical-brief-ochmo.pdf> | Radiation sample card, Ask NASA |
+| radiation | `lib:source:x-nasa-radiation-cancer-risk` | Risk of Radiation-Induced Cancers | NASA Human Research Program | 2024-10-01 (web page, last updated 2025-05-16) | <https://www.nasa.gov/reference/risk-of-radiation-induced-cancers> | Radiation sample card, Ask NASA |
+| radiation | `lib:source:x-nasa-space-radiation-element` | About the Space Radiation Element | NASA Human Research Program | 2024-03-11 (web page, last updated 2024-07-31) | <https://www.nasa.gov/reference/about-the-space-radiation-element> | Radiation sample card, Ask NASA |
+| general | `lib:source:x-ntrs-comm-bandwidth-medical` | Communication Bandwidth Considerations for Exploration Medical Care During Space Missions | NASA (Krihak, Middour, Reyes, Nusbaum, Antonsen), NTRS | 2019-08-01 (NASA/TM-2019-220335) | <https://ntrs.nasa.gov/citations/20200001702> | Body-map frame and context for Ask NASA |
+| general | `lib:source:x-nasa-hera-comm-delay` | Houston, Do You Copy? HERA Crew Navigates Communication Delays | NASA | 2022-10-19 (web page, last updated 2023-09-25) | <https://www.nasa.gov/humans-in-space/houston-do-you-copy-hera-crew-navigates-communication-delays> | Body-map frame and context for Ask NASA |
+
+Merged duplicates: `lib:source:x-nasa-five-hazards` was the same page as `lib:nasa-hrp-hazards`, and `lib:source:x-ochmo-tb-behavioral-health` was the same PDF as `lib:nasa-std-3001-tb-behavioral-health`. The x- entries and their corpus files were removed and their extra excerpts were folded into the kept entries. Combined, the two files hold 34 sources, above the 15-25 range of FR-AS-01: the team decides whether the Library screen lists all of them (the app reads only `library.json` today).
+
+## Challenge resources
+
+| Item | URL | Status |
+|---|---|---|
+| Official challenge page: Create Health Monitoring Software for Astronauts on Space Missions (NASA Space Apps 2026) | <https://www.spaceappschallenge.org/2026/challenges/health-monitoring-software/> | Found through web search (the result title matches). The agent could not fetch the page (the site blocks automated access), so its text and its Resources tab were not read. |
+
+TODO(question: Amr opens the challenge page, copies every item on its Resources tab (title, publisher, URL), and marks which are already in the library. Likely overlaps: the NASA HRP risk pages and NASA-STD-3001 technical briefs. No item is claimed here as coming from the Resources tab until that check is done.)
+
+## URLs tried and dropped
+
+| URL | Why dropped |
+|---|---|
+| <https://www.spaceappschallenge.org/2026/challenges/health-monitoring-software/> | Site blocks automated fetching; kept above as the challenge link, not as a library source |
+| <https://humanresearchroadmap.nasa.gov/Risks/risk.aspx?i=179> (HRR cardiovascular risk) | Site blocks automated fetching |
+| <https://humanresearchroadmap.nasa.gov/Evidence/reports/Sleep.pdf> (HRR sleep evidence report) | Site blocks automated fetching |
+
+## Review notes for the human check
+
+- Excerpts came through a page-reading tool that returns short quotes. Check each one word for word against the URL, and confirm page numbers in the PDFs (several were inferred from the text layout).
+- OCHMO-MTB-004 (space adaptation sickness) gives different prevalence and onset figures in different sections (up to 73% in the first 2-3 days; 70-90%; first 3-7 days). Each is quoted with its page; never merge them into one number.
+- OCHMO-TB-016: "Ensuring crew behavioral health over the long term is essential." was placed on p. 1 by one fetch and p. 2 by the other; confirm.
+- Sentences left out on purpose: those naming supplements or medications (SANS and sensorimotor risk pages) and those using wording the product never shows (cardiovascular risk page, orthostatic intolerance brief, SANS brief).
+- Licences: Basner et al. 2015 is an author manuscript with no open licence stated; Mallis and DeRoshia 2005 is listed on NTRS with copyright "Other"; ESA reuse terms not checked; Dev et al. 2024 is CC BY.
+- The real-model eval (`python ask_nasa.py --eval ../content/eval.json`) was not run here (no Ollama). The corpus was built offline with keyword embeddings to confirm it parses.
