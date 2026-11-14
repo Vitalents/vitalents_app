@@ -80,6 +80,12 @@ Shaimaa's `science/simulator.py` replay (seed 42, S1-S4) is the official simulat
 
 Integrity over the five bundles (units, timestamp order, versions, schema, ID/realm rules, 24/24 ledgers re-verified by `decode.verify`, 44/44 exported statuses reproduced by `status.evaluate`, 10/10 vectors). The hand-made S5 reproduces 31/44: its Decode sessions have no response events (the known gap in `test_fixtures_status.py`). Detection: training member `sim:crew:04` sets one fixed band (min-max of its 10 earlier valid session medians, 620-620 ms); held-out members 01-03 are scored on the review day only (overlap 0). Personal reference (replay rules engine): 1/1 hits, 0/1 false alarms; fixed band: 1/1 hits, 1/1 false alarms; S2's interrupted round is not scorable. These are four replayed members: the counts show the method runs without leakage, not how well it detects anything. Daily-check time is `null`: the replay stores one submission time per check and no start time. Permission and sync-dedupe tests run in the app suite and are `null` here.
 
+## Decision (Ahmed, 14 Nov 2026): demo data vs Shaimaa's replay
+
+- The app and the pitch keep the hand-made Fahim fixtures in `app/public/data/fixtures/` (S1 = Fahim). Do not replace them with `science/out/scenarios/`.
+- Shaimaa's S1–S4 replay (`science/simulator.py`) is the evidence behind the proof page (`science/validate.py` → `science/out/validation.json` → `app/public/data/proof.json`).
+- The replay can replace the fixtures only after Shaimaa: (1) renames crew 01 to Fahim (`sim:crew:fahim`); (2) builds the Decode reference on correct answers (`decode_correct_count`) with a low–high range; (3) gives the movable meeting an allowed window (earliest start / latest end); (4) keeps the short nights, day 23's interrupted round and day 27's weak pulse contact (`limited`).
+
 ## Task 1: Fahim's app fixture
 
 Regenerate with `python -m scripts.make_fahim_s1` after `npm ci` in `app/`.

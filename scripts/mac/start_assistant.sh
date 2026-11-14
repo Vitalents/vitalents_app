@@ -8,6 +8,7 @@
 #
 # Stop with Ctrl+C. The live site falls back to recorded answers whenever this is not running.
 set -euo pipefail
+trap 'echo; echo "Stopped at line $LINENO (exit $?). Paste this output to the team." >&2' ERR
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 HOSTNAME_PUBLIC="${VITA_PUBLIC_HOST:-ask.vitalents.life}"
@@ -74,18 +75,44 @@ if [[ ! -f "$HOME/.cloudflared/cert.pem" ]]; then
   echo "A browser window opens: sign in to Cloudflare and choose the zone vitalents.life."
   cloudflared tunnel login
 fi
-cloudflared tunnel list 2>/dev/null | awk '{print $2}' | grep -qx "$TUNNEL_NAME" || cloudflared tunnel create "$TUNNEL_NAME"
-TUNNEL_ID="$(cloudflared tunnel list 2>/dev/null | awk -v n="$TUNNEL_NAME" '$2==n {print $1}')"
-cloudflared tunnel route dns --overwrite-dns "$TUNNEL_NAME" "$HOSTNAME_PUBLIC" >/dev/null
+# Find the tunnel id by name (JSON, no grep -q, so pipefail cannot stop the script).
+tunnel_id() {
+  cloudflared tunnel list --output json 2>/dev/null | "$PY" -c '
+import json, sys
+name = sys.argv[1]
+try:
+    rows = json.load(sys.stdin) or []
+except Exception:
+    rows = []
+def active(r):
+    d = r.get("deleted_at") or ""
+    return not d or d.startswith("0001-01-01")  # cloudflared uses the zero time for tunnels that are not deleted
+print(next((r.get("id", "") for r in rows if r.get("name") == name and active(r)), ""))
+' "$TUNNEL_NAME"
+}
+TUNNEL_ID="${VITA_TUNNEL_ID:-$(tunnel_id || true)}"
+if [[ -z "$TUNNEL_ID" ]]; then
+  echo "Creating tunnel $TUNNEL_NAME"
+  cloudflared tunnel create "$TUNNEL_NAME"
+  TUNNEL_ID="$(tunnel_id)"
+fi
+echo "Tunnel: $TUNNEL_NAME ($TUNNEL_ID)"
+CRED="$HOME/.cloudflared/$TUNNEL_ID.json"
+[[ -f "$CRED" ]] || { echo "Missing $CRED (tunnel credentials). Run: cloudflared tunnel token --cred-file $CRED $TUNNEL_NAME"; exit 1; }
+# DNS: ask.vitalents.life -> $TUNNEL_ID.cfargotunnel.com is set in the vitalents.life zone.
+# Set VITA_ROUTE_DNS=1 only if that record is missing AND your cloudflared login is for vitalents.life.
+if [[ "${VITA_ROUTE_DNS:-0}" == "1" ]]; then cloudflared tunnel route dns --overwrite-dns "$TUNNEL_NAME" "$HOSTNAME_PUBLIC"; fi
+# Stop an older copy of this tunnel left running from a previous start.
+pkill -f "cloudflared tunnel --config $HOME/.cloudflared/$TUNNEL_NAME.yml" 2>/dev/null || true
 CONFIG="$HOME/.cloudflared/$TUNNEL_NAME.yml"
 cat > "$CONFIG" <<YML
 tunnel: $TUNNEL_ID
-credentials-file: $HOME/.cloudflared/$TUNNEL_ID.json
+credentials-file: $CRED
 ingress:
   - hostname: $HOSTNAME_PUBLIC
     service: http://127.0.0.1:$PORT
   - service: http_status:404
 YML
-echo "Live: https://$HOSTNAME_PUBLIC/health  ·  the site at https://vitalents.life now answers with the onboard model."
+echo "Live: https://$HOSTNAME_PUBLIC/health  ·  vitalents.life now answers with the onboard model."
 echo "Keep this window open. Ctrl+C stops the tunnel and the assistant."
 cloudflared tunnel --config "$CONFIG" run "$TUNNEL_NAME"
