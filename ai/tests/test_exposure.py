@@ -67,3 +67,10 @@ A paraphrase that must never be cited.
     assert '"Quoted sentence one."' in kept
     assert "Publisher" not in kept and "paraphrase" not in kept and "Licence" not in kept
     assert ask_nasa.quoted_sections("plain text without headings") == "plain text without headings"
+
+
+def test_every_sentence_needs_a_citation():
+    ok = "Light changes the body clock. [S1] Crews see many sunrises each day. [S2]"
+    bad = "Light changes the body clock. Crews see many sunrises each day. [S2]"
+    assert ask_nasa.uncited_sentences(ok) == []
+    assert ask_nasa.uncited_sentences(bad) == ["Light changes the body clock."]

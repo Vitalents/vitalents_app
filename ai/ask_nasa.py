@@ -235,6 +235,12 @@ def is_diagnosis_question(q: str) -> bool:
     return bool(DIAGNOSIS_Q.search(q or ""))
 
 
+def uncited_sentences(text: str) -> list[str]:
+    """Sentences of an answer that carry no [S#] marker (CLAUDE.md rule 7: every sentence has a source)."""
+    parts = re.split(r"(?<=[.!?])\s+(?=[A-Z0-9\"'(])", (text or "").strip())
+    return [p for p in parts if len(p.strip()) > 12 and not CITE.search(p)]
+
+
 def quoted_sections(markdown: str) -> str:
     """Keep only the verbatim-quote sections of a corpus note.
 
@@ -479,17 +485,29 @@ def ask(req: AskIn):
     )
     out = parse_json(llm().invoke([("system", ASK_RULES), ("human", msg)]).content)
     science = (out or {}).get("science") or (out or {}).get("answer")
+    if out and not out.get("not_in_library") and science and uncited_sentences(science):
+        # One retry: every sentence must carry its [S#] marker (FR-AS-02). The model sees its own draft and the rule.
+        retry = (f"{msg}\n\n<previous_answer>\n{fence(science)}\n</previous_answer>\n"
+                 "Rewrite the previous answer so that EVERY sentence ends with the [S#] id of the source it comes from. "
+                 "Drop any sentence that no source supports. Reply with the same JSON shape.")
+        out2 = parse_json(llm().invoke([("system", ASK_RULES), ("human", retry)]).content)
+        science2 = (out2 or {}).get("science") or (out2 or {}).get("answer")
+        if out2 and science2:
+            out, science = out2, science2
     if not out or out.get("not_in_library") or not science:
         return _respond("not_in_library", qid, your_data, limits=NOT_IN_LIB, trace=trace)
 
+    # Only sources cited in the text count: a source listed but never cited is not evidence for any sentence.
     cited_in_text = set(CITE.findall(science))
-    listed = set(out.get("citations") or [])
-    cites = sorted((cited_in_text | listed) & set(ids), key=lambda c: int(c[1:]))
-    invalid = (cited_in_text | listed) - set(ids)
+    cites = sorted(cited_in_text & set(ids), key=lambda c: int(c[1:]))
+    invalid = cited_in_text - set(ids)
+    missing = uncited_sentences(science)
     bad_numbers = unsupported_numbers(science, "\n".join(d.page_content for d in ids.values()), crew, req.question)
     reason = None
     if not cites:
         reason = "uncited"
+    elif missing:
+        reason = f"sentence without a citation: {missing[0][:80]!r}"
     elif invalid:
         reason = f"citation not retrieved {sorted(invalid)}"
     elif bad_numbers:
