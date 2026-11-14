@@ -10,6 +10,7 @@ import { useStore } from '../store/store'
 import { HelpDialog, ReportDialog } from './Dialogs'
 import { Icon } from './Icons'
 import { Emblem, Logo, Mark } from './Logo'
+import { HELP_EVENT } from '../features/decode/useRound'
 
 export const NAV = [
   { to: '/', key: 'map', end: true },
@@ -30,6 +31,13 @@ export function Layout() {
   useEffect(() => {
     init()
   }, [init])
+
+  // The Decode round asks for help through an event so it never imports the shell (FR-DEC-06).
+  useEffect(() => {
+    const open = () => setDialog('help')
+    window.addEventListener(HELP_EVENT, open)
+    return () => window.removeEventListener(HELP_EVENT, open)
+  }, [])
 
   return (
     <div className="app">
