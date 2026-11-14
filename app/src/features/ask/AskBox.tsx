@@ -2,14 +2,14 @@
 import { useId, useState, type FormEvent } from 'react'
 import { ask, buildContext, type AskResult } from '../../assistant/client'
 import { domainById, DOMAINS, type DomainId } from '../../content/content'
-import { useStore } from '../../store/store'
+import { useVisibleStoreData } from '../../store/selectors'
 import { AnswerCard } from './AnswerCard'
 import { DOMAIN_SUGGESTIONS, GENERAL_SUGGESTIONS } from './suggestions'
 import { S } from './strings'
 import './ask.css'
 
 export function AskBox({ domainId, compact = false }: { domainId?: DomainId; compact?: boolean }) {
-  const data = useStore((s) => s.data)
+  const data = useVisibleStoreData()
   const uid = useId()
   const [question, setQuestion] = useState('')
   const [asked, setAsked] = useState('')

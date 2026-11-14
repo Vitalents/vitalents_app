@@ -5,13 +5,13 @@ Version: OCHMO-TB-016 Rev B
 Date: 2023-10-24
 URL: https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-016-behavioral-health.pdf
 Retrieved: 2026-11-14
-Licence: US government work (NASA); public domain in the US
+Licence: NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.
 Library ID: lib:nasa-std-3001-tb-behavioral-health
 
 ## Verbatim excerpts (NASA, US government work)
 
-- [Executive Summary (p. 1 or 2: page label to confirm)] "Ensuring crew behavioral health over the long term is essential."
-- [p. 2, Executive Summary] "Crew behavioral health and performance are affected by missions in isolated, confined, and extreme (ICE) environments."
+- [p. 1, Executive Summary] "Ensuring crew behavioral health over the long term is essential."
+- [p. 1, Executive Summary] "Crew behavioral health and performance are affected by missions in isolated, confined, and extreme (ICE) environments."
 - [p. 3, Background] "Space flight occurs in an extreme environment that has unique stressors."
 - [p. 6, Application: Behavioral Health Support] "It should be noted that current behavioral health support is provided before, during, and after the mission."
 - [p. 8, Habitat Design Guidance: Lack of Sleep Quality and/or Quantity] "Environmental factors such as noise, temperature, vibration, and light inhibit sleep and affect well-being in space."

@@ -5,7 +5,7 @@ Version: NTRS record 20050218840 (journal reprint)
 Date: 2005-06-01
 URL: https://ntrs.nasa.gov/citations/20050218840
 Retrieved: 2026-11-14
-Licence: not verified: NTRS lists copyright as Other; short quotes with attribution only
+Licence: NTRS determinationType OTHER; no open redistribution licence verified. Short attributed quotations do not establish permission.
 Library ID: lib:ntrs-mallis-2005-sleep
 
 ## Verbatim excerpts (short quotes, non-NASA source)

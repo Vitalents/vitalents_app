@@ -45,10 +45,13 @@ export function useRound(opts: {
   sequence: SymbolId[]
   durationMs: number
   onEnd: (end: RoundEnd) => void
+  onCheckpoint?: (checkpoint: RoundEnd) => void
 }) {
   const { keyMap, sequence, durationMs } = opts
   const onEnd = useRef(opts.onEnd)
   onEnd.current = opts.onEnd
+  const onCheckpoint = useRef(opts.onCheckpoint)
+  onCheckpoint.current = opts.onCheckpoint
 
   const [view, setView] = useState<RoundView>({ symbol: sequence[0] ?? null, pulse: 0, waiting: false, progress: 0, ended: false })
 
@@ -61,6 +64,7 @@ export function useRound(opts: {
     raw: [] as RawResponse[],
     ended: false,
     finalised: false,
+    armed: false,
     hiddenTotal: 0,
     hiddenSince: null as number | null,
     hidden: [] as Span[],
@@ -71,6 +75,18 @@ export function useRound(opts: {
 
   // monotonic ms since the window opened, captured at 0.1 ms so stored events and summaries agree exactly
   const now = () => Math.round((performance.now() - s.current.t0) * 10) / 10
+
+  const checkpoint = useCallback(() => {
+    const st = s.current
+    if (st.finalised || !onCheckpoint.current) return
+    const raw = [...st.raw]
+    if (!st.answered) {
+      const symbol = sequence[st.trial - 1]
+      raw.push({ trial_index: st.trial, symbol_id: symbol, correct_digit: keyMap[symbol], stimulus_ms: st.stimulus, response_ms: null, response_digit: null })
+    }
+    onCheckpoint.current({ state: 'started', raw, interruptionReasons: [], cutMs: null, startedAt: st.startedAt,
+      elapsedMs: now(), inputMethod: st.method ?? 'other', hidden: [...st.hidden], deviceClass: currentDeviceClass() })
+  }, [keyMap, sequence])
 
   const finalise = useCallback((state: SessionState, reasons: string[], cut: number | null) => {
     const st = s.current
@@ -113,12 +129,14 @@ export function useRound(opts: {
       if (!st.answered) {
         st.raw.push({ trial_index: st.trial, symbol_id: sym, correct_digit: keyMap[sym], stimulus_ms: st.stimulus, response_ms: t, response_digit: digit })
         st.answered = true
+        checkpoint()
       }
       return
     }
     st.raw.push({ trial_index: st.trial, symbol_id: sym, correct_digit: keyMap[sym], stimulus_ms: st.stimulus, response_ms: t, response_digit: digit })
-    if (st.answered) return // duplicate press during the gap: logged, classified as duplicate
+    if (st.answered) { checkpoint(); return } // duplicate press during the gap: logged, classified as duplicate
     st.answered = true
+    checkpoint()
     setView((v) => ({ ...v, pulse: v.pulse + 1, waiting: true }))
     st.timers.push(
       window.setTimeout(() => {
@@ -129,7 +147,7 @@ export function useRound(opts: {
         setView((v) => ({ ...v, symbol: sequence[st.trial - 1] ?? null, waiting: false }))
       }, NEXT_ITEM_DELAY_MS),
     )
-  }, [keyMap, sequence])
+  }, [keyMap, sequence, checkpoint])
 
   const quit = useCallback(() => end('aborted', ['quit_early'], now()), [end])
   const help = useCallback(() => end('interrupted', ['interrupted_help'], now()), [end])
@@ -138,9 +156,11 @@ export function useRound(opts: {
     const st = s.current
     Object.assign(st, {
       t0: performance.now(), startedAt: new Date(), trial: 1, stimulus: 0, answered: false, raw: [],
-      ended: false, finalised: false, hiddenTotal: 0, hiddenSince: null, hidden: [], method: null, timers: [],
+      ended: false, finalised: false, armed: false, hiddenTotal: 0, hiddenSince: null, hidden: [], method: null, timers: [],
     })
     setView({ symbol: sequence[0] ?? null, pulse: 0, waiting: false, progress: 0, ended: false })
+    // React StrictMode performs a synchronous setup/cleanup probe. Arm persistence on the real mounted task.
+    st.timers.push(window.setTimeout(() => { st.armed = true; checkpoint() }, 0))
 
     const tick = () => {
       const t = now()
@@ -180,13 +200,24 @@ export function useRound(opts: {
       }
     }
     const onHelp = () => { if (!st.ended) end('interrupted', ['interrupted_help'], now()) }
+    const persistOnExit = () => {
+      if (!st.armed || st.finalised) return
+      // The completed window can still be listening for late presses. Navigation must not downgrade it.
+      if (st.ended) finalise('completed', [], null)
+      else finalise('aborted', ['aborted'], now())
+    }
+    const onPageHide = () => { if (onCheckpoint.current) persistOnExit() }
     window.addEventListener('keydown', onKey)
     document.addEventListener('visibilitychange', onVisibility)
     window.addEventListener(HELP_EVENT, onHelp)
+    window.addEventListener('pagehide', onPageHide)
     return () => {
       window.removeEventListener('keydown', onKey)
       document.removeEventListener('visibilitychange', onVisibility)
       window.removeEventListener(HELP_EVENT, onHelp)
+      window.removeEventListener('pagehide', onPageHide)
+      // Route navigation must preserve the partial round just as the explicit Quit button does.
+      if (onCheckpoint.current) persistOnExit()
       st.timers.forEach((t) => window.clearTimeout(t))
       cancelAnimationFrame(st.raf)
       st.ended = true

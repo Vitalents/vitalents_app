@@ -1,19 +1,20 @@
-> **DRAFT · owner: Amr Abd ElHaleem.** Tick each item before submitting. Confirm the exact rules and deadlines against the official Project Submission Guide and Judging and Awards Guide.
+# Vitalents · submission handoff
 
-# Vitalents · submission checklist
+**Status: repository preparation, not an official submission.** The functional project page has been corrected using repository facts. No event registration, team approval, deadline, presentation acceptance or submission action is implied.
 
-| # | Rule / item | Owner | Done |
-|---|---|---|---|
-| 1 | Project page and every linked file are in **English only** | Amr | ☐ |
-| 2 | Demo is **7 slides or fewer**, or a video of **30 seconds or less** (going over removes the project from global judging) | Youssef | ☐ |
-| 3 | **Public project link** opens with no login: https://vitalents.life (fallback https://vitalents.pages.dev) | Ahmed | ☐ |
-| 4 | **At least one NASA resource** used and cited, matching an item from the official challenge Resources tab | Amr | ☐ |
-| 5 | **Use of AI** described: product AI (local model, guardrails, recorded answers on the public site) and build AI (Claude Code agents under team review, research drafting) | Ahmed (facts) · Amr (text) | ☐ |
-| 6 | Any **AI-generated image or video** carries a visible watermark; AI-generated code and data are stated | Amr | ☐ |
-| 7 | **No NASA logos or mission insignia** anywhere (deck, site, video) | Amr | ☐ |
-| 8 | **Team size** within the limit and every member registered at the same local event | Amr | ☐ |
-| 9 | Work is original; third-party data credited (LifeSnaps CC BY 4.0 attribution, ESA, University of Pennsylvania) | Shaimaa | ☐ |
-| 10 | Every number in the deck and on the page comes from `science/out/validation.json` or `science/out/assistant_eval.json` | Youssef | ☐ |
-| 11 | "Simulated data · not a medical device" visible on the public site | Ahmed | ☐ |
-| 12 | Backup demo video recorded and playable offline | Amr | ☐ |
-| 13 | Submission deadline: [date and time from the Project Submission Guide] · local pitch time: [from the Local Lead] | Amr | ☐ |
+| Item | Current evidence / remaining action | Owner |
+|---|---|---|
+| Project text and source URLs | English project-page draft populated from repository and source library; team editorial approval still required | Amr |
+| Functional demo | `https://vitalents.life/`, fallback `https://vitalents.pages.dev/`; verify deployed revision and no-login flow after publication | Ahmed |
+| Required presentation | No final video or deck created in phase one. Prepare the artifact in phase two and confirm permitted format/length against the current official guide; do not treat an older draft's limits as verified rules | Youssef / Amr |
+| NASA resource eligibility | NASA sources are cited; confirm at least one exact match to this challenge's official Resources list | Amr |
+| Event and eligibility | Confirm all members' registration, local event, team-size rules and eligibility with official event records | Team |
+| Deadline and local pitch | Confirm actual date, time, time zone and local pitch arrangement; no verified deadline is recorded here | Amr |
+| AI disclosure | Product model, historical evaluation limits, recorded-answer withdrawals and build-AI use are described. Confirm all tools and any image/video use for final presentation | Ahmed / Amr |
+| Source rights and credits | Quote matching and hashes recorded; all sources remain draft. Resolve source-specific rights where needed. NASA reuse guidance does not clear all third-party material | Amr |
+| Data and science claims | Simulated histories and synthetic research examples; custom Decode and demo thresholds lack clinical validation. No measured LifeSnaps or clinical-success claim | Shaimaa |
+| Proof numbers | Use current generated proof with denominators and source files. Saved model evaluation is `science/out/assistant_eval_gptoss.json`, historical source-title/abstention checks only | Shaimaa / Ahmed |
+| Final assets | Check English text, source credits, any required AI labels, no unauthorized NASA insignia and offline playback once final deck/video exists | Amr / Youssef |
+| Official submission | Upload/paste approved project content and required artifacts through the official process, then retain its receipt. This repository contains no submission receipt | Amr |
+
+Official challenge: [Create Health Monitoring Software for Astronauts on Space Missions](https://www.spaceappschallenge.org/2026/challenges/health-monitoring-software/). The phase-one audit could read the challenge description, but did not establish the complete current Resources tab or submission guide. That uncertainty remains explicit.

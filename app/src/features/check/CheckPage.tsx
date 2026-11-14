@@ -1,11 +1,12 @@
 // Check & Decode (Increment 2): daily check -> intro -> practice -> measured round -> interruption question -> reward -> result.
 // Order is always preparation -> measurement -> story and reward (FR-DEC-01).
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import type { DecodeSession } from '../../data/contract'
 import {
   DEMO_MS, MEASURE_MS, PRACTICE_MS, buildRoundRecords, makeDifferentKey, makeKey, makeSequence, newSeed, type Quality,
 } from '../../engine/decodeSession'
 import { baselineSessions } from '../../engine/decodeValidity'
+import { referenceForDate } from '../../engine/reference'
 import { useStore } from '../../store/store'
 import { DecodeRound } from '../decode/DecodeRound'
 import { DataBadge, ResultView } from '../decode/ResultView'
@@ -44,7 +45,7 @@ function completionStreak(sessions: DecodeSession[], subjectId: string, today: s
 export function CheckPage() {
   const ctx = useCheckContext()
   const data = useStore((s) => s.data)
-  const put = useStore((s) => s.put)
+  const putMany = useStore((s) => s.putMany)
   const [step, setStep] = useState<Step>('check')
   const [demo, setDemo] = useState(false)
   const [seed, setSeed] = useState(() => newSeed())
@@ -54,43 +55,60 @@ export function CheckPage() {
   const practiceSeq = useMemo(() => makeSequence(seed + 7), [seed])
   const [pending, setPending] = useState<RoundEnd | null>(null)
   const [saved, setSaved] = useState<{ session: DecodeSession; quality: Quality; eventCount: number; ruleset: string } | null>(null)
+  const [saveError, setSaveError] = useState<string | null>(null)
+  const roundKey = useRef(crypto.randomUUID())
+  const writeQueue = useRef<Promise<unknown>>(Promise.resolve())
 
   const durationMs = demo ? DEMO_MS : MEASURE_MS
 
-  const save = async (end: RoundEnd, extraReasons: string[]) => {
+  const save = async (end: RoundEnd, extraReasons: string[], showResult = true) => {
+    let n = 0
+    const key = roundKey.current
     const built = buildRoundRecords({
       subjectId: ctx.subjectId, seed, raw: end.raw, plannedMs: durationMs, isPractice: demo, state: end.state,
       interruptionReasons: [...end.interruptionReasons, ...extraReasons], interruptedAtMs: end.cutMs,
       startedAt: end.startedAt, elapsedMs: end.elapsedMs, inputMethod: end.inputMethod,
       // SRS 7.3: pauses (page visible, no response) and a device change against the reference sessions
-      hidden: end.hidden, deviceClass: end.deviceClass, baseline: baselineSessions(data, ctx.subjectId),
+      hidden: end.hidden, deviceClass: end.deviceClass, baseline: baselineSessions(data, ctx.subjectId, end.startedAt.toISOString()),
+      // Checkpoints and finalisation update the same attempt and event identities, never duplicate it.
+      uuid: () => `${key}-${n++}`,
     })
-    await put('decode_session', [built.session])
-    await put('decode_response_event', built.events)
-    await put('information_status', [built.info])
-    setSaved({ session: built.session, quality: built.quality, eventCount: built.events.length, ruleset: built.info.ruleset_version })
+    const write = writeQueue.current.catch(() => undefined).then(() => putMany({
+      decode_session: [built.session], decode_response_event: built.events, information_status: [built.info],
+    }))
+    writeQueue.current = write
+    await write
+    if (showResult) setSaved({ session: built.session, quality: built.quality, eventCount: built.events.length, ruleset: built.info.ruleset_version })
     return built
   }
 
   const onRoundEnd = async (end: RoundEnd) => {
-    if (end.state === 'completed') {
-      setPending(end)
-      setStep('interruption')
-    } else {
-      await save(end, [])
-      setStep('stopped')
-    }
+    try {
+      if (end.state === 'completed') {
+        // Keep the completed ledger before asking about conditions; it cannot compare until answered.
+        await save(end, ['pending_interruption_check'], false)
+        setPending(end)
+        setStep('interruption')
+      } else {
+        await save(end, [])
+        setStep('stopped')
+      }
+    } catch { setSaveError(S.saveFailed) }
   }
 
   const answerInterruption = async (yes: boolean) => {
     if (!pending) return
-    await save(pending, yes ? ['reported_interruption'] : [])
-    setPending(null)
-    setStep('reward')
+    try {
+      await save(pending, yes ? ['reported_interruption'] : [])
+      setPending(null)
+      setStep('reward')
+    } catch { setSaveError(S.saveFailed) }
   }
 
   const restart = () => {
     setSeed(newSeed())
+    roundKey.current = crypto.randomUUID()
+    setSaveError(null)
     setSaved(null)
     setPending(null)
     setStep('intro')
@@ -98,9 +116,8 @@ export function CheckPage() {
 
   const selfRating = todaysAlertness(data, ctx)?.alertness_rating ?? null
   const reference = useMemo(
-    () => [...data.personal_reference].filter((r) => r.subject_id === ctx.subjectId && r.metric_code === 'decode_correct_count')
-      .sort((a, b) => a.created_at_utc.localeCompare(b.created_at_utc)).pop() ?? null,
-    [data.personal_reference, ctx.subjectId],
+    () => referenceForDate(data.personal_reference, 'decode_correct_count', saved?.session.start_at_utc.slice(0, 10) ?? ctx.today, ctx.subjectId),
+    [data.personal_reference, ctx.subjectId, ctx.today, saved],
   )
   const streak = completionStreak(data.decode_session, ctx.subjectId, ctx.today)
   const dayIndex = Math.round(Date.parse(`${ctx.today}T00:00:00Z`) / 86_400_000)
@@ -108,6 +125,7 @@ export function CheckPage() {
   return (
     <div className="dc-page">
       <h1 className="sr-only">{SH.nav.check.full}</h1>
+      {saveError && <p role="alert">{saveError}</p>}
       {step === 'check' && <DailyCheck ctx={ctx} onDone={() => setStep('intro')} />}
 
       {step === 'intro' && (
@@ -144,7 +162,8 @@ export function CheckPage() {
 
       {step === 'round' && (
         <DecodeRound key={`m-${seed}`} keyMap={keyMap} sequence={sequence} durationMs={durationMs}
-          label={demo ? S.demoLabel : S.measureLabel} onEnd={onRoundEnd} />
+          label={demo ? S.demoLabel : S.measureLabel} onEnd={onRoundEnd}
+          onCheckpoint={(end) => { void save(end, [], false).catch(() => setSaveError(S.saveFailed)) }} />
       )}
 
       {step === 'interruption' && (

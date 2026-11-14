@@ -1,8 +1,8 @@
 {
-  "rules_version": "1.0-draft",
+  "rules_version": "1.1-draft",
   "created_at_utc": "2026-11-14T00:00:00Z",
   "engine": "app/src/engine/rules.ts evaluateRules (facts from computeFacts, SRS 6.3)",
-  "review_status": "TODO(review: every rule is approval_state draft. A medical owner must approve each rule before science/rules.py may propose it as an approved step. Source ids point at content/library.json entries that still have no URL, date or excerpt; a person must check that each excerpt supports the rule. Rules with source_type team_rule are shown as 'Team rule · needs medical review'.)",
+  "review_status": "TODO(review: every rule remains approval_state draft. Library sources provide scientific background, not approval of the team's numeric thresholds or workflow. A medical owner must approve a rule before it can be represented as an approved plan. Rules with source_type team_rule remain demonstration policies.)",
   "attention_order": ["urgent", "due_follow_up", "change", "missing", "reference"],
   "rules": [
     {
@@ -90,13 +90,13 @@
       "finding": "Two observations: {decode.below_reference_consecutive} sessions in a row below your personal range ({decode.reference_range}), and {sleep.nights_under_6h_last3} of the last 3 nights under 6 hours of recorded sleep.",
       "step": { "title": "Review tonight's rest window", "decision_owner": "astronaut", "followup_days": 1, "opens": "schedule_alternatives" },
       "source_id": "lib:nasa-sleep-risk",
-      "source_type": "nasa",
-      "limits": "These two observations happen together. This does not show that one causes the other. The planner approves any schedule change.",
-      "rule_class": "approved_plan",
+      "source_type": "team_rule",
+      "limits": "These two observations happen together. This does not show that one causes the other. The counts and sleep cutoff are demonstration parameters, not medical thresholds. The planner approves any schedule change.",
+      "rule_class": "descriptive_change",
       "required_quality": "valid",
       "condition_description": "Two or more valid Decode sessions in a row below the personal range, and two or more of the last three valid sleep records under 6 hours.",
       "approval_state": "draft",
-      "review_status": "TODO(review: the 2-session and 6-hour thresholds come from SRS 6.4 and are demo parameters; a medical owner must approve them. lib:nasa-sleep-risk has no URL or excerpt yet.)"
+      "review_status": "TODO(review: the 2-session and 6-hour thresholds come from SRS 6.4 and are team demonstration parameters. NASA's sleep-risk source supports the background only; it does not approve these parameters or this plan.)"
     },
     {
       "id": "R-PLAN-02",
@@ -120,20 +120,63 @@
       "review_status": "TODO(source: 'add one more measurement and keep watching' is a team rule; lib:cognition-battery only covers the Decode-style task. The plan must name which extra measurement (SRS 6.4 suggests temperature or mood).)"
     },
     {
+      "id": "R-OBS-01",
+      "version": "1.0",
+      "category": "DESCRIPTIVE_OBSERVATION",
+      "attention": "change",
+      "priority": 3,
+      "when": { "all": [
+        { "fact": "decode.reference_status", "op": "==", "value": "usable_for_question" },
+        { "fact": "decode.below_reference_consecutive", "op": "==", "value": 1 }
+      ] },
+      "finding": "One Decode session was below your personal range ({decode.reference_range}).",
+      "step": { "title": "Keep the daily check and watch the next sessions", "decision_owner": "astronaut", "followup_days": 1 },
+      "source_id": "lib:cognition-battery",
+      "source_type": "team_rule",
+      "limits": "One session describes performance on this task. It does not explain the change or establish a health condition.",
+      "rule_class": "descriptive_change",
+      "required_quality": "valid",
+      "condition_description": "Exactly one latest comparable Decode session is below the usable personal range. This records a descriptive observation and keeps follow-up open; it is not a medical threshold.",
+      "approval_state": "draft",
+      "review_status": "TODO(review: this explicitly names the historical observation used by S1. The Cognition source describes the task background; the decision to watch the next session is a team demonstration workflow.)"
+    },
+    {
+      "id": "R-OBS-02",
+      "version": "1.0",
+      "category": "DESCRIPTIVE_OBSERVATION",
+      "attention": "change",
+      "priority": 4,
+      "when": { "all": [
+        { "fact": "decode.info_status", "op": "==", "value": "valid" },
+        { "fact": "decode.reference_status", "op": "==", "value": "usable_for_question" },
+        { "fact": "decode.below_reference_consecutive", "op": "==", "value": 0 }
+      ] },
+      "finding": "Today's Decode: {decode.correct_count} correct answers; your personal range is {decode.reference_range} ({decode.reference_position}).",
+      "step": { "title": "Keep the daily check going", "decision_owner": "astronaut", "followup_days": 1 },
+      "source_id": "lib:cognition-battery",
+      "source_type": "team_rule",
+      "limits": "This comparison describes performance on this task. It does not establish a health condition or close an existing follow-up.",
+      "rule_class": "descriptive_change",
+      "required_quality": "valid",
+      "condition_description": "Today's comparable Decode value is within or above a usable personal range. Record the descriptive comparison without a health verdict.",
+      "approval_state": "draft",
+      "review_status": "TODO(review: the source describes the task background. Recording the comparison and continuing the daily check is a team demonstration workflow.)"
+    },
+    {
       "id": "R-MEAS-01",
       "version": "1.0",
       "category": "MEASUREMENT_ISSUE",
       "attention": "missing",
       "priority": 1,
-      "when": { "all": [{ "fact": "decode.info_status", "op": "==", "value": "not_comparable" }] },
-      "finding": "Today's Decode round can't be compared with your reference: it was interrupted or the conditions changed.",
+      "when": { "all": [{ "fact": "decode.info_status", "op": "in", "value": ["not_comparable", "incomplete"] }] },
+      "finding": "Today's Decode round can't be compared with your reference: it is unfinished, was interrupted or the conditions changed.",
       "step": { "title": "Repeat Decode in the same conditions", "decision_owner": "astronaut", "followup_days": 0 },
       "source_id": "lib:cognition-battery",
       "source_type": "research",
       "limits": "Your earlier round is kept. Nothing is erased.",
       "rule_class": "data_quality",
       "required_quality": null,
-      "condition_description": "Today's Decode session has the information status not_comparable (SRS 7.3).",
+      "condition_description": "Today's Decode session has the information status not_comparable or incomplete (SRS 7.3).",
       "approval_state": "draft",
       "review_status": "TODO(review: lib:cognition-battery has no URL or excerpt yet.)"
     },
@@ -179,17 +222,17 @@
       "category": "MEASUREMENT_ISSUE",
       "attention": "missing",
       "priority": 4,
-      "when": { "all": [{ "fact": "pulse.info_status", "op": "in", "value": ["limited", "not_comparable", "incomplete"] }] },
-      "finding": "Today's resting pulse reading has limited quality.",
+      "when": { "all": [{ "fact": "pulse.info_status", "op": "in", "value": ["no_reading", "limited", "not_comparable", "incomplete"] }] },
+      "finding": "Today's resting pulse reading is missing or has limited quality.",
       "step": { "title": "Repeat the pulse reading with the sensor in firm contact", "decision_owner": "astronaut", "followup_days": 0 },
       "source_id": "lib:nasa-standard-measures",
-      "source_type": "nasa",
-      "limits": "A limited reading is shown, but never used for your reference.",
+      "source_type": "team_rule",
+      "limits": "Missing values stay missing. A limited reading is shown with its caveat; neither is used for your reference.",
       "rule_class": "data_quality",
       "required_quality": null,
-      "condition_description": "Today's pulse reading has the information status limited, not_comparable or incomplete.",
+      "condition_description": "Today's pulse reading has the information status no_reading, limited, not_comparable or incomplete.",
       "approval_state": "draft",
-      "review_status": "TODO(source: the 'firm sensor contact' instruction needs a measurement source; lib:nasa-standard-measures is the closest existing id. Not in SRS 6.4; kept from rules.starter.ts.)"
+      "review_status": "TODO(source: this is a team demonstration workflow. The 'firm sensor contact' instruction needs a device-specific measurement source; lib:nasa-standard-measures supplies background, not approval of the instruction.)"
     },
     {
       "id": "R-REF-01",
@@ -198,7 +241,7 @@
       "attention": "reference",
       "priority": 1,
       "when": { "all": [{ "fact": "decode.reference_status", "op": "in", "value": ["not_built", "provisional"] }] },
-      "finding": "Saved. {decode.session_count_comparable} comparable sessions so far; your personal reference needs at least 5 recent ones.",
+      "finding": "Saved. {decode.reference_eligible_count} recent historical sessions are eligible after the first two sessions are excluded; your personal reference needs at least 5.",
       "step": { "title": "Keep the daily check going", "decision_owner": "astronaut", "followup_days": 1 },
       "source_id": "lib:cognition-battery",
       "source_type": "team_rule",
@@ -207,7 +250,7 @@
       "required_quality": "valid",
       "condition_description": "The latest Decode personal reference is not_built or provisional (CONTRACT_P0 D-10).",
       "approval_state": "draft",
-      "review_status": "TODO(question: the minimum of 5 comes from SRS 6.4 and D-10, but D-10 also drops the first 2 sessions and keeps a 14-day window, while decode.session_count_comparable counts every valid session. The count shown can therefore reach 5 while the reference is still provisional. Shaimaa to decide the counting rule; SRS 19 #3 makes the minimum a demo parameter.)"
+      "review_status": "TODO(review: the minimum of 5, exclusion of the first 2 sessions and 14-day window are D-10 demonstration parameters. The displayed count is the stored reference's eligible historical count and excludes the target day.)"
     }
   ]
 }

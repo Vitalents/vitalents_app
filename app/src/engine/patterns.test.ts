@@ -71,7 +71,7 @@ describe('sleepDecodePattern edge cases', () => {
   })
 
   it('without a usable Decode reference there is no pattern', () => {
-    const p = sleepDecodePattern(s4 as unknown as DataSet, { to: DATE })
+    const p = sleepDecodePattern({ ...s4, personal_reference: [] } as unknown as DataSet, { to: DATE })
     expect(p.state).toBe('no_decode_reference')
     expect(p.short.nights).toBe(0)
   })

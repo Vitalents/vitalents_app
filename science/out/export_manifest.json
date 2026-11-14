@@ -1917,15 +1917,16 @@
      "subject_profile": 1,
      "sleep_record": 15,
      "measurement": 15,
-     "information_status": 44,
      "self_report": 16,
+     "decode_response_event": 588,
      "decode_session": 14,
+     "information_status": 44,
      "personal_reference": 1,
-     "finding": 3,
      "action": 3,
      "follow_up": 2,
+     "finding": 3,
      "mission_schedule": 3,
-     "daily_review": 1
+     "daily_review": 3
     },
     "first_and_last_day": [
      "2026-10-31",
@@ -1955,8 +1956,8 @@
     ],
     "information_status": {
      "valid": 42,
-     "not_comparable": 1,
-     "limited": 1
+     "no_reading": 1,
+     "not_comparable": 1
     },
     "schedule": [
      [
@@ -2182,13 +2183,14 @@
      "information_status": 44,
      "measurement": 15,
      "self_report": 15,
-     "decode_response_event": 661,
+     "decode_response_event": 657,
      "decode_session": 14,
      "personal_reference": 1,
-     "finding": 1,
-     "action": 1,
+     "finding": 2,
+     "action": 2,
+     "follow_up": 1,
      "mission_schedule": 4,
-     "daily_review": 1
+     "daily_review": 2
     },
     "first_and_last_day": [
      "2026-10-31",
@@ -2203,16 +2205,18 @@
     "references": [
      {
       "metric_code": "decode_correct_count",
-      "reference_value": 46,
+      "reference_value": 46.0,
       "status": "usable_for_question",
       "range": [
        45,
        48
       ],
-      "frozen": false
+      "frozen": true
      }
     ],
-    "follow_ups": [],
+    "follow_ups": [
+     "watching"
+    ],
     "information_status": {
      "valid": 44
     },
@@ -2342,6 +2346,7 @@
      "self_report": 9,
      "decode_response_event": 389,
      "decode_session": 8,
+     "personal_reference": 1,
      "finding": 1,
      "action": 1,
      "follow_up": 1,
@@ -2367,7 +2372,18 @@
       "protocol_version": "decode-1.0"
      }
     ],
-    "references": [],
+    "references": [
+     {
+      "metric_code": "decode_correct_count",
+      "reference_value": 47,
+      "status": "usable_for_question",
+      "range": [
+       46,
+       48
+      ],
+      "frozen": false
+     }
+    ],
     "follow_ups": [
      "review_requested"
     ],

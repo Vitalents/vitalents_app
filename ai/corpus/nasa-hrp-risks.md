@@ -5,7 +5,7 @@ Version: Web page, last updated 2026-07-21
 Date: not shown
 URL: https://www.nasa.gov/hrp/risks/
 Retrieved: 2026-11-14
-Licence: US government work (NASA); public domain in the US
+Licence: NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.
 Library ID: lib:nasa-hrp-risks
 
 ## Verbatim excerpts (NASA, US government work)

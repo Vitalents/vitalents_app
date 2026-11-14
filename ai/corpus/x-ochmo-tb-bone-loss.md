@@ -23,7 +23,7 @@ Every line below is quoted from the source as published (NASA work). Locators gi
 (p. 1, Executive Summary (fragment))
 
 > ISS currently uses the Advanced Resistive Exercise Device (ARED) for resistance and loading exercises.
-(p. 13, Reference Data: Countermeasures)
+(p. 12, Reference Data: Countermeasures)
 
 > Microfractures may propagate and result in stress fractures.
-(p. 21, Application: Post-flight Monitoring and Testing)
+(p. 20, Application: Post-flight Monitoring and Testing)

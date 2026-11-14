@@ -95,32 +95,34 @@ export function buildReportRecords(ctx: Ctx & { text: string; onset: string; sev
     ...base,
     finding_id: newId('finding', ctx.subjectId, ctx.uuid),
     review_id: ctx.reviewId,
-    rule_id: 'rule:R-OBS-02',
+    rule_id: 'rule:R-REV-02',
     rule_version: '1.0',
-    finding_kind: 'descriptive_change',
+    finding_kind: 'review_request',
     supporting_record_ids: [self_report.self_report_id],
     explanation: S.report.explanation(text),
     limitations: S.report.limitations,
-    owner_role: 'astronaut',
+    owner_role: 'medical',
   }
   const action: Action = {
     ...base,
     action_id: newId('action', ctx.subjectId, ctx.uuid),
     finding_id: finding.finding_id,
-    step_category: 'observe',
+    step_category: 'request_review',
     reason_text: S.report.reason,
     action_text: S.report.actionText,
     source_reference_id: 'lib:nasa-medops',
-    owner_role: 'astronaut',
-    execution_status: 'in_progress',
+    owner_role: 'medical',
+    execution_status: 'accepted',
+    follow_up_due_utc: new Date(Date.parse(now) + 86_400_000).toISOString(),
   }
   const follow_up: FollowUp = {
     ...base,
     follow_up_id: newId('follow_up', ctx.subjectId, ctx.uuid),
     action_id: action.action_id,
-    followup_status: 'watching',
+    followup_status: 'review_requested',
     opened_at_utc: now,
-    assigned_role: 'astronaut',
+    assigned_role: 'medical',
+    next_review_due_utc: action.follow_up_due_utc,
   }
   return { self_report, finding, action, follow_up }
 }

@@ -7,9 +7,10 @@
     "url": "https://www.nasa.gov/hrp/hazards/",
     "date": "2023-10-26",
     "version": "Web page, last updated 2026-06-12",
-    "license": "US government work (NASA); public domain in the US",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
     "scope": "general",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "nasa-hrp-risks.md",
@@ -19,9 +20,10 @@
     "url": "https://www.nasa.gov/hrp/risks/",
     "date": null,
     "version": "Web page, last updated 2026-07-21",
-    "license": "US government work (NASA); public domain in the US",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
     "scope": "general",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "nasa-behavioral-risk.md",
@@ -31,9 +33,10 @@
     "url": "https://www.nasa.gov/reference/risk-of-behavioral-changes-and-psychiatric-disorders/",
     "date": "2024-10-22",
     "version": "Web page, last updated 2026-02-24",
-    "license": "US government work (NASA); public domain in the US",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
     "scope": "cognition",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "nasa-std-3001-tb-016-behavioral-health.md",
@@ -43,9 +46,10 @@
     "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-016-behavioral-health.pdf",
     "date": "2023-10-24",
     "version": "OCHMO-TB-016 Rev B",
-    "license": "US government work (NASA); public domain in the US",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
     "scope": "cognition",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "upenn-cognition-battery.md",
@@ -55,9 +59,10 @@
     "url": "https://www.med.upenn.edu/uep/cognition.html",
     "date": null,
     "version": "Web page (no date shown)",
-    "license": "not verified: third-party web page; short quotes with attribution only",
+    "license": "No open redistribution licence verified. Short attributed quotations do not establish permission.",
     "scope": "cognition",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "basner-2015-cognition.md",
@@ -67,9 +72,10 @@
     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4691281/",
     "date": "2015-11-01",
     "version": "Author manuscript in PMC (PMC4691281)",
-    "license": "not verified: author manuscript, no open licence stated; short quotes with attribution only",
+    "license": "No open redistribution licence verified. Short attributed quotations do not establish permission.",
     "scope": "cognition",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "dev-2024-cognition-iss.md",
@@ -79,9 +85,10 @@
     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11614644/",
     "date": "2024-11-20",
     "version": "Published article, PMC11614644",
-    "license": "CC BY (as stated on the PMC page)",
+    "license": "CC BY as stated by the original paper; credit authors and journal.",
     "scope": "cognition",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "nasa-standard-measures.md",
@@ -91,9 +98,10 @@
     "url": "https://www.nasa.gov/humans-in-space/spaceflight-standard-measures-characterizing-how-humans-adapt-in-space/",
     "date": "2021-01-11",
     "version": "Web article, last updated 2024-11-15",
-    "license": "US government work (NASA); public domain in the US",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
     "scope": "cognition",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "nasa-sleep-risk.md",
@@ -103,9 +111,10 @@
     "url": "https://www.nasa.gov/reference/risk-from-inadequate-sleep-and-irregular-schedules/",
     "date": "2024-10-22",
     "version": "Web page, last updated 2025-05-16",
-    "license": "US government work (NASA); public domain in the US",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
     "scope": "sleep",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "nasa-std-3001-tb-041-sleep-accommodations.md",
@@ -115,9 +124,10 @@
     "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-041-sleep-accommodations.pdf",
     "date": "2023-10-23",
     "version": "OCHMO-TB-041 Rev B",
-    "license": "US government work (NASA); public domain in the US",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
     "scope": "sleep",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "nasa-std-3001-mtb-009-circadian-desynchrony.md",
@@ -127,9 +137,10 @@
     "url": "https://www.nasa.gov/wp-content/uploads/2026/03/ochmo-mtb-009-circadian-desynchrony.pdf",
     "date": "2026-03-04",
     "version": "OCHMO-MTB-009 (no revision letter printed)",
-    "license": "US government work (NASA); public domain in the US",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
     "scope": "sleep",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "ntrs-mallis-2005-sleep.md",
@@ -139,9 +150,10 @@
     "url": "https://ntrs.nasa.gov/citations/20050218840",
     "date": "2005-06-01",
     "version": "NTRS record 20050218840 (journal reprint)",
-    "license": "not verified: NTRS lists copyright as Other; short quotes with attribution only",
+    "license": "NTRS determinationType OTHER; no open redistribution licence verified. Short attributed quotations do not establish permission.",
     "scope": "sleep",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "nasa-cardio-risk.md",
@@ -151,9 +163,10 @@
     "url": "https://www.nasa.gov/reference/risk-of-cardiovascular-adaptations/",
     "date": "2024-10-23",
     "version": "Web page, last updated 2025-05-16",
-    "license": "US government work (NASA); public domain in the US",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
     "scope": "heart",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "nasa-std-3001-tb-019-orthostatic-intolerance.md",
@@ -163,9 +176,10 @@
     "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-019-orthostatic-intolerance.pdf",
     "date": "2023-12-01",
     "version": "OCHMO-TB-019 Rev B",
-    "license": "US government work (NASA); public domain in the US",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
     "scope": "heart",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "nasa-cardiac-rhythm-evidence.md",
@@ -175,9 +189,10 @@
     "url": "https://ntrs.nasa.gov/api/citations/20170005625/downloads/20170005625.pdf",
     "date": "2017-06-12",
     "version": "Evidence report, approved for public release 2017-06-12",
-    "license": "US government work (NASA); public domain in the US",
+    "license": "NTRS record: PUBLIC_USE_PERMITTED. This is the recorded rights determination, not a blanket public-domain claim.",
     "scope": "heart",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "nasa-sans-risk.md",
@@ -187,9 +202,10 @@
     "url": "https://www.nasa.gov/reference/risk-of-spaceflight-associated-neuro-ocular-syndrome-sans/",
     "date": "2024-10-23",
     "version": "Web page, last updated 2025-05-16",
-    "license": "US government work (NASA); public domain in the US",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
     "scope": "symptoms",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "nasa-std-3001-mtb-001-sans.md",
@@ -199,9 +215,10 @@
     "url": "https://www.nasa.gov/wp-content/uploads/2024/02/ochmo-mtb-001-sans.pdf?emrc=d4c581",
     "date": "2024-02-21",
     "version": "OCHMO-MTB-001 (no revision letter printed; derived from NASA-STD-3001 Vol 1 Rev C and Vol 2 Rev D)",
-    "license": "US government work (NASA); public domain in the US",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
     "scope": "symptoms",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "nasa-sensorimotor-risk.md",
@@ -211,9 +228,10 @@
     "url": "https://www.nasa.gov/reference/risk-of-altered-sensorimotor-and-vestibular-function/",
     "date": "2024-10-23",
     "version": "Web page, last updated 2025-12-02",
-    "license": "US government work (NASA); public domain in the US",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
     "scope": "symptoms",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "nasa-std-3001-mtb-004-space-adaptation-sickness.md",
@@ -223,9 +241,10 @@
     "url": "https://www.nasa.gov/wp-content/uploads/2025/09/ochmo-mtb-004-space-adaptation-sickness-sas.pdf",
     "date": "2025-09-25",
     "version": "OCHMO-MTB-004 Rev A",
-    "license": "US government work (NASA); public domain in the US",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
     "scope": "symptoms",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "nasa-immune-risk.md",
@@ -235,9 +254,10 @@
     "url": "https://www.nasa.gov/reference/risk-of-altered-immune-system-responses/",
     "date": "2024-10-23",
     "version": "Web page, last updated 2025-05-16",
-    "license": "US government work (NASA); public domain in the US",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
     "scope": "symptoms",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "nasa-std-3001-tb-044-medical-operations.md",
@@ -247,9 +267,10 @@
     "url": "https://www.nasa.gov/wp-content/uploads/2025/08/ochmo-tb-044-medical-operations.pdf?emrc=69583461d2c7e",
     "date": "2025-08-13",
     "version": "OCHMO-TB-044 (no revision letter printed; references NASA-STD-3001 Vol 1 Rev C and Vol 2 Rev E)",
-    "license": "US government work (NASA); public domain in the US",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
     "scope": "symptoms",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "esa-radiation.md",
@@ -259,9 +280,10 @@
     "url": "https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/Proxima/Radiation_and_magnetic_fields",
     "date": "2016-09-09",
     "version": "Web page (Proxima mission)",
-    "license": "not verified: ESA terms and conditions apply; short quotes with attribution only",
+    "license": "No open redistribution licence verified. Short attributed quotations do not establish permission.",
     "scope": "radiation",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "x-nasa-food-nutrition-risk.md",
@@ -273,7 +295,9 @@
     "source_version": "web page, last updated 2025-05-16",
     "license_status": "not_verified",
     "scope": "nutrition",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "x-ochmo-tb-food-nutrition.md",
@@ -282,10 +306,12 @@
     "publisher": "NASA Office of the Chief Health and Medical Officer (OCHMO)",
     "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-013-food-and-nutrition.pdf",
     "publication_date": "2023-12-07",
-    "source_version": "OCHMO-TB-013 Rev D",
+    "source_version": "OCHMO-TB-013: Rev E on cover; quoted pages carry Rev D, 2023-12-07 (mixed source PDF)",
     "license_status": "not_verified",
     "scope": "nutrition",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "x-nasa-nutritional-biochemistry.md",
@@ -297,7 +323,9 @@
     "source_version": "web page, last updated 2026-03-13",
     "license_status": "not_verified",
     "scope": "nutrition",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "x-hrp-fn-risk-strategy.md",
@@ -309,7 +337,9 @@
     "source_version": "slide deck, HRP Research Strategy 2024",
     "license_status": "not_verified",
     "scope": "nutrition",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "x-ochmo-tb-bone-loss.md",
@@ -321,7 +351,9 @@
     "source_version": "OCHMO-MTB-013 Rev D",
     "license_status": "not_verified",
     "scope": "movement",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "x-nasa-fitness-risk.md",
@@ -333,7 +365,9 @@
     "source_version": "web page, last updated 2025-05-16",
     "license_status": "not_verified",
     "scope": "movement",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "x-nasa-astronaut-exercise.md",
@@ -345,7 +379,9 @@
     "source_version": "web page (Science in Space: May 2024), last updated 2025-02-03",
     "license_status": "not_verified",
     "scope": "movement",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "x-ochmo-tb-ionizing-radiation.md",
@@ -357,7 +393,9 @@
     "source_version": "OCHMO-TB-020 Rev E",
     "license_status": "not_verified",
     "scope": "radiation",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "x-nasa-radiation-cancer-risk.md",
@@ -369,7 +407,9 @@
     "source_version": "web page, last updated 2025-05-16",
     "license_status": "not_verified",
     "scope": "radiation",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "x-nasa-space-radiation-element.md",
@@ -381,7 +421,9 @@
     "source_version": "web page, last updated 2024-07-31",
     "license_status": "not_verified",
     "scope": "radiation",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "x-ntrs-comm-bandwidth-medical.md",
@@ -391,9 +433,11 @@
     "url": "https://ntrs.nasa.gov/citations/20200001702",
     "publication_date": "2019-08-01",
     "source_version": "NASA/TM-2019-220335",
-    "license_status": "not_verified",
+    "license_status": "public_use_permitted_per_ntrs",
     "scope": "general",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "license": "NTRS record: PUBLIC_USE_PERMITTED. This is the recorded rights determination, not a blanket public-domain claim.",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   },
   {
     "file": "x-nasa-hera-comm-delay.md",
@@ -405,6 +449,8 @@
     "source_version": "web page, last updated 2023-09-25",
     "license_status": "not_verified",
     "scope": "general",
-    "approval_status": "draft"
+    "approval_status": "draft",
+    "license": "NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.",
+    "review_status": "Source-text comparison recorded in ai/source_verification.json; approval remains draft. This check does not establish clinical validity or complete redistribution clearance."
   }
 ]

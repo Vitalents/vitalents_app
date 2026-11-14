@@ -86,10 +86,12 @@ export const signatureOf = (s: Pick<DecodeSession, 'technical_context' | 'input_
 export function baselineSessions(
   d: { decode_session: DecodeSession[]; personal_reference: PersonalReference[]; information_status: Pick<InformationStatus, 'record_ref' | 'status' | 'created_at_utc'>[] },
   subjectId: string,
+  asOf?: string,
 ): DecodeSession[] {
-  const mine = d.decode_session.filter((s) => s.subject_id === subjectId && !s.is_practice)
+  const mine = d.decode_session.filter((s) => s.subject_id === subjectId && !s.is_practice && (!asOf || (s.end_at_utc !== null && Date.parse(s.end_at_utc) < Date.parse(asOf))))
   const ref = d.personal_reference
-    .filter((p) => p.subject_id === subjectId && p.metric_code === 'decode_correct_count' && (p.source_record_ids?.length ?? 0) > 0)
+    .filter((p) => p.subject_id === subjectId && p.metric_code === 'decode_correct_count' && (p.source_record_ids?.length ?? 0) > 0
+      && (!asOf || (Date.parse(p.created_at_utc) <= Date.parse(asOf) && p.end_date < asOf.slice(0, 10))))
     .sort((a, b) => a.created_at_utc.localeCompare(b.created_at_utc))
     .pop()
   if (ref) {

@@ -5,7 +5,7 @@ Version: Evidence report, approved for public release 2017-06-12
 Date: 2017-06-12
 URL: https://ntrs.nasa.gov/api/citations/20170005625/downloads/20170005625.pdf
 Retrieved: 2026-11-14
-Licence: US government work (NASA); public domain in the US
+Licence: NTRS record: PUBLIC_USE_PERMITTED. This is the recorded rights determination, not a blanket public-domain claim.
 Library ID: lib:nasa-cardiac-rhythm-evidence
 
 ## Verbatim excerpts (NASA, US government work)

@@ -5,7 +5,7 @@ Version: Author manuscript in PMC (PMC4691281)
 Date: 2015-11-01
 URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC4691281/
 Retrieved: 2026-11-14
-Licence: not verified: author manuscript, no open licence stated; short quotes with attribution only
+Licence: No open redistribution licence verified. Short attributed quotations do not establish permission.
 Library ID: lib:basner-2015-cognition
 
 ## Verbatim excerpts (short quotes, non-NASA source)

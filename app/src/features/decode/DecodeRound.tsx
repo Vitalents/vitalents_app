@@ -10,6 +10,7 @@ export function DecodeRound(props: {
   durationMs: number
   label: string
   onEnd: (end: RoundEnd) => void
+  onCheckpoint?: (checkpoint: RoundEnd) => void
 }) {
   const { view, respond, quit, help } = useRound(props)
   const requestHelp = () => {

@@ -5,7 +5,7 @@ Version: Web article, last updated 2024-11-15
 Date: 2021-01-11
 URL: https://www.nasa.gov/humans-in-space/spaceflight-standard-measures-characterizing-how-humans-adapt-in-space/
 Retrieved: 2026-11-14
-Licence: US government work (NASA); public domain in the US
+Licence: NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.
 Library ID: lib:nasa-standard-measures
 
 ## Verbatim excerpts (NASA, US government work)

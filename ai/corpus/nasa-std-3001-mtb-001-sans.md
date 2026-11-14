@@ -5,7 +5,7 @@ Version: OCHMO-MTB-001 (no revision letter printed; derived from NASA-STD-3001 V
 Date: 2024-02-21
 URL: https://www.nasa.gov/wp-content/uploads/2024/02/ochmo-mtb-001-sans.pdf?emrc=d4c581
 Retrieved: 2026-11-14
-Licence: US government work (NASA); public domain in the US
+Licence: NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.
 Library ID: lib:nasa-std-3001-mtb-sans
 
 ## Verbatim excerpts (NASA, US government work)

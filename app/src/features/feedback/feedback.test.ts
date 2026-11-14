@@ -3,7 +3,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // The store writes to IndexedDB first; jsdom has none, so the table write is a no-op here. The in-memory state is what we check.
 vi.mock('../../store/db', () => ({
-  db: { entity: () => ({ bulkPut: async () => undefined }), table: () => ({ toArray: async () => [] }), meta: { get: async () => undefined } },
+  db: {
+    entity: () => ({ bulkPut: async () => undefined }),
+    table: () => ({ toArray: async () => [], bulkPut: async () => undefined }),
+    transaction: async (_mode: string, _tables: unknown, callback: () => Promise<void>) => callback(),
+    meta: { get: async () => undefined },
+  },
 }))
 
 import type { DecodeSession, FeedbackEntry, KnowledgeGap } from '../../data/contract'

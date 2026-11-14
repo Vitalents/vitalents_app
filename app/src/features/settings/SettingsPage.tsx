@@ -7,13 +7,15 @@ import { RoleSwitcher } from '../roles/RoleSwitcher'
 import { SyncSettingsPanel } from '../sharing/SyncSettingsPanel'
 import { OfflineNote } from '../../pwa'
 import { completedCheckTimes, reminderNote, suggestReminderTime } from '../../store/preferences'
+import { useRole } from '../../store/role'
 
 interface ScenarioEntry { code: string; title: string; description: string }
 
 export function SettingsPage() {
-  const { scenario, loadScenario, data } = useStore()
+  const { scenario, loadScenario, data, fixtureUpdateAvailable } = useStore()
+  const role = useRole((s) => s.role)
   const subjectId = data.subject_profile[0]?.subject_profile_id
-  const reminder = subjectId ? reminderNote(suggestReminderTime(completedCheckTimes(data.decode_session, subjectId))) : null
+  const reminder = subjectId && role === 'astronaut' ? reminderNote(suggestReminderTime(completedCheckTimes(data.decode_session, subjectId))) : null
   const [list, setList] = useState<ScenarioEntry[]>([])
   const [pick, setPick] = useState(scenario)
   const [confirm, setConfirm] = useState(false)
@@ -41,6 +43,7 @@ export function SettingsPage() {
 
       <section className="card pad">
         <h2>{S.settings.scenario}</h2>
+        {fixtureUpdateAvailable && <p role="status">{S.fixtureUpdate}</p>}
         <p>{S.settings.current(scenario)}</p>
         <label className="field">
           <span>{S.settings.choose}</span>

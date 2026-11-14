@@ -20,6 +20,7 @@ def test_answer_shape_and_citations(lib):
     c = r["citations"][0]
     assert set(c) >= {"id", "source_id", "title", "url", "page", "excerpt"}
     assert c["source_id"] == "lib:nasa-sleep-risk" and c["excerpt"]
+    assert c["page"] is None  # a Markdown corpus note is not page 1 of its linked source
 
 
 def test_threshold_refusal_never_calls_model(lib):

@@ -1,6 +1,6 @@
 # Ask NASA: the onboard library assistant
 
-A local RAG service. It answers only from the documents in `ai/corpus/`, cites every sentence, and refuses rather than guesses. It runs on the demo laptop with Ollama and never needs the internet. The public site never calls it; it shows recorded answers instead.
+A local RAG service using `gpt-oss:20b` and `nomic-embed-text`. Retrieval and citation checks constrain its answers to `ai/corpus/`, but they do not establish that every generated claim follows from its source. The model runs on the demo laptop with Ollama. Cloudflare Pages builds force reviewed `cached` mode. Local builds can use `auto`/`live` to call the laptop API, including through the authorized Cloudflare Tunnel. Core app behavior does not require the service.
 
 It only explains and summarises. It never sets a status, chooses an action, diagnoses, or names a medication or dose. Every core app function works without it.
 
@@ -21,7 +21,7 @@ Put the files (`.pdf`, `.md`, `.txt`) in `ai/corpus/` and describe each one in `
 [
   {"file": "sleep-risk.pdf", "id": "lib:nasa-sleep-risk", "title": "Risk from Inadequate Sleep and Irregular Schedules",
    "publisher": "NASA Human Research Program", "url": "https://...", "date": "2024-05-01",
-   "license": "public domain", "scope": "sleep", "approval_status": "reviewed"}
+   "license": "source-specific rights must be checked", "scope": "sleep", "approval_status": "draft"}
 ]
 ```
 
@@ -38,7 +38,7 @@ VITA_LLM="YOUR-QWEN-TAG" python ask_nasa.py --eval ../content/eval.json --out ..
 
 `eval.json`: `[{"q": "...", "answerable": true, "expect": "title substring"}, {"q": "...", "answerable": false}]`. The eval prints PASS/FAIL per question and counts of correct source, correct abstention and blocked answers. Tune `VITA_MIN_SCORE` (default 0.55) so answerable questions pass and the unanswerable ones stay refused.
 
-The eval file holds counts but no rates. `python eval_summary.py ../science/out/assistant_eval_*.json` prints, per model, `correct_source_rate` (of answerable questions), `abstention_rate` (of unanswerable questions) and `blocked_rate` (of all questions), each with its count; a rate with no questions behind it is `null`. `python3 scripts/publish_proof.py` (repo root) uses the same module to put these on the Proof screen. Tests: `pytest tests/test_eval_summary.py` (synthetic files, no Ollama).
+The eval checks source-title matching and abstention; it does not test scientific entailment or clinical accuracy and does not store answer text. The eval file holds counts but no rates. `python eval_summary.py ../science/out/assistant_eval_*.json` prints, per model, `correct_source_rate` (of answerable questions), `abstention_rate` (of unanswerable questions) and `blocked_rate` (of all questions), each with its count; a rate with no questions behind it is `null`. `python3 scripts/publish_proof.py` (repo root) uses the same module to put these on the Proof screen. Tests: `pytest tests/test_eval_summary.py` (synthetic files, no Ollama).
 
 ```bash
 curl -s localhost:8008/health
@@ -89,18 +89,23 @@ curl -s localhost:8008/consult -H 'Content-Type: application/json' \
 
 ## Cached mode for the public site
 
-The public build (`VITE_ASSISTANT_MODE=cached`) reads `app/public/data/cached_answers.json`:
+The public Cloudflare build uses cached mode; local `auto` mode also falls back to `app/public/data/cached_answers.json`:
 
 ```json
 [{"question": "...", "response": {"status": "answered", "...": "..."}, "label": "Recorded from the onboard model"}]
 ```
 
-Record it from the running service, check every answer by hand, then commit:
+Recordings are immutable input, not publication approval. `record_answers.py` saves raw output under `ai/recordings/`, then applies `cache_review.json`. A decision binds to the exact entry hash. New or changed entries are blocked in the published fallback until reviewed; retaining a prior answer does not authorize future output for the same question. Commit the raw recording and policy with any published cache.
 
 ```bash
-python record_answers.py                     # default 5 questions -> ../app/public/data/cached_answers.json
+python record_answers.py                     # record raw output; publish only hash-matched reviewed entries
 python record_answers.py --questions my_questions.json
+python record_answers.py --from-recording recordings/2026-11-14-gptoss20b.raw.json  # reproduce committed fallback
 ```
+
+The 14 November source comparison retained the light explanation and the two original refusals, and withdrew the sleep and pulse explanations because of overstatement and claim-to-source gaps. The published refusals explicitly identify this as a publication decision. No replacement scientific prose was attributed to the model. Citation page metadata was corrected separately; Markdown file page numbers are not source PDF pages. `source_verification.json` records the 34-source quote check and nine locator corrections, while all source approval states remain draft. This automated comparison is not human, clinical or legal approval.
+
+The saved evaluation in `science/out/assistant_eval_gptoss.json` is historical: 9/10 source-title matches for answerable questions, 5/5 expected abstentions, 14/15 combined, and 2/15 blocked. Its recorded library version predates these source metadata corrections. A new live evaluation and per-claim review have not been performed in this fix. Rebuild the index after pulling corpus changes.
 
 ## Tests (no Ollama needed)
 
@@ -108,10 +113,10 @@ python record_answers.py --questions my_questions.json
 python -m pytest -q
 ```
 
-The tests use keyword embeddings and scripted fake models. They prove the guardrails in code (threshold refusal, dose refusal, citation filtering, unsupported numbers, `your_data` from context only, injection fencing, and that a model which obeys an injected instruction still gets blocked). They do not prove answer quality with the real models; the eval does that. `VITA_FAKE=1` runs the service with keyword embeddings and a model that always abstains, for wiring tests.
+The tests use keyword embeddings and scripted fake models. They exercise specific guardrail cases (threshold refusal, dose refusal, citation filtering, unsupported numbers, `your_data` from context only, injection fencing, and a scripted injected instruction). Passing these examples does not guarantee future output. Neither these tests nor the source-title evaluation establish scientific accuracy for real-model answers. `VITA_FAKE=1` runs the service with keyword embeddings and a model that always abstains, for wiring tests.
 
 
-## Live on the public site (Cloudflare Tunnel)
+## Optional live API (Cloudflare Tunnel)
 
 On the team Mac, one command runs Ollama (private, localhost only), the assistant on 127.0.0.1:8008 and a Cloudflare Tunnel that publishes the assistant at `https://ask.vitalents.life`:
 
@@ -119,4 +124,4 @@ On the team Mac, one command runs Ollama (private, localhost only), the assistan
 bash scripts/mac/start_assistant.sh        # first run opens a browser once for `cloudflared tunnel login`
 ```
 
-The site (`VITE_ASSISTANT_MODE=auto`) checks `/health`; when the laptop answers, questions go to the onboard model, otherwise the recorded answers are used. Guards in `ask_nasa.py`: allowed origins (`VITA_ALLOWED_ORIGINS`, `VITA_ALLOWED_ORIGIN_REGEX`), per-visitor rate limit (`VITA_RATE_LIMIT` per `VITA_RATE_WINDOW_S`, keyed on `CF-Connecting-IP`), body cap (`VITA_MAX_BODY_BYTES`), question length cap, and the existing private-note rejection and guardrails. Ollama (port 11434) is never published.
+Local `VITE_ASSISTANT_MODE=auto` checks `/health`; when the laptop answers, questions go to the onboard model, otherwise recorded answers are used. Cloudflare Pages builds force `cached`, even if the environment says `auto`. Updating the independently running backend and reviewing live output are separate work before public reconnection. Guards in `ask_nasa.py`: allowed origins (`VITA_ALLOWED_ORIGINS`, `VITA_ALLOWED_ORIGIN_REGEX`), per-visitor rate limit (`VITA_RATE_LIMIT` per `VITA_RATE_WINDOW_S`, keyed on `CF-Connecting-IP`), body cap (`VITA_MAX_BODY_BYTES`), question length cap, and the existing private-note rejection and guardrails. Ollama (port 11434) is never published.

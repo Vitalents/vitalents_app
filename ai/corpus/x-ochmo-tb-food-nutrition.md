@@ -2,7 +2,7 @@
 
 Publisher: NASA Office of the Chief Health and Medical Officer (OCHMO)
 Source: https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-013-food-and-nutrition.pdf
-Version: OCHMO-TB-013 Rev D
+Version: OCHMO-TB-013: Rev E on cover; quoted pages carry Rev D, 2023-12-07 (mixed source PDF)
 Published: 2023-12-07. Retrieved: 2026-11-14.
 Library domain: Nutrition
 

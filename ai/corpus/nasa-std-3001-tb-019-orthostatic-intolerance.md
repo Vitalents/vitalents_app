@@ -5,7 +5,7 @@ Version: OCHMO-TB-019 Rev B
 Date: 2023-12-01
 URL: https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-019-orthostatic-intolerance.pdf
 Retrieved: 2026-11-14
-Licence: US government work (NASA); public domain in the US
+Licence: NASA-origin text; NASA general reuse guidance checked. Source-specific and third-party rights are not fully determined; no blanket redistribution clearance.
 Library ID: lib:nasa-std-3001-tb-orthostatic-intolerance
 
 ## Verbatim excerpts (NASA, US government work)
