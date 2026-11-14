@@ -68,7 +68,8 @@ def scan_json(path):
                 walk(x, f"{where}[{i}]")
         elif isinstance(v, dict):
             for k, x in v.items():
-                if k in ("review_status",):  # editorial notes, not shown to users
+                # editorial notes, and language.json's list of the forbidden terms themselves; neither is shown to users
+                if k in ("review_status", "forbidden_wording"):
                     continue
                 walk(x, f"{where}.{k}")
     walk(json.loads(path.read_text(encoding="utf-8")), "$")

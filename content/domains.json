@@ -1,114 +1,128 @@
 {
-  "content_version": "0.1-draft",
-  "review_status": "TODO(review: Amr replaces this draft with reviewed text and source links)",
+  "content_version": "0.2-draft",
+  "review_status": "TODO(review: still draft. No domain can leave draft until every cited source in content/library.json has a URL, a date and an excerpt (FR-MAP-08 needs a working link), and a person checks each risk title against the current NASA HRP risk list. Text below only restates hazard and risk names from the cited sources plus what the app does; it adds no medical facts.)",
   "domains": [
     {
       "id": "cognition",
-      "name": "Cognition and subjective state",
+      "name": "Cognition and how you feel",
       "region": "head",
       "live": true,
+      "sample": false,
       "indicators": [
         { "id": "decode_correct_count", "name": "Decode correct answers", "unit": "count", "frequency": "daily", "source_entity": "decode_session" },
         { "id": "alertness_self", "name": "Self-rated alertness", "unit": "1-10", "frequency": "daily", "source_entity": "self_report" }
       ],
-      "why_space": "Shows performance and feeling side by side to support the follow-up plan and review requests.",
-      "limits_note": "No psychological diagnosis from a game or a pulse. The self-rating and Decode are different scales and are never combined.",
-      "how_to_measure": "Daily check: rate alertness 1-10, log mood, then play one 90-second Decode round.",
-      "when_to_involve_specialist": "When a follow-up asks for a review, or any time you want one: use Request help.",
+      "why_space": "NASA's Human Research Program names isolation and confinement as one of the five hazards of human spaceflight. Here you see your Decode result and your own alertness rating side by side, so you can follow your plan and decide when to request a review.",
+      "limits_note": "A 90-second task and a self-rating cannot tell you why you feel the way you do, and they are not a psychological assessment. They use different scales and are never combined into one number.",
+      "how_to_measure": "Once a day: rate your alertness from 1 to 10, note your mood, then play one 90-second Decode round.",
+      "when_to_involve_specialist": "Whenever a follow-up asks for a review, or any time you want one. Use Request help.",
       "hazard": "Isolation and confinement",
       "risk": "Risk of Behavioral Changes and Psychiatric Disorders",
-      "sources": ["lib:cognition-battery", "lib:nasa-behavioral-risk"]
+      "sources": ["lib:nasa-hrp-hazards", "lib:nasa-behavioral-risk", "lib:cognition-battery"],
+      "review_status": "TODO(review: check the risk title against the current NASA HRP risk list; it may now read 'Risk of Adverse Cognitive or Behavioral Conditions and Psychiatric Disorders'. lib:cognition-battery has no URL yet.)"
     },
     {
       "id": "sleep",
       "name": "Sleep and daily rhythm",
       "region": "sleep",
       "live": true,
+      "sample": false,
       "indicators": [
         { "id": "sleep_duration", "name": "Recorded sleep", "unit": "h", "frequency": "daily", "source_entity": "sleep_record" }
       ],
-      "why_space": "Separates recorded sleep from the rest opportunity, follows the plan and reviews schedule conflicts and alternatives.",
-      "limits_note": "Recorded sleep is a wrist estimate. Less sleep and lower performance happening together is not proof of a cause.",
-      "how_to_measure": "Imported each morning from the wrist sensor, with its source.",
-      "when_to_involve_specialist": "When short sleep continues despite plan steps, or you want help with the schedule.",
+      "why_space": "NASA's Human Research Program lists inadequate sleep and irregular schedules as a risk of human spaceflight. This card keeps your recorded sleep apart from the rest opportunity in your schedule, so you can follow your plan and review schedule conflicts and alternatives.",
+      "limits_note": "Recorded sleep is an estimate from your wrist sensor. Shorter sleep and a lower Decode result on the same days are two observations that happen together, not evidence that one causes the other.",
+      "how_to_measure": "Imported each morning from your wrist sensor, with its source. If last night's reading is missing, you can check the sensor or add the reading by hand.",
+      "when_to_involve_specialist": "When short recorded sleep continues after your plan steps, or when you want help with your schedule. Use Request help.",
       "hazard": "Hostile / closed environments",
       "risk": "Risk from Inadequate Sleep and Irregular Schedules",
-      "sources": ["lib:nasa-sleep-risk", "lib:nasa-standard-measures"]
+      "sources": ["lib:nasa-sleep-risk", "lib:nasa-hrp-hazards", "lib:nasa-standard-measures"],
+      "review_status": "TODO(review: the hazard mapping (hostile / closed environments) needs a person to confirm it against lib:nasa-hrp-hazards; sources have no URL yet.)"
     },
     {
       "id": "heart",
       "name": "Heart and circulation",
       "region": "chest",
       "live": true,
+      "sample": false,
       "indicators": [
         { "id": "hr_resting_bpm", "name": "Resting pulse", "unit": "bpm", "frequency": "daily", "source_entity": "measurement" }
       ],
-      "why_space": "Follows the measurement plan, shows trends and requests a review when needed.",
-      "limits_note": "Pulse alone does not assess heart health.",
-      "how_to_measure": "Seated, at rest, with the wrist sensor in firm contact.",
-      "when_to_involve_specialist": "When the plan's review condition is met, or with any symptom.",
+      "why_space": "Gravity fields are one of the five hazards of human spaceflight named by NASA, and NASA's list of spaceflight risks includes cardiovascular adaptations. Here you follow your resting pulse against your own reference and can request a review whenever you need one.",
+      "limits_note": "Resting pulse alone does not assess your heart health. A change from your reference is an observation, not an explanation.",
+      "how_to_measure": "Once a day, seated and at rest, with the wrist sensor in firm contact.",
+      "when_to_involve_specialist": "When your plan's review condition is met, or whenever you notice a symptom. Use Report something or Request help.",
       "hazard": "Gravity fields",
       "risk": "Cardiovascular Adaptations",
-      "sources": ["lib:nasa-hrp-risks"]
+      "sources": ["lib:nasa-hrp-hazards", "lib:nasa-hrp-risks", "lib:nasa-standard-measures"],
+      "review_status": "TODO(review: the measuring conditions (seated, at rest, firm contact) need a source; lib:nasa-standard-measures is the closest existing id. Check the risk title against the HRP risk list.)"
     },
     {
       "id": "symptoms",
       "name": "Symptoms and temperature",
       "region": "arms",
       "live": true,
+      "sample": false,
       "indicators": [
         { "id": "symptom", "name": "Reported symptoms", "unit": null, "frequency": "as_needed", "source_entity": "self_report" },
         { "id": "temperature", "name": "Temperature", "unit": "°C", "frequency": "as_needed", "source_entity": "measurement" }
       ],
-      "why_space": "Keeps the sequence of symptoms, completes missing information and supports specialist follow-up.",
-      "limits_note": "Temperature is not an immunity score. Skin temperature is not core body temperature.",
-      "how_to_measure": "Use Report something at any time; no medical category needed.",
-      "when_to_involve_specialist": "Any symptom can be sent for review. The urgent path never waits for a game result.",
+      "why_space": "NASA's list of spaceflight risks includes altered immune system responses. This card keeps your reports in the order you made them, helps you fill in missing information and supports follow-up with the medical team.",
+      "limits_note": "Temperature is not an immunity score, and skin temperature is not core body temperature. A report is your own description; the medical team decides what it means.",
+      "how_to_measure": "Use Report something at any time. You do not need to choose a medical category.",
+      "when_to_involve_specialist": "You can send any symptom for review. This path never waits for a Decode result.",
       "hazard": "Hostile / closed environments",
       "risk": "Altered Immune System Responses",
-      "sources": ["lib:nasa-hrp-risks", "lib:nasa-medops"]
+      "sources": ["lib:nasa-hrp-hazards", "lib:nasa-hrp-risks", "lib:nasa-medops"],
+      "review_status": "TODO(review: 'skin temperature is not core body temperature' needs a measurement source (TODO(source)); check the risk title against the HRP risk list.)"
     },
     {
       "id": "nutrition",
       "name": "Nutrition and hydration",
       "region": "stomach",
       "live": false,
+      "sample": true,
       "indicators": [],
-      "why_space": "Follows the specialist's targets and avoids duplicate entry.",
-      "limits_note": "A consumption log does not prove deficiency or dehydration.",
-      "how_to_measure": "Sample card in this demo.",
+      "why_space": "Sample card. Distance from Earth is one of the five hazards of human spaceflight named by NASA, and NASA's list of spaceflight risks includes inadequate food and nutrition. In a full version, this card would follow the targets your nutrition specialist sets, without asking you to enter anything twice.",
+      "limits_note": "A food and drink log does not show a deficiency or dehydration.",
+      "how_to_measure": "Sample card: nothing is measured here in this demo.",
       "when_to_involve_specialist": "As set by the mission's nutrition plan.",
       "hazard": "Distance from Earth",
       "risk": "Inadequate Food and Nutrition",
-      "sources": ["lib:nasa-hrp-risks"]
+      "sources": ["lib:nasa-hrp-hazards", "lib:nasa-hrp-risks"],
+      "review_status": "TODO(review: sample card; no measurement in this demo. Check the risk title against the HRP risk list.)"
     },
     {
       "id": "movement",
       "name": "Movement and exercise",
       "region": "legs",
       "live": false,
+      "sample": true,
       "indicators": [],
-      "why_space": "Tracks execution of the exercise plan and reasons for missed sessions.",
-      "limits_note": "Completing exercise does not measure bone density. Step count is not evidence of bone health.",
-      "how_to_measure": "Sample card in this demo.",
-      "when_to_involve_specialist": "Pain during exercise, or sessions repeatedly missed.",
+      "why_space": "Sample card. Gravity fields are one of the five hazards of human spaceflight named by NASA, and NASA's list of spaceflight risks includes reduced fitness and bone changes. In a full version, this card would follow your exercise plan and the reasons for any missed session.",
+      "limits_note": "Completing an exercise session does not measure bone density, and a step count is not evidence about your bones.",
+      "how_to_measure": "Sample card: nothing is measured here in this demo.",
+      "when_to_involve_specialist": "If you have pain during exercise, or when sessions are missed again and again.",
       "hazard": "Gravity fields",
       "risk": "Reduced Fitness; Spaceflight-Induced Bone Changes",
-      "sources": ["lib:nasa-hrp-risks"]
+      "sources": ["lib:nasa-hrp-hazards", "lib:nasa-hrp-risks"],
+      "review_status": "TODO(review: sample card; the 'pain during exercise' trigger needs a medical owner to confirm it. Check both risk titles against the HRP risk list.)"
     },
     {
       "id": "radiation",
       "name": "Radiation exposure",
       "region": "aura",
       "live": false,
+      "sample": true,
       "indicators": [],
-      "why_space": "Exposure log and review by an approved protocol.",
-      "limits_note": "Solar activity alone does not give a personal dose.",
-      "how_to_measure": "Sample card in this demo.",
+      "why_space": "Sample card. Space radiation is one of the five hazards of human spaceflight named by NASA. In a full version, this card would keep your exposure log and follow review under an approved exposure protocol.",
+      "limits_note": "Solar activity alone does not give your personal dose.",
+      "how_to_measure": "Sample card: nothing is measured here in this demo.",
       "when_to_involve_specialist": "As set by the approved exposure protocol.",
       "hazard": "Space radiation",
       "risk": "Radiation-Induced Cancers",
-      "sources": ["lib:nasa-hrp-hazards", "lib:esa-radiation"]
+      "sources": ["lib:nasa-hrp-hazards", "lib:esa-radiation"],
+      "review_status": "TODO(review: sample card. The risk title needs checking against the HRP risk list (it may read 'Risk of Radiation Carcinogenesis'); lib:esa-radiation has no URL yet.)"
     }
   ]
 }

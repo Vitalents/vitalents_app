@@ -1,0 +1,52 @@
+{
+  "content_version": "1.0-draft",
+  "review_status": "TODO(review: Amr checks the wording. followups.* uses the keys of app/src/features/followups/strings.ts (T) and OUTCOME_TEXT in records.ts. {value} is filled by the app; no other placeholder is allowed.)",
+  "followups": {
+    "outcome": "Result",
+    "outcome_text": {
+      "within": "Your result was within your reference after this action. This does not show that the action caused it.",
+      "outside": "Your result was outside your reference after this action. This does not show anything about the action.",
+      "no_reading": "No reading after this action yet. The follow-up stays open until a result is recorded."
+    },
+    "waitingNote": "Stays open until a later reading is recorded.",
+    "rated": "You rated this step: {value}. Ratings never change your reference or the rules."
+  },
+  "data_status": {
+    "valid": "Valid",
+    "limited": "Limited quality",
+    "stale": "Out of date",
+    "not_comparable": "Not comparable",
+    "incomplete": "Incomplete",
+    "no_reading": "No reading"
+  },
+  "source_type_label": {
+    "nasa": "NASA source",
+    "research": "Published research",
+    "team_rule": "Team rule · needs medical review"
+  },
+  "preferred_wording": [
+    { "use": "observation, change from your reference" },
+    { "use": "No open follow-up · No reading" },
+    { "use": "rest opportunity" },
+    { "use": "two observations that happen together" },
+    { "use": "needs independent validation" },
+    { "use": "request a review" },
+    { "use": "a pattern in your record, not a cause" }
+  ],
+  "forbidden_wording": [
+    "healthy",
+    "all clear",
+    "normal (as a status)",
+    "diagnosis / diagnose",
+    "readiness score",
+    "ready / not ready",
+    "fit for duty",
+    "fatigue detected",
+    "proves",
+    "caused by",
+    "worked (about an action)",
+    "best treatment",
+    "validated (about our task)",
+    "will improve your sleep"
+  ]
+}
