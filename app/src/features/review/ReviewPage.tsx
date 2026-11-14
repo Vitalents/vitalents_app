@@ -1,6 +1,7 @@
 // Today's review (UI-05): Recorded / Changed / Missing / Next step, then other open follow-ups.
 // FR-REV-01/03/04/05: every finding and step explains itself; no score or verdict anywhere.
 // The next step is the focal card; the page header links straight to it.
+import { AlertRating } from '../feedback/AlertRating'
 import { Link } from 'react-router-dom'
 import { describeRecord, reasonText, sourceTitle } from '../../content/format'
 import { S } from '../../content/strings'
@@ -58,6 +59,7 @@ export function ReviewPage() {
                 <p>{f.explanation}</p>
                 <p className="muted small">{f.limitations}</p>
                 <Why finding={f} repeatText={false} />
+                <AlertRating finding={f} />
               </div>
             ))
           )}

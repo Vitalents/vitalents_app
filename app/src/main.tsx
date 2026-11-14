@@ -20,6 +20,7 @@ const CheckPage = pick(() => import('./features/check/CheckPage'), 'CheckPage')
 const ReviewPage = pick(() => import('./features/review/ReviewPage'), 'ReviewPage')
 const RecordPage = pick(() => import('./features/record/RecordPage'), 'RecordPage')
 const FollowUpList = pick(() => import('./features/followups/FollowUpList'), 'FollowUpList')
+const TriedActionsLog = pick(() => import('./features/feedback/TriedActionsLog'), 'TriedActionsLog')
 const RestWindowPage = pick(() => import('./features/schedule/RestWindowPage'), 'RestWindowPage')
 const DomainPage = pick(() => import('./features/domain/DomainPage'), 'DomainPage')
 const SettingsPage = pick(() => import('./features/settings/SettingsPage'), 'SettingsPage')
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
       { path: 'check', element: page(<CheckPage />) },
       { path: 'review', element: page(<ReviewPage />) },
       { path: 'record', element: page(<RecordPage />) },
-      { path: 'plan', element: page(<FollowUpList scheduleHref="/rest-window" />) },
+      { path: 'plan', element: page(<><FollowUpList scheduleHref="/rest-window" /><div className="page"><TriedActionsLog /></div></>) },
       { path: 'rest-window', element: page(<RestWindowPage backHref="/plan" />) },
       { path: 'share', element: <WithSubject C={SharePage} /> },
       { path: 'medical', element: <WithSubject C={MedicalView} /> },
