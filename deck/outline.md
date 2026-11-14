@@ -87,7 +87,7 @@ Screenshots to take from the live app (Amr): `map-day27.png`, `card-cognition-no
 - Data-status engine: [88/88] tests pass; agrees with the app on [30/30] sleep and heart-rate records in the Fahim scenario.
 - Assistant: [x/15 from science/out/assistant_eval.json] correct source or correct refusal; [n] injected-instruction test blocked.
 - Scenarios: [n/5 from validation.json] S1–S5 show their expected outcome.
-- **Where we lose:** all data is simulated; Decode is not validated; reference rules are demonstration values; any health effect needs an independent study.
+- **Where we lose:** all data is simulated; our Decode version needs independent validation; reference rules are demonstration values; any health effect needs an independent study.
 
 **Visual:** Simple table of the numbers above, each with its count.
 
