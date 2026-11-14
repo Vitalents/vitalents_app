@@ -1,0 +1,61 @@
+/* Mission profile (FR-SH-04). Read-only facts; schedule kinds use outline style and words, never
+   follow-up or data colours, so a schedule item never looks like a health state. */
+.profile .pf-sim { margin-bottom: 1.25rem; max-width: 72ch; }
+.profile .pf-sim p { margin: 0 0 0.25rem; }
+
+.pf-grid {
+  display: grid; gap: 1rem; align-items: start;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  grid-template-areas: 'facts schedule' 'facts plan';
+}
+.pf-facts { grid-area: facts; }
+.pf-schedule { grid-area: schedule; }
+.pf-plan { grid-area: plan; }
+
+.pf-day { display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; margin: 0.1rem 0 0.9rem; }
+.pf-day-n { font-family: var(--font-head); font-size: 2.25rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+.pf-sub { margin-top: 1.4rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+.pf-dl { margin-top: 0; font-size: 0.92rem; gap: 0.45rem; }
+.pf-dl div { grid-template-columns: 9.5rem minmax(0, 1fr); }
+.pf-dl dd { overflow-wrap: anywhere; }
+.pf-dl code { font-size: 0.85em; color: var(--ink); }
+
+.pf-list { list-style: none; margin: 0.75rem 0 0; padding: 0; display: grid; gap: 0.5rem; }
+.pf-item {
+  display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 0.25rem 1rem; align-items: start;
+  padding: 0.7rem 0.85rem; border: 1px solid var(--line); border-left-width: 4px; border-radius: var(--radius-sm);
+}
+.pf-item p { margin: 0; }
+.pf-fixed { border-left-color: var(--ink); }
+.pf-movable { border-left-style: dashed; border-left-color: var(--deep); }
+.pf-rest { background: var(--tint-soft); border-left-color: var(--deep); }
+.pf-time { font-weight: 600; white-space: nowrap; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.2rem; }
+.pf-utc { font-weight: 500; color: var(--muted); font-size: 0.8rem; }
+.pf-next { flex-basis: 100%; font-weight: 500; font-size: 0.78rem; color: var(--muted); }
+.pf-label { font-weight: 600; }
+.pf-meta { display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; align-items: center; font-size: 0.85rem; margin-top: 0.25rem !important; }
+.pf-tag {
+  display: inline-flex; align-items: center; padding: 0.05rem 0.45rem; border-radius: 4px;
+  font-size: 0.75rem; font-weight: 600; color: var(--ink); border: 1px solid var(--ink); line-height: 1.5;
+}
+.pf-tag-movable { border-style: dashed; border-color: var(--deep); color: var(--deep); }
+.pf-tag-rest { border-color: transparent; background: var(--tint); }
+
+.pf-plan-list { list-style: none; margin: 0.6rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem 1.5rem; }
+.pf-plan-list > li { display: grid; gap: 0.25rem; align-content: start; padding-top: 0.6rem; border-top: 1px solid var(--line); }
+.pf-plan-domain { font-weight: 600; }
+.pf-ind { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.15rem; font-size: 0.9rem; }
+.pf-ind li { display: flex; justify-content: space-between; gap: 0.75rem; }
+.pf-freq { color: var(--muted); white-space: nowrap; }
+.pf-source { margin: 1rem 0 0; }
+
+@media (max-width: 960px) {
+  .pf-grid { grid-template-columns: 1fr; grid-template-areas: 'facts' 'schedule' 'plan'; }
+}
+@media (max-width: 560px) {
+  .pf-plan-list { grid-template-columns: 1fr; }
+  .pf-item { grid-template-columns: 1fr; }
+  .pf-next { flex-basis: auto; margin-left: 0.3rem; }
+  .pf-dl div { grid-template-columns: 1fr; gap: 0; }
+  .pf-dl dt { font-size: 0.8rem; }
+}
