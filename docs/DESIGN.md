@@ -56,7 +56,7 @@ Contrast: all text ≥ 4.5:1 on its background (WCAG AA). Colour never carries m
 | Component | Spec |
 |---|---|
 | `FollowChip` | Pill, follow-up status: symbol + text. ● quiet "No open follow-up", ◐ watch "Watching", ◑ watch "Action open", ▲ review "Review requested", ▲ review "Under specialist review", ✓ quiet "Closed". |
-| `DataBadge` | Small square-cornered tag, data status: "Valid", "Limited quality", "Stale", "Not comparable", "Incomplete", "No reading". Valid is plain text in `--muted`; problems use the hatched `--data` background. Never green. |
+| `DataBadge` | Small square-cornered tag, data status: "Valid", "Limited quality", "Out of date" (status `stale`), "Not comparable", "Incomplete", "No reading". Labels come from `content/language.json` `data_status`. Valid is plain text in `--muted`; problems use the hatched `--data` background. Never green. |
 | `SyncLabel` | Inline text with a dot: "Saved on device", "Waiting to send", "Sent", "Delivered", "Reviewed", each with its time. |
 | `Card` | `--card`, 1 px `--line`, 12 px radius, 16–24 px padding. Title in Instrument Sans 600, 1.125 rem. |
 | `Why` | `<details>` disclosure labelled "Why?"; inside: a compact table of supporting records (date, what, value, data status), then rule id + version, explanation, limitations in `--muted`. |
