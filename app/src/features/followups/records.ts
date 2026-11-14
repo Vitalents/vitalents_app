@@ -84,6 +84,57 @@ export function closeFollowUp(fu: FollowUp, a: Action, reason: string, role: Rol
   return { ...fu, followup_status: 'closed', closing_reason: reason.trim(), closed_at_utc: utc(now) }
 }
 
+// ---------------------------------------------------------------------------------------------------------------
+// FR-FU-04: on or after the follow-up date, the step's owner says what happened.
+// The answer is stored with what the contract has: the action's execution_status (+ rejection_reason for the note when
+// the step was not done) and the follow-up's outcome_note ("later observation; not automatic proof of effect"),
+// which ends with the data IDs of the readings shown at the time.
+// TODO(question: Ahmed/Shaimaa — follow_up has no field for the reviewed data IDs; add outcome_record_ids to the
+// contract? Until then they are the last line of outcome_note, "Data: id, id" or "Data: none".)
+
+export type ReviewAnswer = 'done' | 'not_done' | 'unable'
+export const DATA_PREFIX = '\nData: '
+
+export const REVIEW_TEXT = {
+  not_done: 'Not done by the follow-up date.',
+  unable: 'You could not do this step.',
+} as const
+
+/** The question shows when the follow-up date has come, the follow-up is open and the step is still under way. */
+export function reviewDue(a: Action, fu: FollowUp | null, now: Date | string): boolean {
+  if (!fu || fu.followup_status === 'closed' || !fu.next_review_due_utc) return false
+  if (!['accepted', 'in_progress'].includes(a.execution_status)) return false
+  return Date.parse(fu.next_review_due_utc) <= new Date(now).getTime()
+}
+
+/** Splits a stored outcome note into the text shown and the data IDs behind it. */
+export function splitOutcome(note: string): { text: string; ids: string[] } {
+  const i = note.lastIndexOf(DATA_PREFIX)
+  if (i < 0) return { text: note, ids: [] }
+  const rest = note.slice(i + DATA_PREFIX.length).trim()
+  return { text: note.slice(0, i), ids: rest === 'none' ? [] : rest.split(/,\s*/) }
+}
+
+/**
+ * Stores the answer. Never closes the follow-up: only its owner closes it (closeFollowUp).
+ * done → completed when a later reading exists, else awaiting_impact_review (D-7); not_done → deferred; unable → unable.
+ */
+export function answerReview(
+  a: Action, fu: FollowUp, answer: ReviewAnswer, note: string, dataIds: string[], later: LaterReading, role: Role, now: Date | string,
+): { action: Action; follow_up: FollowUp } {
+  mustOwn(a, role)
+  if (!reviewDue(a, fu, now)) throw new NotPermitted('The follow-up date has not come yet.')
+  const n = note.trim()
+  const ids = DATA_PREFIX + (dataIds.length ? dataIds.join(', ') : 'none')
+  if (answer === 'done') {
+    const action: Action = { ...a, execution_status: later ? 'completed' : 'awaiting_impact_review', completed_at_utc: utc(now) }
+    const text = later ? OUTCOME_TEXT[later.position] : OUTCOME_TEXT.no_reading
+    return { action, follow_up: { ...fu, outcome_note: `${text}${n ? ` You noted: “${n}”` : ''}${ids}` } }
+  }
+  const action: Action = { ...a, execution_status: answer === 'not_done' ? 'deferred' : 'unable', rejection_reason: n || null }
+  return { action, follow_up: { ...fu, outcome_note: `${REVIEW_TEXT[answer]}${ids}` } }
+}
+
 export function continueFollowUp(fu: FollowUp, role: Role, nextDue: string): FollowUp {
   if (fu.assigned_role !== role) throw new NotPermitted(`Only the ${fu.assigned_role} role continues this follow-up.`)
   return { ...fu, followup_status: 'watching', next_review_due_utc: utc(nextDue) }

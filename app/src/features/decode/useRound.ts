@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   HIDDEN_LIMIT_MS, NEXT_ITEM_DELAY_MS, type DecodeKey, type RawResponse, type SessionState, type SymbolId,
 } from '../../engine/decodeSession'
+import { deviceClassFrom, type DeviceClass, type Span } from '../../engine/decodeValidity'
 
 export const HELP_EVENT = 'vitalents:request-help'
 const LATE_GRACE_MS = 400
@@ -16,6 +17,19 @@ export interface RoundEnd {
   startedAt: Date // UTC moment the window opened
   elapsedMs: number
   inputMethod: 'keyboard' | 'touch' | 'other'
+  hidden: Span[] // monotonic spans with the page hidden (never counted as pauses)
+  deviceClass: DeviceClass | null
+}
+
+/** Device class as the browser reports it (SRS 7.3 device_change). Null when the browser cannot tell. */
+export function currentDeviceClass(): DeviceClass | null {
+  try {
+    const coarse = window.matchMedia('(pointer: coarse)').matches
+    const shortSidePx = Math.min(window.screen.width, window.screen.height)
+    return shortSidePx > 0 ? deviceClassFrom({ coarsePointer: coarse, shortSidePx }) : null
+  } catch {
+    return null
+  }
 }
 
 export interface RoundView {
@@ -49,6 +63,7 @@ export function useRound(opts: {
     finalised: false,
     hiddenTotal: 0,
     hiddenSince: null as number | null,
+    hidden: [] as Span[],
     method: null as 'keyboard' | 'touch' | 'other' | null,
     timers: [] as number[],
     raf: 0,
@@ -63,6 +78,7 @@ export function useRound(opts: {
     st.finalised = true
     st.timers.forEach((t) => window.clearTimeout(t))
     cancelAnimationFrame(st.raf)
+    if (st.hiddenSince !== null) st.hidden.push([st.hiddenSince, now()]) // still hidden when the round ended
     // the trial still open when the round ended stays in the log with no response (missed / interrupted)
     if (!st.answered) {
       const sym = sequence[st.trial - 1]
@@ -71,6 +87,7 @@ export function useRound(opts: {
     onEnd.current({
       state, raw: st.raw, interruptionReasons: reasons, cutMs: cut, startedAt: st.startedAt,
       elapsedMs: cut ?? durationMs, inputMethod: st.method ?? 'other',
+      hidden: st.hidden, deviceClass: currentDeviceClass(),
     })
   }, [durationMs, keyMap, sequence])
 
@@ -121,7 +138,7 @@ export function useRound(opts: {
     const st = s.current
     Object.assign(st, {
       t0: performance.now(), startedAt: new Date(), trial: 1, stimulus: 0, answered: false, raw: [],
-      ended: false, finalised: false, hiddenTotal: 0, hiddenSince: null, method: null, timers: [],
+      ended: false, finalised: false, hiddenTotal: 0, hiddenSince: null, hidden: [], method: null, timers: [],
     })
     setView({ symbol: sequence[0] ?? null, pulse: 0, waiting: false, progress: 0, ended: false })
 
@@ -155,7 +172,9 @@ export function useRound(opts: {
         }, left))
       } else if (st.hiddenSince !== null) {
         const since = st.hiddenSince
-        st.hiddenTotal += now() - since
+        const back = now()
+        st.hidden.push([since, back])
+        st.hiddenTotal += back - since
         st.hiddenSince = null
         if (st.hiddenTotal > HIDDEN_LIMIT_MS) end('interrupted', ['interrupted_page_hidden'], since)
       }

@@ -13,12 +13,14 @@ import { FollowUpList } from './FollowUpList'
 
 const VIEWS = [
   ['followups', 'Plan & follow-ups'],
+  ['due', 'Follow-up date reached'],
   ['rest', 'Rest window'],
   ['rest-fixed', 'Rest window: no alternative'],
   ['planner', 'Planner view'],
 ] as const
 type View = (typeof VIEWS)[number][0]
 const NOW = () => '2026-11-14T08:30:00Z' // mission day 27 morning (simulated clock)
+const LATER = () => '2026-11-15T08:00:00Z' // day 28, after the 07:00 follow-up date (FR-FU-04)
 
 function Dev() {
   const { ready, error, init, loadScenario, data } = useStore()
@@ -45,6 +47,7 @@ function Dev() {
         {!ready ? <p>Loading…</p> : error ? <p role="alert">{error}</p> : (
           <>
             {view === 'followups' && <FollowUpList scheduleHref="#rest" now={NOW} />}
+            {view === 'due' && <FollowUpList scheduleHref="#rest" now={LATER} />}
             {view === 'rest' && <RestWindowPage now={NOW} backHref="#followups" />}
             {view === 'rest-fixed' && <RestWindowPage now={NOW} schedule={fixed} backHref="#followups" />}
             {view === 'planner' && <FollowUpList role="planner" now={NOW} />}

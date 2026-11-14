@@ -3,6 +3,9 @@
 // sets the information status, and builds contract records.
 import type { DecodeResponseEvent, DecodeSession, InformationStatus } from '../data/contract'
 import { scoreDecode, type DecodeScore, type ResponseState, type TrialEvent } from './decode'
+import {
+  deviceChange, encodeContext, findPauses, validityReasons, type DeviceClass, type Pause, type Span,
+} from './decodeValidity'
 
 export const TASK_VERSION = 'decode-1.0'
 export const APP_VERSION = 'demo-0.1'
@@ -131,6 +134,12 @@ export interface BuildInput {
   elapsedMs: number // monotonic ms from window open to the cut (ignored for completed rounds)
   inputMethod: 'keyboard' | 'touch' | 'other'
   focusStates?: ('foreground' | 'background')[]
+  /** Device class of this round (SRS 7.3 device_change); null when it cannot be told. */
+  deviceClass?: DeviceClass | null
+  /** Spans (monotonic ms) with the page hidden; hidden time is never counted as a pause. */
+  hidden?: Span[]
+  /** The astronaut's reference sessions (baselineSessions); a different device class or input method → device_change. */
+  baseline?: DecodeSession[]
   uuid?: () => string
 }
 
@@ -140,6 +149,7 @@ export interface BuiltRecords {
   info: InformationStatus
   score: DecodeScore
   quality: Quality
+  pauses: Pause[]
 }
 
 const realmOf = (id: string) => id.split(':', 1)[0]
@@ -150,13 +160,19 @@ export function buildRoundRecords(i: BuildInput): BuiltRecords {
   const realm = realmOf(i.subjectId)
   const now = new Date().toISOString()
   const { score, states } = finaliseRound(i.raw, i.plannedMs, i.state, i.interruptedAtMs)
-  const quality = sessionQuality(score, i.state, i.interruptionReasons)
-  const sessionId = `${realm}:decode_session:${uuid()}`
-  const infoId = `${realm}:information_status:${uuid()}`
-  const inSimulation = realm === 'sim'
   // A completed round lasted exactly the planned window; other rounds the measured time to the cut.
   // end_at_utc is derived from start + elapsed so the two clocks always agree (status-0.3.0 checks this).
   const elapsed = i.state === 'completed' ? i.plannedMs : Math.max(0, Math.round(i.elapsedMs))
+  // SRS 7.3: pauses and device change are added as reasons; they never end the round or change the score.
+  const pauses = findPauses(i.raw, i.state === 'completed' ? i.plannedMs : (i.interruptedAtMs ?? elapsed), i.hidden ?? [])
+  const deviceChanged = deviceChange({ device_class: i.deviceClass ?? null, input_method: i.inputMethod }, i.baseline ?? [])
+  const extra = validityReasons({ pauses, deviceChanged })
+  const interruptionReasons = [...new Set([...i.interruptionReasons, ...extra])]
+  const quality = sessionQuality(score, i.state, interruptionReasons)
+  const hiddenMs = (i.hidden ?? []).reduce((n, [f, t]) => n + Math.max(0, t - f), 0)
+  const sessionId = `${realm}:decode_session:${uuid()}`
+  const infoId = `${realm}:information_status:${uuid()}`
+  const inSimulation = realm === 'sim'
   const endedAt = new Date(i.startedAt.getTime() + elapsed)
   const session: DecodeSession = {
     decode_session_id: sessionId,
@@ -173,9 +189,10 @@ export function buildRoundRecords(i: BuildInput): BuiltRecords {
     elapsed_monotonic_ms: elapsed,
     is_practice: i.isPractice,
     session_state: i.state,
-    interruption_reasons: i.interruptionReasons,
+    interruption_reasons: interruptionReasons,
     input_method: i.inputMethod,
     app_version: APP_VERSION,
+    technical_context: encodeContext({ device_class: i.deviceClass ?? null, pauses, hidden_ms: Math.round(hiddenMs * 10) / 10 }),
     accepted_responses: score.accepted_responses,
     correct_count: score.correct_count,
     accuracy_percent: score.accuracy_percent,
@@ -219,9 +236,9 @@ export function buildRoundRecords(i: BuildInput): BuiltRecords {
     source_known: true,
     unit_verified: true,
     measurement_time_known: true,
-    method_consistent: true,
+    method_consistent: !deviceChanged,
     reference_eligible: quality.status === 'valid' && !i.isPractice,
     ruleset_version: 'status-1.0',
   }
-  return { session, events, info, score, quality }
+  return { session, events, info, score, quality, pauses }
 }
