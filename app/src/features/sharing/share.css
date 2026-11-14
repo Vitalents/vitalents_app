@@ -187,3 +187,10 @@
   .sh-dev-side { position: static; }
   .sh-dev-title { display: none; }
 }
+
+/* planner: an operational request and its delivery */
+.sh-req { gap: 0.6rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--line); }
+.sh-req:last-child { border-bottom: 0; padding-bottom: 0; }
+.sh-req-delivery { display: grid; gap: 0.5rem; justify-items: start; }
+.sh-req-delivery .sh-track { width: 100%; }
+.sh-earlier-to { color: var(--ink); font-weight: 600; }

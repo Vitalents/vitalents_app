@@ -52,6 +52,7 @@ export function buildPackage(args: {
   summaryText: string
   version: number
   now: string
+  recipientRole?: SharePackage['recipient_role']
 }): SharePackage {
   return {
     share_package_id: args.packageId,
@@ -60,7 +61,7 @@ export function buildPackage(args: {
     data_origin: 'application_generated',
     is_simulated: isSim(args.subjectId),
     created_at_utc: args.now,
-    recipient_role: 'medical',
+    recipient_role: args.recipientRole ?? 'medical',
     previewed_record_ids: args.previewedRecordIds,
     excluded_field_codes: args.excludedFieldCodes,
     summary_text: args.summaryText,

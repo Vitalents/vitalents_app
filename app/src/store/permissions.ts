@@ -43,10 +43,14 @@ export function packageStatus(events: SyncEvent[], packageId: string): SyncEvent
   return best < 0 ? null : SYNC_ORDER[best]
 }
 
-/** Packages that have reached the medical team (delivered or reviewed). */
-export function deliveredPackages(data: Pick<Data, 'share_package' | 'sync_event'>, subjectId: string): SharePackage[] {
+/** Packages that have reached their recipient (delivered or reviewed). Medical by default. */
+export function deliveredPackages(
+  data: Pick<Data, 'share_package' | 'sync_event'>,
+  subjectId: string,
+  recipient: SharePackage['recipient_role'] = 'medical',
+): SharePackage[] {
   return data.share_package.filter((p) => {
-    if (p.subject_id !== subjectId || p.recipient_role !== 'medical') return false
+    if (p.subject_id !== subjectId || p.recipient_role !== recipient) return false
     const s = packageStatus(data.sync_event, p.share_package_id)
     return s === 'delivered' || s === 'reviewed'
   })
@@ -55,6 +59,8 @@ export function deliveredPackages(data: Pick<Data, 'share_package' | 'sync_event
 interface Visibility {
   sharedIds: Set<string>
   medicalActionIds: Set<string>
+  /** Operational-request packages delivered to the planner (schedule changes only). */
+  plannerPackageIds: Set<string>
 }
 
 function visibility(data: Data, ctx: AccessContext): Visibility {
@@ -67,7 +73,8 @@ function visibility(data: Data, ctx: AccessContext): Visibility {
   const medicalActionIds = new Set(
     data.follow_up.filter((f) => f.subject_id === ctx.subjectId && f.assigned_role === 'medical').map((f) => f.action_id),
   )
-  return { sharedIds, medicalActionIds }
+  const plannerPackageIds = new Set(deliveredPackages(data, ctx.subjectId, 'planner').map((p) => p.share_package_id))
+  return { sharedIds, medicalActionIds, plannerPackageIds }
 }
 
 function decide(role: Role, entity: EntityName, rec: unknown, ctx: AccessContext, v: Visibility): boolean {
@@ -76,6 +83,8 @@ function decide(role: Role, entity: EntityName, rec: unknown, ctx: AccessContext
   if (role === 'astronaut') return true
   const id = pkOf(entity, rec)
   if (role === 'planner') {
+    if (entity === 'share_package') return v.plannerPackageIds.has(id)
+    if (entity === 'sync_event') return v.plannerPackageIds.has(String((rec as SyncEvent).share_package_id ?? ''))
     if (PLANNER_NEVER.includes(entity)) return false
     if (entity === 'action') return (rec as EntityMap['action']).owner_role === 'planner'
     if (entity === 'mission_schedule') return true
@@ -144,6 +153,10 @@ export function canWrite(role: Role, entity: EntityName, rec: unknown, ctx: Acce
   const v = visibility(data, ctx)
   if (role === 'planner') {
     if (entity === 'mission_schedule') return true
+    if (entity === 'sync_event') {
+      const e = rec as SyncEvent
+      return e.sync_status === 'reviewed' && v.plannerPackageIds.has(String(e.share_package_id ?? ''))
+    }
     if (entity === 'action') {
       const a = rec as EntityMap['action']
       const before = data.action.find((x) => x.action_id === a.action_id)

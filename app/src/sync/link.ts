@@ -6,8 +6,8 @@ import { useStore } from '../store/store'
 import { assertWrite, type AccessContext } from '../store/permissions'
 import type { Role } from '../store/role'
 import { DEFAULT_LINK, nextEvents, reviewEvent, type LinkSettings } from './engine'
-import { shareRecords, type ShareDraft } from './share'
-import type { SharePackage } from '../data/contract'
+import { operationalDraft, shareRecords, type ShareDraft } from './share'
+import type { Action, SharePackage } from '../data/contract'
 
 const KEY = 'vitalents.link'
 
@@ -89,7 +89,15 @@ export function confirmShare(draft: ShareDraft, role: Role): Promise<SharePackag
   return job.finally(() => inflight.delete(draft.packageId))
 }
 
-/** The medical team marks a delivered package reviewed. Returns false if it is not delivered yet. */
+/**
+ * FR-SCH-05: send a planner-owned schedule action to the planner as an operational request.
+ * Call after the action is stored (features/schedule). Idempotent per action.
+ */
+export function sendOperationalRequest(action: Action, role: Role): Promise<SharePackage> {
+  return confirmShare(operationalDraft(action), role)
+}
+
+/** The recipient (medical team or planner) marks a delivered package reviewed. Returns false if it is not delivered yet. */
 export async function markReviewed(pkg: SharePackage, role: Role) {
   const { data, put } = useStore.getState()
   const ev = reviewEvent(pkg, data.sync_event, role, Date.now())

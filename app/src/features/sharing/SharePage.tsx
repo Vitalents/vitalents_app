@@ -134,7 +134,10 @@ export function SharePage({ subjectId }: { subjectId: string }) {
           <ul className="sh-earlier-list">
             {earlier.map((p) => (
               <li key={p.share_package_id} className="card sh-earlier-item">
-                <p className="small muted">{T.medical.prepared} {utcDateTime(p.prepared_at_utc)}</p>
+                <p className="small muted">
+                  <strong className="sh-earlier-to">{T.share.toRecipient[p.recipient_role] ?? p.recipient_role}</strong>{' '}
+                  {T.medical.prepared} {utcDateTime(p.prepared_at_utc)}
+                </p>
                 <SyncStatusRow pkg={p} events={data.sync_event} compact />
               </li>
             ))}

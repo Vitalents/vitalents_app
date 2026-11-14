@@ -65,10 +65,10 @@ export function saveEvents(pkg: SharePackage, events: SyncEvent[], s: LinkSettin
   return [buildSyncEvent(pkg, 'saved_locally', new Date(nowMs).toISOString(), s.linkUp)]
 }
 
-/** The medical team marks a delivered package reviewed. Only a medical review creates `reviewed`. */
+/** The recipient marks a delivered package reviewed. Only the recipient's review creates `reviewed`. */
 export function reviewEvent(pkg: SharePackage, events: SyncEvent[], role: string, nowMs: number): SyncEvent | null {
-  if (role !== 'medical') return null
+  if (role !== pkg.recipient_role) return null
   const list = eventsFor(events, pkg.share_package_id)
   if (!has(list, 'delivered') || has(list, 'reviewed')) return null
-  return buildSyncEvent(pkg, 'reviewed', new Date(nowMs).toISOString(), true, { reviewed_by_role: 'medical' })
+  return buildSyncEvent(pkg, 'reviewed', new Date(nowMs).toISOString(), true, { reviewed_by_role: pkg.recipient_role })
 }

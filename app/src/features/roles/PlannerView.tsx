@@ -1,9 +1,37 @@
 // Planner view (route /planner, FR-SHR-04, FR-SCH-05): schedule items and operational requests only.
 // The data layer already removed every health record; this screen cannot show what it never receives.
 import '../sharing/share.css'
+import { useState } from 'react'
+import type { SharePackage, SyncEvent } from '../../data/contract'
 import { Emblem } from '../../shell/Logo'
+import { useRole } from '../../store/role'
+import { currentStatus } from '../../sync/engine'
+import { markReviewed } from '../../sync/link'
+import { SyncStatusRow } from '../sharing/SyncStatusRow'
 import { ACTION_STATUS, T } from '../sharing/strings'
 import { useVisibleData } from './hooks'
+
+/** Delivery of the operational request that carries this action, and the planner's "Mark reviewed". */
+function RequestDelivery({ pkg, events }: { pkg: SharePackage; events: SyncEvent[] }) {
+  const role = useRole((s) => s.role)
+  const [error, setError] = useState<string | null>(null)
+  const status = currentStatus(events, pkg.share_package_id)
+  return (
+    <div className="sh-req-delivery">
+      <SyncStatusRow pkg={pkg} events={events} compact />
+      {status === 'delivered' && (
+        <button
+          type="button"
+          className="btn"
+          onClick={() => markReviewed(pkg, role).catch((e) => setError(String(e)))}
+        >
+          {T.medical.markReviewed}
+        </button>
+      )}
+      {error && <p className="field-error" role="alert">{error}</p>}
+    </div>
+  )
+}
 
 const hm = (iso: string) => `${iso.slice(11, 16)}Z`
 
@@ -30,12 +58,18 @@ export function PlannerView({ subjectId }: { subjectId: string }) {
             </div>
           ) : (
             <ul className="sh-items">
-              {requests.map((a) => (
-                <li key={a.action_id} className="sh-item">
-                  <span className="sh-text">{a.action_text}</span>
-                  <span className="chip sh-neutral">{ACTION_STATUS[a.execution_status] ?? a.execution_status}</span>
-                </li>
-              ))}
+              {requests.map((a) => {
+                const pkg = data.share_package.find((p) => p.previewed_record_ids.includes(a.action_id))
+                return (
+                  <li key={a.action_id} className="sh-item no-date sh-req">
+                    <span className="sh-body">
+                      <span className="sh-text">{a.action_text}</span>
+                      <span className="chip sh-neutral">{ACTION_STATUS[a.execution_status] ?? a.execution_status}</span>
+                    </span>
+                    {pkg && <RequestDelivery pkg={pkg} events={data.sync_event} />}
+                  </li>
+                )
+              })}
             </ul>
           )}
         </section>

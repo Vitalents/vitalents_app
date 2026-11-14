@@ -11,7 +11,8 @@ import './share.css'
 import { Emblem, Logo } from '../../shell/Logo'
 import { useRole } from '../../store/role'
 import { useStore } from '../../store/store'
-import { useOutboxTicker } from '../../sync/link'
+import { sendOperationalRequest, useOutboxTicker } from '../../sync/link'
+import { plannerRequest } from '../schedule/request'
 import { MedicalView } from '../roles/MedicalView'
 import { PlannerView } from '../roles/PlannerView'
 import { RoleSwitcher } from '../roles/RoleSwitcher'
@@ -20,6 +21,19 @@ import { SyncSettingsPanel } from './SyncSettingsPanel'
 import { T } from './strings'
 
 const SUBJECT = 'sim:crew:fahim'
+
+/** Dev only: what the rest-window page does when the astronaut asks the planner to move the meeting. */
+async function simulateRestWindowRequest() {
+  const { data, put } = useStore.getState()
+  const meeting = data.mission_schedule.find((m) => m.mission_schedule_id === 'sim:mission_schedule:meeting-d27')
+  if (!meeting) return
+  const action = plannerRequest(
+    [{ item_id: meeting.mission_schedule_id, new_start: '2026-11-14T21:30:00Z', new_end: '2026-11-14T22:30:00Z' }],
+    data.mission_schedule, 0, 420, new Date(),
+  )
+  await put('action', [action])
+  await sendOperationalRequest(action, 'astronaut')
+}
 
 function DevApp() {
   const { ready, error, init, loadScenario } = useStore()
@@ -35,6 +49,7 @@ function DevApp() {
       <header className="topbar">
         <span className="brand"><Logo height={24} /></span>
         <span className="mission small muted sh-dev-title">{T.dev.title}</span>
+        <button type="button" className="btn" onClick={() => void simulateRestWindowRequest()}>{T.dev.restRequest}</button>
         <button type="button" className="btn" onClick={() => void loadScenario('S1')}>{T.dev.reset}</button>
       </header>
       <div className="sh-dev">

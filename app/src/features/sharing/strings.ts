@@ -13,6 +13,7 @@ export const T = {
     stepQuestion: 'Add your question',
     stepPreview: 'Check what will be sent',
     earlier: 'Earlier packages',
+    toRecipient: { medical: 'To the medical team', planner: 'To the planner (schedule request)' } as Record<string, string>,
     itemsWord: 'items',
     onlyAstronaut: 'Only the astronaut can prepare a share from their record. Switch the demo role to Astronaut.',
     lede: 'Check exactly what will be sent. Nothing leaves your device until you confirm.',
@@ -25,6 +26,7 @@ export const T = {
     excludedTitle: 'Not included',
     excluded: {
       'self_report.private_note': 'Your private notes',
+      health_records: 'Health records: the planner gets the schedule change only',
     } as Record<string, string>,
     plannerNever: 'Nothing in this package goes to the planner.',
     recordCount: (n: number) => `${n} ${n === 1 ? 'record' : 'records'} from your record`,
@@ -116,6 +118,7 @@ export const T = {
   dev: {
     title: 'Vitalents share and privacy (dev entry)',
     reset: 'Reset scenario S1',
+    restRequest: 'Planner request',
     loading: 'Loading the simulated record…',
     simulated: 'Simulated data',
   },
