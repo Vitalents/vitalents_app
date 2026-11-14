@@ -102,8 +102,8 @@ export const S = {
     source_conflict: 'conflicting source records',
   } as Record<string, string>,
 
-  sampleCard: 'Sample card',
-  sampleNote: 'Sample card in this demo; nothing is measured here.',
+  sampleCard: 'Sample data',
+  sampleNote: 'Sample data in this demo; nothing is measured here.',
 
   map: {
     title: 'Today & map',
@@ -217,6 +217,7 @@ export const S = {
     roleViews: 'Open the view for this role:',
     medicalView: 'Medical team view',
     plannerView: 'Mission planner view',
+    profileView: 'Mission profile',
     linkTitle: 'Link to Earth (simulated)',
   },
 

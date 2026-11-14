@@ -54,7 +54,7 @@ export function Layout() {
             <span className="long">{S.header.missionDay(missionDay(date), formatDate(date))}</span>
             <span className="short">{S.header.missionDayShort(missionDay(date))}</span>
           </strong>
-          <span className="crew">{subject?.crew_label ?? '—'}</span>
+          <Link to="/profile" className="crew" title="Mission profile">{subject?.crew_label ?? '—'}</Link>
           <span className="sync" title={S.header.syncNone}>{waiting ? S.header.syncWaiting(waiting) : S.header.syncNone}</span>
         </div>
         <div className="top-actions">

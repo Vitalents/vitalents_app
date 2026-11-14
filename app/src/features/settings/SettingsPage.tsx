@@ -65,6 +65,7 @@ export function SettingsPage() {
         <div className="row-gap">
           <Link className="btn" to="/medical">{S.settings.medicalView}</Link>
           <Link className="btn" to="/planner">{S.settings.plannerView}</Link>
+          <Link className="btn" to="/profile">{S.settings.profileView}</Link>
         </div>
       </section>
 
