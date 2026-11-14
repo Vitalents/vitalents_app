@@ -1,5 +1,6 @@
 // Today's review (UI-05): Recorded / Changed / Missing / Next step, then other open follow-ups.
 // FR-REV-01/03/04/05: every finding and step explains itself; no score or verdict anywhere.
+// The next step is the focal card; the page header links straight to it.
 import { Link } from 'react-router-dom'
 import { describeRecord, reasonText, sourceTitle } from '../../content/format'
 import { S } from '../../content/strings'
@@ -20,10 +21,15 @@ export function ReviewPage() {
         <p className="eyebrow">{formatDay(view.date)}</p>
         <h1>{S.review.title}</h1>
         <p className="muted">{S.review.subtitle}</p>
+        {view.nextStep && (
+          <a href="#block-4" className="jump">
+            <span className="jump-label">{S.review.next}:</span> {view.nextStep.action_text}
+          </a>
+        )}
       </header>
 
       <div className="review-grid">
-        <Block title={S.review.recorded} n={1}>
+        <Block title={S.review.recorded} n={1} area="recorded">
           {view.recorded.length === 0 ? (
             <p className="muted">{S.review.noneRecorded}</p>
           ) : (
@@ -33,9 +39,9 @@ export function ReviewPage() {
                 return (
                   <li key={record.id}>
                     <span className="rec-label">{d.label}</span>
-                    <span className="rec-value">{d.value}</span>
+                    <span className="rec-value num">{d.value}</span>
                     <DataBadge status={status} reasons={reasons} compact />
-                    {reasons.length > 0 && <span className="muted small">{reasonText(reasons)}</span>}
+                    {reasons.length > 0 && <span className="rec-reason muted small">{reasonText(reasons)}</span>}
                   </li>
                 )
               })}
@@ -43,7 +49,7 @@ export function ReviewPage() {
           )}
         </Block>
 
-        <Block title={S.review.changed} n={2}>
+        <Block title={S.review.changed} n={2} area="changed">
           {view.changed.length === 0 ? (
             <p className="muted">{S.review.noneChanged}</p>
           ) : (
@@ -51,13 +57,13 @@ export function ReviewPage() {
               <div key={f.finding_id} className="finding">
                 <p>{f.explanation}</p>
                 <p className="muted small">{f.limitations}</p>
-                <Why finding={f} />
+                <Why finding={f} repeatText={false} />
               </div>
             ))
           )}
         </Block>
 
-        <Block title={S.review.missing} n={3}>
+        <Block title={S.review.missing} n={3} area="missing">
           {view.missing.length === 0 ? (
             <p className="muted">{S.review.noneMissing}</p>
           ) : (
@@ -73,13 +79,13 @@ export function ReviewPage() {
           )}
         </Block>
 
-        <Block title={S.review.next} n={4} highlight>
+        <Block title={S.review.next} n={4} area="next" highlight>
           {view.nextStep ? <ActionCard action={view.nextStep} finding={nextFinding} /> : <p className="muted">{S.review.noneNext}</p>}
         </Block>
       </div>
 
-      <section className="card pad other">
-        <h2>{S.review.other}</h2>
+      <section className="card pad other" aria-labelledby="other-title">
+        <h2 id="other-title">{S.review.other}</h2>
         {view.otherFollowUps.length === 0 ? (
           <p className="muted">{S.review.noneOther}</p>
         ) : (
@@ -92,10 +98,10 @@ export function ReviewPage() {
   )
 }
 
-function Block({ title, n, highlight, children }: { title: string; n: number; highlight?: boolean; children: React.ReactNode }) {
+function Block({ title, n, area, highlight, children }: { title: string; n: number; area: string; highlight?: boolean; children: React.ReactNode }) {
   return (
-    <section className={`card pad block ${highlight ? 'highlight' : ''}`} aria-labelledby={`block-${n}`}>
-      <h2 id={`block-${n}`}><span className="block-n" aria-hidden="true">{n}</span>{title}</h2>
+    <section className={`card pad block block-${area} ${highlight ? 'highlight' : ''}`} aria-labelledby={`block-${n}`}>
+      <h2 id={`block-${n}`} tabIndex={-1}><span className="num-badge" aria-hidden="true">{String(n).padStart(2, '0')}</span>{title}</h2>
       {children}
     </section>
   )
@@ -104,13 +110,13 @@ function Block({ title, n, highlight, children }: { title: string; n: number; hi
 function ActionCard({ action, finding }: { action: Action; finding?: Finding }) {
   return (
     <div className="action">
+      <p className="action-kind">{S.stepCategory[action.step_category]}</p>
       <p className="action-text">{action.action_text}</p>
-      <p className="muted small">{S.stepCategory[action.step_category]}</p>
-      <dl className="facts">
-        <div><dt>{S.review.reason}</dt><dd>{action.reason_text}</dd></div>
+      <p className="action-reason">{action.reason_text}</p>
+      <dl className="facts action-facts">
         <div><dt>{S.review.owner}</dt><dd>{S.owner[action.owner_role]}</dd></div>
         <div><dt>{S.review.status}</dt><dd>{S.actionStatus[action.execution_status]}</dd></div>
-        {action.follow_up_due_utc && <div><dt>{S.review.due}</dt><dd>{formatDay(action.follow_up_due_utc)}</dd></div>}
+        {action.follow_up_due_utc && <div><dt>{S.review.due}</dt><dd className="num">{formatDay(action.follow_up_due_utc)}</dd></div>}
         <div><dt>{S.review.sourceLabel}</dt><dd>{sourceTitle(action.source_reference_id)}</dd></div>
       </dl>
       {finding && <Why finding={finding} />}
@@ -126,7 +132,7 @@ function FollowUpItem({ fu }: { fu: FollowUp }) {
     <li>
       <FollowChip status={fu.followup_status} />
       <p className="fu-text">{action?.action_text ?? fu.action_id}</p>
-      <p className="muted small">
+      <p className="muted small num">
         {S.review.owner}: {S.owner[fu.assigned_role]} · {S.review.opened}: {formatDay(fu.opened_at_utc)}
         {fu.next_review_due_utc ? ` · ${S.review.due}: ${formatDay(fu.next_review_due_utc)}` : ''}
       </p>
@@ -135,39 +141,50 @@ function FollowUpItem({ fu }: { fu: FollowUp }) {
   )
 }
 
-/** FR-REV-04: the data ids, values and rule behind a finding or step. */
-function Why({ finding }: { finding: Finding }) {
+/**
+ * FR-REV-04: the data behind a finding or step. DESIGN.md order: a compact table of supporting
+ * records (what, value, date, data status, record id), then rule id + version, explanation, limits.
+ * `repeatText` is false where the explanation is already printed just above the disclosure.
+ */
+function Why({ finding, repeatText = true }: { finding: Finding; repeatText?: boolean }) {
   const idx = useRecordIndex()
   const data = useDataSet()
   return (
     <details className="why">
       <summary>{S.review.why}</summary>
       <div className="why-body">
-        <p><strong>{S.review.rule}:</strong> {finding.rule_id} · v{finding.rule_version}</p>
-        <p>{finding.explanation}</p>
-        <p className="muted small"><strong>{S.review.limitations}:</strong> {finding.limitations}</p>
         {finding.supporting_record_ids.length > 0 && (
-          <>
-            <p className="why-sub">{S.review.supporting}</p>
-            <ul className="why-list">
+          <table className="why-table">
+            <caption>{S.review.supporting}</caption>
+            <thead>
+              <tr>
+                <th scope="col">{S.review.colWhat}</th>
+                <th scope="col">{S.review.colValue}</th>
+                <th scope="col">{S.review.colDate}</th>
+                <th scope="col">{S.review.colData}</th>
+              </tr>
+            </thead>
+            <tbody>
               {finding.supporting_record_ids.map((id) => {
                 const r = idx.get(id)
-                if (!r) return <li key={id}><code>{id}</code></li>
+                if (!r) return <tr key={id}><td colSpan={4}><code>{id}</code></td></tr>
                 const d = describeRecord(r)
                 const st = r.entity === 'personal_reference' ? null : infoStatusOf(data, id)
                 return (
-                  <li key={id}>
-                    <span className="rec-label">{d.label}</span>
-                    <span>{d.value}</span>
-                    <span className="muted small">{d.date}</span>
-                    {st && <DataBadge status={st.status} reasons={st.reasons} compact />}
-                    <code className="rec-id">{id}</code>
-                  </li>
+                  <tr key={id}>
+                    <td data-label={S.review.colWhat}>{d.label}<code className="rec-id">{id}</code></td>
+                    <td data-label={S.review.colValue} className="num">{d.value}</td>
+                    <td data-label={S.review.colDate} className="num">{d.date}</td>
+                    <td data-label={S.review.colData}>{st ? <DataBadge status={st.status} reasons={st.reasons} compact /> : <span className="muted">—</span>}</td>
+                  </tr>
                 )
               })}
-            </ul>
-          </>
+            </tbody>
+          </table>
         )}
+        <p className="why-rule"><span className="why-k">{S.review.rule}</span> <code>{finding.rule_id}</code> · v{finding.rule_version}</p>
+        {repeatText && <p>{finding.explanation}</p>}
+        <p className="muted small"><span className="why-k">{S.review.limitations}</span> {finding.limitations}</p>
       </div>
     </details>
   )

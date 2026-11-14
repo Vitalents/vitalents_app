@@ -11,6 +11,7 @@ import { DataBadge, FollowChip } from '../../shell/StatusChips'
 import { useDataSet, useDomainViews, useReviewDate } from '../../store/selectors'
 
 type Tab = 'now' | 'understand' | 'act'
+const TABS: Tab[] = ['now', 'understand', 'act']
 
 export function DomainPage() {
   const { id = '' } = useParams()
@@ -36,8 +37,26 @@ export function DomainPage() {
         </div>
       </header>
       <div className="tabs" role="tablist" aria-label={content.name}>
-        {(['now', 'understand', 'act'] as Tab[]).map((t) => (
-          <button key={t} role="tab" id={`tab-${t}`} aria-selected={tab === t} aria-controls={`panel-${t}`} className={tab === t ? 'tab on' : 'tab'} onClick={() => setTab(t)}>
+        {TABS.map((t) => (
+          <button
+            key={t}
+            role="tab"
+            id={`tab-${t}`}
+            aria-selected={tab === t}
+            aria-controls={`panel-${t}`}
+            tabIndex={tab === t ? 0 : -1}
+            className={tab === t ? 'tab on' : 'tab'}
+            onClick={() => setTab(t)}
+            onKeyDown={(e) => {
+              // WAI-ARIA tabs pattern: arrows move between tabs, Home/End jump to the ends.
+              const i = TABS.indexOf(t)
+              const to = e.key === 'ArrowRight' ? (i + 1) % TABS.length : e.key === 'ArrowLeft' ? (i + TABS.length - 1) % TABS.length : e.key === 'Home' ? 0 : e.key === 'End' ? TABS.length - 1 : -1
+              if (to < 0) return
+              e.preventDefault()
+              setTab(TABS[to])
+              document.getElementById(`tab-${TABS[to]}`)?.focus()
+            }}
+          >
             {S.domain.tabs[t]}
           </button>
         ))}

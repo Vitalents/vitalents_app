@@ -16,19 +16,20 @@ export function MapPage() {
         <p className="muted">{S.map.subtitle}</p>
       </header>
       <div className="map-grid">
-        <section className="card map-card" aria-label="Body map">
+        <section className="card map-card" aria-label={S.map.figureLabel}>
           <BodyMap views={views} />
           <div className="legend">
             <p className="legend-title">{S.map.legendTitle}</p>
             <p><FollowChip status="watching" compact /> {S.map.legendFollow}</p>
             <p><DataBadge status="limited" compact /> {S.map.legendData}</p>
+            <p><DataBadge status={null} /> {S.map.legendSample}</p>
             <p className="muted small">{S.map.legendNote}</p>
           </div>
         </section>
         <ul className="domain-list" aria-label="Areas">
           {views.map((v) => (
             <li key={v.content.id}>
-              <Link to={`/domain/${v.content.id}`} className={`domain-row follow-${v.followStatus}`} aria-label={S.map.openCard(v.content.name)}>
+              <Link to={`/domain/${v.content.id}`} className={`domain-row follow-${v.followStatus}`}>
                 <span className="domain-name">{v.content.name}</span>
                 <span className="domain-chips">
                   <FollowChip status={v.followStatus} />
