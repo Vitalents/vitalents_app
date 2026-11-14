@@ -26,12 +26,20 @@ describe('buildTrend', () => {
     expect(d27.id).toBeNull()
   })
 
-  it('keeps a not-comparable value off the valid line and on the problem channel', () => {
+  it('leaves a gap for the interrupted round with no published score', () => {
     const d23 = points.find((p) => p.id === 'sim:decode_session:d23')!
-    expect(d23.status).toBe('not_comparable')
-    expect(d23.kind).toBe('problem')
+    expect(decode.history.find((p) => p.id === d23.id)?.status).toBe('not_comparable')
+    expect(d23.kind).toBe('no_reading')
     expect(d23.valid).toBeNull()
-    expect(d23.problem).toBe(30)
+    expect(d23.problem).toBeNull()
+  })
+
+  it('keeps an observed not-comparable value on the problem channel', () => {
+    const [point] = buildTrend([{ date: DATE, value: 30, status: 'not_comparable', id: 'sim:decode_session:example' }], { to: DATE, daily: false })
+    expect(point.status).toBe('not_comparable')
+    expect(point.kind).toBe('problem')
+    expect(point.valid).toBeNull()
+    expect(point.problem).toBe(30)
   })
 
   it('compares only valid values after the reference period (change from your reference)', () => {
@@ -43,12 +51,14 @@ describe('buildTrend', () => {
     expect(d20.comparison).toBeNull()
   })
 
-  it('a limited reading is a problem point, not a valid one (day-27 pulse)', () => {
+  it('leaves a gap when weak wrist contact yields no pulse value on day 27', () => {
     const hr = ind('heart', 'hr_resting_bpm')
     const p = buildTrend(hr.history, { to: DATE, daily: true }).at(-1)!
-    expect(p.status).toBe('limited')
-    expect(p.kind).toBe('problem')
+    expect(hr.status).toBe('limited')
+    expect(p.kind).toBe('no_reading')
+    expect(p.value).toBeNull()
     expect(p.valid).toBeNull()
+    expect(p.problem).toBeNull()
   })
 
   it('as-needed indicators are not padded with No reading days', () => {
@@ -64,8 +74,8 @@ describe('buildTrend', () => {
   it('summary counts each kind', () => {
     const s = summarizeTrend(points)
     expect(s.valid).toBe(13)
-    expect(s.problem).toBe(1)
-    expect(s.noReading).toBe(1)
+    expect(s.problem).toBe(0)
+    expect(s.noReading).toBe(2)
     expect(s.latest?.date).toBe(DATE)
     expect(s.latestWithValue?.id).toBe('sim:decode_session:d26')
   })
@@ -75,7 +85,7 @@ describe('trendDomain', () => {
   it('holds values and the reference band, without forcing a 0 floor', () => {
     const [lo, hi] = trendDomain(points, ref)!
     expect(lo).toBeGreaterThan(0)
-    expect(lo).toBeLessThanOrEqual(30)
+    expect(lo).toBeLessThanOrEqual(35)
     expect(hi).toBeGreaterThanOrEqual(44)
   })
   it('ticks are round and at most six', () => {

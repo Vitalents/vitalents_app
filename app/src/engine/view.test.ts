@@ -17,6 +17,7 @@ describe('domain views (S1, mission day 27)', () => {
     const decode = cognition.indicators.find((i) => i.content.id === 'decode_correct_count')!
     expect(alert.status).toBe('valid')
     expect(decode.status).toBe('no_reading')
+    expect(alert.value).toBe(8)
     expect(cognition.dataStatus).toBe('no_reading')
   })
 
@@ -44,6 +45,7 @@ describe('domain views (S1, mission day 27)', () => {
   it('cognition shows watching; heart shows limited data with no open follow-up', () => {
     expect(byId('cognition').followStatus).toBe('watching')
     expect(byId('heart').dataStatus).toBe('limited')
+    expect(byId('heart').indicators[0].value).toBeNull()
     expect(byId('heart').followStatus).toBe('no_open_follow_up')
     expect(byId('heart').indicators[0].reasons).toContain('weak_sensor_contact')
   })

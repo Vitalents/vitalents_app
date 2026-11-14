@@ -22,13 +22,13 @@ FIXTURES = Path(__file__).resolve().parents[2] / "app/public/data/fixtures"
 # (file, record id) -> reason. Each is a real gap between the stand-in fixtures and status-0.3.0.
 KNOWN = {
     ("S1.json", "sim:measurement:hr-d27"):
-        "fixture stores 'limited' (weak_sensor_contact, contract D-6); status-0.3.0 has no 'limited' status yet",
-    **{(f, f"sim:decode_session:d{d:02d}"):
-       "S1 simulated sessions carry no decode_response_event rows, so events cannot be verified "
+        "fixture stores 'limited' (weak_sensor_contact, contract D-6); Python reports no_reading for the null value",
+    **{("S5.json", f"sim:decode_session:d{d:02d}"):
+       "S5 simulated sessions carry no decode_response_event rows, so events cannot be verified "
        "(engine: incomplete/unverified_decode_events); Shaimaa's simulator will add the events"
-       for f in ("S1.json", "S5.json") for d in range(13, 27) if d != 23},
+       for d in range(13, 27) if d != 23},
 }
-KNOWN[("S5.json", "sim:measurement:hr-d27")] = KNOWN[("S1.json", "sim:measurement:hr-d27")]
+KNOWN[("S5.json", "sim:measurement:hr-d27")] = "legacy S5 stores limited; Python has no limited status"
 
 
 def rescore(events):
@@ -109,9 +109,9 @@ class FixtureStatusTest(unittest.TestCase):
         self.assertEqual(bad, [])
 
     def test_new_scenarios_verify_their_events(self):
-        """S2-S4 sessions carry full event ledgers that rescore to the stored summaries."""
+        """S1-S4 completed sessions carry verifiable event ledgers."""
         for f, rid, kind, st, r in self.rows:
-            if kind == "decode_session" and f in ("S2.json", "S3.json", "S4.json"):
+            if kind == "decode_session" and f in ("S1.json", "S2.json", "S3.json", "S4.json"):
                 with self.subTest(file=f, record=rid):
                     self.assertNotIn("unverified_decode_events", r.get("reason_codes", []))
 

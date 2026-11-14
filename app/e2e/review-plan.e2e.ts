@@ -13,7 +13,7 @@ test("Today's review shows the next step with its source and Why?", async ({ pag
   await expect(main).toContainText(STEP)
   await expect(main).toContainText('Risk from Inadequate Sleep and Irregular Schedules')
   // Two observations together, never a cause (rule 4).
-  await expect(main).toContainText('this does not show that one caused the other')
+  await expect(main).toContainText('This does not show that one causes the other')
   await expect(main.getByText('Why?').first()).toBeVisible()
 })
 
@@ -24,7 +24,7 @@ test('plan: accept the rest-window step, then open the rest window (6 h -> 7 h) 
   // Follow-ups from S1: the rest-window step, the open review request, and the watching follow-up.
   const step = page.getByRole('article', { name: STEP })
   await expect(step).toBeVisible()
-  await expect(page.getByRole('article', { name: 'Request a review by the medical team' })).toBeVisible()
+  await expect(page.getByRole('article', { name: 'Send your report to the medical team' })).toBeVisible()
   await expect(page.getByRole('article', { name: 'Keep the daily check and watch the next sessions' })).toBeVisible()
 
   await expect(step).toContainText('Proposed')

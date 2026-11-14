@@ -77,16 +77,27 @@ describe('ask', () => {
   })
 })
 
-describe('cached_answers.json placeholder', () => {
-  it('follows the response shape and invents no science or citations', () => {
-    const list = cachedFile as unknown as CachedEntry[]
+describe('cached_answers.json', () => {
+  it('keeps recorded answers cited and abstentions free of science and citations', () => {
+    const list = cachedFile as CachedEntry[]
     expect(list).toHaveLength(5)
-    for (const e of list) {
-      expect(e.response.status).toBe('not_in_library')
-      expect(e.response.science).toBeNull()
-      expect(e.response.your_data).toBeNull()
-      expect(e.response.citations).toEqual([])
-      expect(e.response.limits).toContain('Recorded answers not added yet')
+    for (const { question, response, label } of list) {
+      expect(question).not.toBe('')
+      expect(label).toBe('Recorded from the onboard model')
+      expect(response.limits).not.toBe('')
+      expect(['answered', 'not_in_library', 'blocked']).toContain(response.status)
+      if (response.status === 'answered') {
+        expect(response.science).toEqual(expect.any(String))
+        expect(response.citations.length).toBeGreaterThan(0)
+        for (const { id, source_id, excerpt } of response.citations) {
+          expect(response.science).toContain(`[${id}]`)
+          expect(source_id).toMatch(/^lib:/)
+          expect(excerpt).not.toBe('')
+        }
+      } else {
+        expect(response.science).toBeNull()
+        expect(response.citations).toEqual([])
+      }
     }
   })
 })
