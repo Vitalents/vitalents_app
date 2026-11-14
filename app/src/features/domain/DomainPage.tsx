@@ -1,7 +1,8 @@
 // Indicator card (UI-02, FR-MAP-06): Now / Understand / Act.
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { domainById, LIBRARY } from '../../content/content'
+import { domainById, LIBRARY, type DomainId } from '../../content/content'
+import { AskBox } from '../ask/AskBox'
 import { describeRecord, formatNumber, formatValue, reasonText, sourceTitle } from '../../content/format'
 import { S } from '../../content/strings'
 import { addDays, formatDay } from '../../engine/mission'
@@ -183,7 +184,7 @@ function UnderstandTab({ view }: { view: DomainView }) {
           })}
         </ul>
       </section>
-      <p className="card pad muted">{S.domain.askLater}</p>
+      <section className="card pad"><AskBox domainId={view.content.id as DomainId} compact /></section>
     </div>
   )
 }

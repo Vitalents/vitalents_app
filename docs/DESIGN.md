@@ -26,7 +26,7 @@ Source: the shared Vitalents PDFs (Project Brief, Complete Vision, Master Projec
 | `--paper` | #F5F3EB | #0F1F23 | Page background |
 | `--card` | #FFFFFF | #152A30 | Surfaces |
 | `--line` | #CFDBDC | #2A4249 | Borders, dividers |
-| `--teal` | #31B9D4 | #31B9D4 | Brand accent, focus ring |
+| `--teal` | #31B9D4 | #31B9D4 | Brand accent (not for text or focus: ~2:1 on paper) |
 | `--deep` | #00687A | #5FD0E3 | Links, primary buttons, labels |
 | `--tint` | #BFEAF0 | #173E47 | Selected, subtle highlight |
 | `--watch` | #8A5A16 / bg #F6ECD9 | #E8B96A / bg #3A2E17 | Follow-up: watching, action_open |
@@ -48,7 +48,7 @@ Contrast: all text ≥ 4.5:1 on its background (WCAG AA). Colour never carries m
 
 - Spacing scale (px): 4, 8, 12, 16, 24, 32, 48. Page gutter 16 px on phones, 32 px on desktop; max content width 1120 px.
 - Radius: 12 px cards, 8 px controls, 999 px chips. Borders 1 px `--line`. Shadow: none, or `0 1px 2px rgb(0 0 0 / 0.05)` on raised cards only.
-- Touch targets ≥ 44 × 44 px. Focus: 2 px `--teal` outline, offset 2 px, always visible.
+- Touch targets ≥ 44 × 44 px. Focus: 3 px `--focus` outline (deep teal, #00687A light / #5FD0E3 dark), offset 2 px, always visible.
 - Motion: 150–200 ms ease-out for state changes only; respect `prefers-reduced-motion`. No motion inside the Decode measurement window.
 
 ## Components (shared names; build once, reuse)

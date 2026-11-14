@@ -15,6 +15,7 @@ import { RecordPage, SharePage } from './features/placeholder/Placeholder'
 import { PlanPage } from './features/plan/PlanPage'
 import { DomainPage } from './features/domain/DomainPage'
 import { SettingsPage } from './features/settings/SettingsPage'
+import { AskPage } from './features/ask/AskPage'
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
       { path: 'share', element: <SharePage /> },
       { path: 'domain/:id', element: <DomainPage /> },
       { path: 'settings', element: <SettingsPage /> },
+      { path: 'ask', element: <AskPage /> },
       { path: '*', element: <MapPage /> },
     ],
   },
