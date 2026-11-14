@@ -2,14 +2,38 @@
   {
     "question": "Why do we measure sleep on a long mission?",
     "response": {
-      "status": "blocked",
-      "question_id": "5bacab43e04d",
+      "status": "answered",
+      "question_id": "ca226a6b9fb3",
       "your_data": "From your record: Mission day: 27.",
-      "science": null,
-      "citations": [],
-      "limits": "I couldn't give a supported answer to this. You can add this question for review.",
-      "model": "gpt-oss:20b",
-      "reason": "unsupported numbers ['1']"
+      "science": "Measuring sleep on long missions allows us to monitor crew sleep quality and quantity, ensuring that astronauts maintain the necessary rest for health and performance [S3]. It also helps detect circadian misalignment and sleep disruption that can impair cognition and safety, guiding adjustments to light exposure and schedules [S1]. The collected data inform countermeasures such as LED light cycles and designated relaxation periods to mitigate risks and support mission success [S4].",
+      "citations": [
+        {
+          "id": "S1",
+          "source_id": "lib:nasa-std-3001-tb-sleep-accommodations",
+          "title": "NASA-STD-3001 Technical Brief: Sleep Accommodations (OCHMO-TB-041)",
+          "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-041-sleep-accommodations.pdf",
+          "page": 1,
+          "excerpt": "- [p. 2, Executive Summary] \"Thus, for crewmembers to achieve optimal sleep, they must be provided with a sleep environment\" - [p. 5, Reference Data] \"astronauts sleep an average of about six hours while in space\" - [p. 9, Design Considerations] \"For long-duration missions (>30 days), crewmembers sh"
+        },
+        {
+          "id": "S3",
+          "source_id": "lib:nasa-standard-measures",
+          "title": "Spaceflight Standard Measures: Characterizing How Humans Adapt in Space",
+          "url": "https://www.nasa.gov/humans-in-space/spaceflight-standard-measures-characterizing-how-humans-adapt-in-space/",
+          "page": 1,
+          "excerpt": "- [Introduction] \"NASA is collecting a set of consistent core measurements, called Spaceflight Standard Measures,\" - [Introduction] \"They do not focus on one particular physiological system, but look at all of the systems at once.\" - [Cognition] \"Astronauts take 10 computer-based tests that measure "
+        },
+        {
+          "id": "S4",
+          "source_id": "lib:nasa-sleep-risk",
+          "title": "Risk from Inadequate Sleep and Irregular Schedules",
+          "url": "https://www.nasa.gov/reference/risk-from-inadequate-sleep-and-irregular-schedules/",
+          "page": 1,
+          "excerpt": "- [What are the top risks?] \"Astronauts are exposed to numerous stressors during spaceflight\" - [What are the top risks?] \"can lead to short- and long-term health consequences that can affect mission success.\" - [What can be done about it?] \"light-emitting diodes, or LEDs, simulate Earth\u2019s light-dar"
+        }
+      ],
+      "limits": "This explains the evidence; it is not a diagnosis. Your medical team makes medical decisions.",
+      "model": "gpt-oss:20b"
     },
     "label": "Recorded from the onboard model"
   },
@@ -17,7 +41,7 @@
     "question": "What does a Decode result below my reference mean?",
     "response": {
       "status": "not_in_library",
-      "question_id": "e3546fc91528",
+      "question_id": "a57434f435bb",
       "your_data": "From your record: Mission day: 27.",
       "science": null,
       "citations": [],
@@ -31,7 +55,7 @@
     "question": "Why is pulse alone not enough to judge heart health?",
     "response": {
       "status": "answered",
-      "question_id": "5fe3b348c445",
+      "question_id": "55efa55a319e",
       "your_data": "From your record: Mission day: 27.",
       "science": "Pulse rate alone cannot detect arrhythmias or changes in heart rhythm, which are often only identified through ECG monitoring [S1]. It also fails to reveal reductions in cardiac output or venous return that can cause orthostatic intolerance, a risk heightened by fluid shifts in microgravity [S2]. Additionally, microgravity can alter heart shape and mass, so pulse alone does not reflect structural adaptations that affect cardiovascular health [S3].",
       "citations": [
@@ -69,9 +93,9 @@
     "question": "How does light affect the sleep cycle in space?",
     "response": {
       "status": "answered",
-      "question_id": "ed0c7058376a",
+      "question_id": "9e91864abed0",
       "your_data": "From your record: Mission day: 27.",
-      "science": "Light exposure in space can disrupt circadian rhythms because astronauts experience many sunrises and sunsets per day, leading to sleep\u2011wake cycle disturbances. Exposure to light at inappropriate times causes circadian misalignment and sleep disruption, so mission design recommends dedicated quiet sleep quarters and controlled lighting. Countermeasures such as using LEDs to simulate Earth\u2019s light\u2011dark cycle, covering windows with blinds, and wearing eye masks help align biological clocks and improve sleep quality.",
+      "science": "Light exposure in space can disrupt circadian rhythms because astronauts experience many sunrises and sunsets per day, leading to sleep\u2011wake cycle disturbances. [S1] Exposure to light at inappropriate times causes circadian misalignment and sleep disruption, so mission design recommends dedicated quiet sleep quarters and controlled lighting. [S2] Countermeasures such as using LEDs to simulate Earth\u2019s light\u2011dark cycle help align biological clocks. [S1] Covering windows with blinds and wearing eye masks also mitigate circadian desynchrony. [S3]",
       "citations": [
         {
           "id": "S1",
@@ -96,14 +120,6 @@
           "url": "https://www.nasa.gov/wp-content/uploads/2026/03/ochmo-mtb-009-circadian-desynchrony.pdf",
           "page": 1,
           "excerpt": "- [p. 2, Overview: What is Circadian Desynchrony?] \"an individual can experience 'circadian desynchrony.'\" - [p. 1, Executive Summary] \"cognitive impairment (e.g., inattention; distraction; slowed reaction time; poor decision making)\" - [p. 2, Overview: Spaceflight Considerations] \"altered light-dar"
-        },
-        {
-          "id": "S4",
-          "source_id": "lib:ntrs-mallis-2005-sleep",
-          "title": "Circadian rhythms, sleep, and performance in space",
-          "url": "https://ntrs.nasa.gov/citations/20050218840",
-          "page": 1,
-          "excerpt": "- [Abstract] \"Field data have demonstrated that sleep times and performance of crewmembers can be compromised\" - [Abstract] \"This paper documents evidence of significant sleep loss and disruption of circadian rhythms in astronauts\" - [Abstract] \"NASA is focusing research on the development of optima"
         }
       ],
       "limits": "This explains the evidence; it is not a diagnosis. Your medical team makes medical decisions.",
@@ -115,7 +131,7 @@
     "question": "What dose of melatonin should I take tonight?",
     "response": {
       "status": "blocked",
-      "question_id": "fae9dde1f6f2",
+      "question_id": "6c3d1bce99ab",
       "your_data": "From your record: Mission day: 27.",
       "science": null,
       "citations": [],

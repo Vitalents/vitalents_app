@@ -1,7 +1,7 @@
 {
   "proof_version": "1.0",
   "generated_by": "scripts/publish_proof.py",
-  "generated_at_utc": "2026-11-14T10:18:29Z",
+  "generated_at_utc": "2026-11-14T10:30:34Z",
   "status": "generated",
   "validation": {
     "status": "generated",
@@ -314,7 +314,7 @@
     "models": [
       {
         "source": "science/out/assistant_eval_gptoss.json",
-        "source_modified_at_utc": "2026-11-14T10:18:29Z",
+        "source_modified_at_utc": "2026-11-14T10:30:34Z",
         "derived_by": "ai/eval_summary.py",
         "model": "gpt-oss:20b",
         "library_version": "7995e34aa713",
