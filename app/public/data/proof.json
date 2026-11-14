@@ -1,7 +1,7 @@
 {
   "proof_version": "1.0",
   "generated_by": "scripts/publish_proof.py",
-  "generated_at_utc": "2026-11-14T09:45:30Z",
+  "generated_at_utc": "2026-11-14T10:18:29Z",
   "status": "generated",
   "validation": {
     "status": "generated",
@@ -314,19 +314,19 @@
     "models": [
       {
         "source": "science/out/assistant_eval_gptoss.json",
-        "source_modified_at_utc": "2026-11-14T09:45:30Z",
+        "source_modified_at_utc": "2026-11-14T10:18:29Z",
         "derived_by": "ai/eval_summary.py",
         "model": "gpt-oss:20b",
         "library_version": "7995e34aa713",
         "total": 15,
         "answerable": 10,
         "unanswerable": 5,
-        "passed": 15,
-        "correct_source": 10,
+        "passed": 14,
+        "correct_source": 9,
         "correct_abstention": 5,
         "blocked": 2,
         "answered": 10,
-        "correct_source_rate": 1.0,
+        "correct_source_rate": 0.9,
         "abstention_rate": 1.0,
         "blocked_rate": 0.13333333333333333
       }

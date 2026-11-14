@@ -3,8 +3,8 @@
   "library_version": "7995e34aa713",
   "counts": {
     "total": 15,
-    "passed": 15,
-    "correct_source": 10,
+    "passed": 14,
+    "correct_source": 9,
     "correct_abstention": 5,
     "blocked": 2,
     "answered": 10
@@ -27,7 +27,6 @@
       "pass": true,
       "reason": null,
       "citations": [
-        "Cognitive performance in ISS astronauts on 6-month low earth orbit missions",
         "Cognitive performance in ISS astronauts on 6-month low earth orbit missions"
       ]
     },
@@ -39,8 +38,9 @@
       "reason": null,
       "citations": [
         "Risk from Inadequate Sleep and Irregular Schedules",
-        "Circadian rhythms, sleep, and performance in space",
-        "NASA-STD-3001 Technical Brief: Sleep Accommodations (OCHMO-TB-041)"
+        "NASA-STD-3001 Technical Brief: Sleep Accommodations (OCHMO-TB-041)",
+        "NASA-STD-3001 Medical Technical Brief: Circadian Desynchrony (OCHMO-MTB-009)",
+        "Circadian rhythms, sleep, and performance in space"
       ]
     },
     {
@@ -50,7 +50,6 @@
       "pass": true,
       "reason": null,
       "citations": [
-        "NASA-STD-3001 Technical Brief: Sleep Accommodations (OCHMO-TB-041)",
         "NASA-STD-3001 Technical Brief: Sleep Accommodations (OCHMO-TB-041)"
       ]
     },
@@ -62,7 +61,7 @@
       "reason": null,
       "citations": [
         "NASA-STD-3001 Medical Technical Brief: Circadian Desynchrony (OCHMO-MTB-009)",
-        "NASA-STD-3001 Medical Technical Brief: Circadian Desynchrony (OCHMO-MTB-009)"
+        "Risk from Inadequate Sleep and Irregular Schedules"
       ]
     },
     {
@@ -73,17 +72,17 @@
       "reason": null,
       "citations": [
         "Risk of Cardiovascular Adaptations",
-        "NASA-STD-3001 Technical Brief: Orthostatic Intolerance (OCHMO-TB-019)"
+        "Evidence Report: Risk of Cardiac Rhythm Problems during Spaceflight"
       ]
     },
     {
       "question": "Why can some astronauts feel faint when standing up after returning to gravity?",
       "answerable": true,
       "status": "answered",
-      "pass": true,
+      "pass": false,
       "reason": null,
       "citations": [
-        "NASA-STD-3001 Technical Brief: Orthostatic Intolerance (OCHMO-TB-019)"
+        "Evidence Report: Risk of Cardiac Rhythm Problems during Spaceflight"
       ]
     },
     {
@@ -104,7 +103,7 @@
       "reason": null,
       "citations": [
         "Risk of Spaceflight Associated Neuro-ocular Syndrome (SANS)",
-        "Risk of Spaceflight Associated Neuro-ocular Syndrome (SANS)"
+        "NASA-STD-3001 Technical Brief: Spaceflight Associated Neuro-ocular Syndrome (SANS) (OCHMO-MTB-001)"
       ]
     },
     {
