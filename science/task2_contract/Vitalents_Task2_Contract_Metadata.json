@@ -1,0 +1,593 @@
+{
+  "version": "0.9",
+  "status": "FOR TEAM REVIEW",
+  "entities": [
+    {
+      "Entity": "subject_profile",
+      "Primary Key": "subject_profile_id",
+      "Default Data Origin": "application_generated",
+      "MVP Priority": "P0",
+      "Description": "Real study participant OR simulated mission crew OR current application player; identity partitions disjoint.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "measurement",
+      "Primary Key": "measurement_id",
+      "Default Data Origin": "real_research",
+      "MVP Priority": "P0",
+      "Description": "One wearable or manually entered single metric; no fabricated values.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "sleep_record",
+      "Primary Key": "sleep_record_id",
+      "Default Data Origin": "real_research",
+      "MVP Priority": "P0",
+      "Description": "Sleep summary from daily Fitbit: distinguish recorded interval duration from minutes actually asleep.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "self_report",
+      "Primary Key": "self_report_id",
+      "Default Data Origin": "application_generated",
+      "MVP Priority": "P0",
+      "Description": "User alertness/mood/symptom/SEMA survey information; never collapse weekly survey into daily report.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "decode_session",
+      "Primary Key": "decode_session_id",
+      "Default Data Origin": "live_decode",
+      "MVP Priority": "P0",
+      "Description": "90-second DSST-inspired task; app events are not LifeSnaps study measurements.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "decode_response_event",
+      "Primary Key": "decode_response_event_id",
+      "Default Data Origin": "live_decode",
+      "MVP Priority": "P0",
+      "Description": "Raw trial-level events; immutable; missed/late inputs not silently counted wrong.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "personal_reference",
+      "Primary Key": "personal_reference_id",
+      "Default Data Origin": "application_generated",
+      "MVP Priority": "P0",
+      "Description": "Transparent comparator using same person, compatible metric, past-only, explicit versioning.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "information_status",
+      "Primary Key": "information_status_id",
+      "Default Data Origin": "application_generated",
+      "MVP Priority": "P0",
+      "Description": "Information usability separated from health follow-up status.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "daily_review",
+      "Primary Key": "daily_review_id",
+      "Default Data Origin": "application_generated",
+      "MVP Priority": "P0",
+      "Description": "Daily summary, no readiness percentage.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "rule_definition",
+      "Primary Key": "rule_definition_id",
+      "Default Data Origin": "application_generated",
+      "MVP Priority": "P0",
+      "Description": "Approved versioned observation and action rules; clinical rules require independent approval.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "finding",
+      "Primary Key": "finding_id",
+      "Default Data Origin": "application_generated",
+      "MVP Priority": "P0",
+      "Description": "Generated factual observation with explicit evidence, rule version and limitations.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "action",
+      "Primary Key": "action_id",
+      "Default Data Origin": "application_generated",
+      "MVP Priority": "P0",
+      "Description": "Action choice independent from inference of recovery.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "follow_up",
+      "Primary Key": "follow_up_id",
+      "Default Data Origin": "application_generated",
+      "MVP Priority": "P0",
+      "Description": "Open/close lifecycle, independent of measurement availability.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "mission_schedule",
+      "Primary Key": "mission_schedule_id",
+      "Default Data Origin": "simulated_mission",
+      "MVP Priority": "P1",
+      "Description": "Task intervals and rest window constraints for mission demo; not measured sleep.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "simulator_scenario",
+      "Primary Key": "simulator_scenario_id",
+      "Default Data Origin": "simulated_mission",
+      "MVP Priority": "P0",
+      "Description": "Reproducible fixtures S1-S5 for 4 invented crew; no cross-link into real people.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "sync_event",
+      "Primary Key": "sync_event_id",
+      "Default Data Origin": "application_generated",
+      "MVP Priority": "P0",
+      "Description": "Offline-first delivery events, never confuse transport with clinical review.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "evidence_source",
+      "Primary Key": "evidence_source_id",
+      "Default Data Origin": "scientific_evidence",
+      "MVP Priority": "P0",
+      "Description": "NASA/research/approved medical plans are evidence, not measurement rows.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "sharing_permission",
+      "Primary Key": "sharing_permission_id",
+      "Default Data Origin": "application_generated",
+      "MVP Priority": "P0",
+      "Description": "Permission/role audit and sharing consent state; separate from package content.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "share_package",
+      "Primary Key": "share_package_id",
+      "Default Data Origin": "application_generated",
+      "MVP Priority": "P0",
+      "Description": "Previewed snapshot for medical review; exclude private notes and planner forbidden data.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "feedback_entry",
+      "Primary Key": "feedback_entry_id",
+      "Default Data Origin": "application_generated",
+      "MVP Priority": "P2",
+      "Description": "MVP feedback loops: tried actions, alert ratings, preference changes; no automatic clinical learning.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    },
+    {
+      "Entity": "knowledge_gap",
+      "Primary Key": "knowledge_gap_id",
+      "Default Data Origin": "application_generated",
+      "MVP Priority": "P1",
+      "Description": "Assistant coverage gaps; questions not knowledge until curated and reviewed.",
+      "Source Docs": "Product Scope 13 Nov 2026; Scope Update 14 Nov 2026; Master Specification 13 Nov 2026"
+    }
+  ],
+  "enums": {
+    "data_origin": [
+      "real_research",
+      "simulated_mission",
+      "live_decode",
+      "application_generated",
+      "scientific_evidence"
+    ],
+    "subject_mode": [
+      "real_research",
+      "mission_simulation",
+      "live_player"
+    ],
+    "information_status": [
+      "no_reading",
+      "incomplete",
+      "not_comparable",
+      "valid"
+    ],
+    "followup_status": [
+      "no_open_follow_up",
+      "watching",
+      "action_open",
+      "review_requested",
+      "under_specialist_review",
+      "closed"
+    ],
+    "reference_status": [
+      "not_built",
+      "provisional",
+      "usable_for_question",
+      "needs_review"
+    ],
+    "role": [
+      "astronaut",
+      "medical",
+      "planner"
+    ],
+    "decode_session_state": [
+      "started",
+      "completed",
+      "interrupted",
+      "aborted"
+    ],
+    "decode_response_state": [
+      "correct",
+      "incorrect",
+      "missed",
+      "late",
+      "duplicate",
+      "interrupted"
+    ],
+    "action_status": [
+      "proposed",
+      "accepted",
+      "in_progress",
+      "completed",
+      "deferred",
+      "rejected"
+    ],
+    "rule_class": [
+      "data_quality",
+      "descriptive_change",
+      "approved_plan",
+      "approved_medical_condition"
+    ],
+    "step_category": [
+      "complete_measurement",
+      "observe",
+      "approved_plan_step",
+      "request_review"
+    ],
+    "sync_status": [
+      "saved_locally",
+      "queued",
+      "sent",
+      "delivered",
+      "reviewed"
+    ],
+    "scenario_code": [
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5"
+    ],
+    "evidence_kind": [
+      "NASA_resource",
+      "published_research",
+      "approved_plan"
+    ]
+  },
+  "relationships": [
+    {
+      "From Entity": "subject_profile",
+      "To Entity": "measurement",
+      "Cardinality": "1:N",
+      "Foreign Key": "measurement.subject_id",
+      "Referential Guard": "same source partition; real research no simulated subject",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "subject_profile",
+      "To Entity": "sleep_record",
+      "Cardinality": "1:N",
+      "Foreign Key": "sleep_record.subject_id",
+      "Referential Guard": "observation_date local only",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "subject_profile",
+      "To Entity": "self_report",
+      "Cardinality": "1:N",
+      "Foreign Key": "self_report.subject_id",
+      "Referential Guard": "weekly surveys not every-day",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "subject_profile",
+      "To Entity": "decode_session",
+      "Cardinality": "1:N",
+      "Foreign Key": "decode_session.subject_id",
+      "Referential Guard": "not research LifeSnaps unless same actual player; no fabricated research joins",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "decode_session",
+      "To Entity": "decode_response_event",
+      "Cardinality": "1:N",
+      "Foreign Key": "decode_response_event.decode_session_id",
+      "Referential Guard": "parent-scoped response sequence",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "subject_profile",
+      "To Entity": "personal_reference",
+      "Cardinality": "1:N",
+      "Foreign Key": "personal_reference.subject_id",
+      "Referential Guard": "previous same subject and metric only",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "measurement",
+      "To Entity": "information_status",
+      "Cardinality": "1:N or 1:1 current",
+      "Foreign Key": "information_status.record_ref",
+      "Referential Guard": "state versioned; status not medical health",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "sleep_record",
+      "To Entity": "information_status",
+      "Cardinality": "1:N or 1:1 current",
+      "Foreign Key": "information_status.record_ref",
+      "Referential Guard": "scoped by record type",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "decode_session",
+      "To Entity": "information_status",
+      "Cardinality": "1:N or 1:1 current",
+      "Foreign Key": "information_status.record_ref",
+      "Referential Guard": "session protocol quality",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "daily_review",
+      "To Entity": "finding",
+      "Cardinality": "1:N",
+      "Foreign Key": "finding.review_id",
+      "Referential Guard": "findings carry rule version",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "rule_definition",
+      "To Entity": "finding",
+      "Cardinality": "1:N",
+      "Foreign Key": "finding.rule_id",
+      "Referential Guard": "approved rule only",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "finding",
+      "To Entity": "action",
+      "Cardinality": "1:N optional",
+      "Foreign Key": "action.finding_id",
+      "Referential Guard": "one main step UI, others remain visible",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "action",
+      "To Entity": "follow_up",
+      "Cardinality": "1:N",
+      "Foreign Key": "follow_up.action_id",
+      "Referential Guard": "action complete != follow-up closed",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "subject_profile",
+      "To Entity": "mission_schedule",
+      "Cardinality": "1:N",
+      "Foreign Key": "mission_schedule.subject_id",
+      "Referential Guard": "simulation only",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "subject_profile",
+      "To Entity": "sharing_permission",
+      "Cardinality": "1:N",
+      "Foreign Key": "sharing_permission.subject_id",
+      "Referential Guard": "service enforced",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "sharing_permission",
+      "To Entity": "share_package",
+      "Cardinality": "1:N",
+      "Foreign Key": "share_package.permission_record_id",
+      "Referential Guard": "preview and consent before transfer",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "share_package",
+      "To Entity": "sync_event",
+      "Cardinality": "1:N",
+      "Foreign Key": "sync_event.share_package_id",
+      "Referential Guard": "states sent/delivered/reviewed distinct",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "simulation_scenario",
+      "To Entity": "subject_profile",
+      "Cardinality": "N:4 demo",
+      "Foreign Key": "simulator_scenario.crew_subject_ids",
+      "Referential Guard": "exactly synthetic crew; labels mandatory",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "evidence_source",
+      "To Entity": "rule_definition",
+      "Cardinality": "1:N",
+      "Foreign Key": "rule_definition.evidence_source_id",
+      "Referential Guard": "sources evidence not direct participant reading",
+      "Decision Status": "FOR TEAM REVIEW"
+    },
+    {
+      "From Entity": "evidence_source",
+      "To Entity": "knowledge_gap",
+      "Cardinality": "1:N optional",
+      "Foreign Key": "knowledge_gap.resolution_source_id",
+      "Referential Guard": "human reviewed before library update",
+      "Decision Status": "FOR TEAM REVIEW"
+    }
+  ],
+  "decisions": [
+    {
+      "Owner": "Ahmed",
+      "Topic": "Identifiers",
+      "Question / decision": "Namespaced string IDs vs UUID and exact JSON nesting; preserve provenance guard",
+      "Impact": "Schema design can proceed provisionally",
+      "Provisional recommendation": "Propose prefix in fixture IDs; keep original source IDs unchanged",
+      "Status": "OPEN / FOR TEAM REVIEW"
+    },
+    {
+      "Owner": "Ahmed",
+      "Topic": "Timestamp contract",
+      "Question / decision": "Use UTC fields for newly collected events; research date plus local hour/unknown offset",
+      "Impact": "Necessary before schema freeze",
+      "Provisional recommendation": "No inferred research UTC",
+      "Status": "OPEN / FOR TEAM REVIEW"
+    },
+    {
+      "Owner": "Ahmed",
+      "Topic": "Hourly duplicates",
+      "Question / decision": "Select dedup resolution retaining conflict and source row lineage",
+      "Impact": "Blocks unqualified hourly import",
+      "Provisional recommendation": "70 duplicate keys; 1 conflicting non-index record",
+      "Status": "OPEN / FOR TEAM REVIEW"
+    },
+    {
+      "Owner": "Ahmed",
+      "Topic": "Null vs missing properties",
+      "Question / decision": "Decide optional property omission vs explicit null consistently",
+      "Impact": "Necessary before implementation",
+      "Provisional recommendation": "Never encode 0 for missing measurements",
+      "Status": "OPEN / FOR TEAM REVIEW"
+    },
+    {
+      "Owner": "Ahmed",
+      "Topic": "TypeScript schemas",
+      "Question / decision": "Confirm names and enum aliases in app before generation",
+      "Impact": "Needed for integration, not for dictionary drafting",
+      "Provisional recommendation": "FOR TEAM REVIEW",
+      "Status": "OPEN / FOR TEAM REVIEW"
+    },
+    {
+      "Owner": "Team",
+      "Topic": "Source version precedence",
+      "Question / decision": "Confirm Scope Update 14 Nov approved; later change supersedes QoL_Stress primary use",
+      "Impact": "Latest update described as discussion / approval not signed",
+      "Provisional recommendation": "Use LifeSnaps primary only provisionally",
+      "Status": "OPEN / FOR TEAM REVIEW"
+    },
+    {
+      "Owner": "Team",
+      "Topic": "Dataset reuse licensing",
+      "Question / decision": "Confirm precise LifeSnaps v4 archive license and what can be republished",
+      "Impact": "Needed before public hosting raw/mapped records",
+      "Provisional recommendation": "Do not put raw participant-level CSV in GitHub/public",
+      "Status": "OPEN / FOR TEAM REVIEW"
+    },
+    {
+      "Owner": "Team",
+      "Topic": "NASA challenge resources",
+      "Question / decision": "Confirm eligible official 2026 challenge Resource and exact feature integration",
+      "Impact": "Needed for final NASA eligibility claim",
+      "Provisional recommendation": "NASA documents are evidence, not sourced astronaut data",
+      "Status": "OPEN / FOR TEAM REVIEW"
+    },
+    {
+      "Owner": "Team",
+      "Topic": "Scope ownership",
+      "Question / decision": "Old Product Scope assigns simulator to Youssef, newer team division says Shaimaa simulator",
+      "Impact": "Clarify owner (not data field schema)",
+      "Provisional recommendation": "No silent reassignment of tasks",
+      "Status": "OPEN / FOR TEAM REVIEW"
+    },
+    {
+      "Owner": "Team",
+      "Topic": "DECODE event conventions",
+      "Question / decision": "Agree focus interruption categories, accepted/late decisions, session duration and platform timing",
+      "Impact": "Required before scoring validation",
+      "Provisional recommendation": "No fabricated RT cutoff",
+      "Status": "OPEN / FOR TEAM REVIEW"
+    },
+    {
+      "Owner": "Shaimaa",
+      "Topic": "Source unit labeling",
+      "Question / decision": "Confirm nightly_temperature Celsius and signed hourly temperature semantics from specific extract/export",
+      "Impact": "Block public physiological temperature cards until verified",
+      "Provisional recommendation": "Store raw value, label source UNVERIFIED",
+      "Status": "OPEN / FOR TEAM REVIEW"
+    },
+    {
+      "Owner": "Shaimaa",
+      "Topic": "Baseline eligibility",
+      "Question / decision": "Document 5 past valid days /14 lookback only as test heuristic, not approved clinical cutoff",
+      "Impact": "Applicable to later Task 4, not schema freeze",
+      "Provisional recommendation": "Insufficient => not comparable",
+      "Status": "OPEN / FOR TEAM REVIEW"
+    },
+    {
+      "Owner": "Team",
+      "Topic": "Rating scale",
+      "Question / decision": "Agree 1–5 vs other feedback code before UI/backend freeze",
+      "Impact": "Low urgency",
+      "Provisional recommendation": "Pure UX, no effect estimation",
+      "Status": "OPEN / FOR TEAM REVIEW"
+    },
+    {
+      "Owner": "Team",
+      "Topic": "MVP priorities",
+      "Question / decision": "Latest update P0 full simulation and P1 LifeSnaps while Product Scope p5 calls 4 domains live",
+      "Impact": "Needs explicit team decision if deployment order diverges",
+      "Provisional recommendation": "Keep data contract for both",
+      "Status": "OPEN / FOR TEAM REVIEW"
+    }
+  ],
+  "audit_file_summary": [
+    {
+      "CSV File": "daily_fitbit_sema_df_unprocessed(1).csv",
+      "Rows": 7410,
+      "Columns": 63,
+      "Participant IDs": 71,
+      "Dates": 283,
+      "Date Range": "2021-04-08 to 2022-01-22",
+      "Duplicate Natural Keys": 0,
+      "Duplicate Nonindex Rows": 0,
+      "SHA-256": "82c84ee495be4b0ff636a8a44271ffb124e2358d9dd52012b529b897f3d54963"
+    },
+    {
+      "CSV File": "hourly_fitbit_sema_df_unprocessed(1).csv",
+      "Rows": 159508,
+      "Columns": 39,
+      "Participant IDs": 71,
+      "Dates": 283,
+      "Date Range": "2021-04-08 to 2022-01-22",
+      "Duplicate Natural Keys": 70,
+      "Duplicate Nonindex Rows": 69,
+      "SHA-256": "99ecc8e2e0a5d7cfd766de835e97aef62b08d1ff767a73185f2d14fed0aed8fd"
+    },
+    {
+      "CSV File": "stai(1).csv",
+      "Rows": 279,
+      "Columns": 6,
+      "Participant IDs": 53,
+      "Dates": 79,
+      "Date Range": "2021-05-31 to 2022-01-25",
+      "Duplicate Natural Keys": 0,
+      "Duplicate Nonindex Rows": 0,
+      "SHA-256": "808341b8262a1e82921eacfc7ad836fbff578e1fbfc127859e6eb134962036c0"
+    },
+    {
+      "CSV File": "panas(1).csv",
+      "Rows": 268,
+      "Columns": 6,
+      "Participant IDs": 51,
+      "Dates": 76,
+      "Date Range": "2021-05-31 to 2022-01-25",
+      "Duplicate Natural Keys": 0,
+      "Duplicate Nonindex Rows": 0,
+      "SHA-256": "f81a4178202e9b869f92dfc8e4b39830d86e5cb68866d5f070f19606c455fd87"
+    }
+  ],
+  "source_links": [
+    "https://zenodo.org/records/7229547",
+    "https://www.nature.com/articles/s41597-022-01764-x",
+    "https://dev.fitbit.com/build/reference/web-api/sleep-v1/"
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "scenario_version": "mission-demo-1",
+  "seed": 42,
+  "simulation_banner": "SIMULATED DATA",
+  "scenario_clock_basis": "UTC demo clock",
+  "review_date": "2026-11-20",
+  "crew": [
+    {
+      "scenario_code": "S1",
+      "subject_id": "sim:crew:01",
+      "crew_label": "Aster Vale (fictional)",
+      "role": "Payload operator",
+      "resting_hr_bpm": 64,
+      "alertness_rating": 4,
+      "sleep_minutes_by_day": {"10": 430, "12": 425, "14": 425, "16": 425, "18": 365, "19": 350, "20": 335},
+      "decode_history": {"median_rt_ms": 620, "attempts": 75, "correct": 69},
+      "decode_today": {"median_rt_ms": 840, "attempts": 60, "correct": 48},
+      "follow_up": {"followup_status": "action_open", "assigned_role": "medical", "step_category": "approved_plan_step"},
+      "expected_outcomes": ["Sleep is 90 minutes below reference", "DECODE median correct RT is 220 ms above reference", "The synthetic plan and open follow-up are visible", "A schedule alternative adds 60 minutes of rest opportunity and requires planner approval"]
+    },
+    {
+      "scenario_code": "S2",
+      "subject_id": "sim:crew:02",
+      "crew_label": "Noor Calder (fictional)",
+      "role": "Systems engineer",
+      "resting_hr_bpm": 67,
+      "alertness_rating": 6,
+      "sleep_minutes_by_day": {"18": 433, "19": 420},
+      "decode_today": {"median_rt_ms": 650, "attempts": 12, "correct": 10, "interrupted_at_ms": 22000},
+      "follow_up": {"followup_status": "action_open", "assigned_role": "astronaut", "step_category": "complete_measurement"},
+      "expected_outcomes": ["Today's sleep is absent", "Interrupted DECODE has no session score or comparison", "Complete measurement takes priority while the existing follow-up remains open"]
+    },
+    {
+      "scenario_code": "S3",
+      "subject_id": "sim:crew:03",
+      "crew_label": "Ivo Sable (fictional)",
+      "role": "Mission planner",
+      "resting_hr_bpm": 61,
+      "alertness_rating": 7,
+      "sleep_minutes_by_day": {"18": 418, "19": 426, "20": 415},
+      "decode_today": {"median_rt_ms": 640, "attempts": 72, "correct": 66},
+      "follow_up": {"followup_status": "watching", "assigned_role": "astronaut", "step_category": "observe"},
+      "expected_outcomes": ["Review has no eligible personal reference", "Every supplied time-only alternative is rejected", "The baseline still offers 360 minutes of calculated rest"]
+    },
+    {
+      "scenario_code": "S4",
+      "subject_id": "sim:crew:04",
+      "crew_label": "Lina Kepler (fictional)",
+      "role": "Habitat specialist",
+      "resting_hr_bpm": 69,
+      "alertness_rating": 7,
+      "sleep_minutes_by_day": {"18": 432, "19": 416, "20": 419},
+      "decode_history": {"median_rt_ms": 620, "attempts": 75, "correct": 69},
+      "decode_today": {"median_rt_ms": 540, "attempts": 75, "correct": 74},
+      "symptom_text": "Fictional report of lightheadedness after standing.",
+      "skin_temperature_c": 35.2,
+      "follow_up": {"followup_status": "review_requested", "assigned_role": "medical", "step_category": "request_review"},
+      "expected_outcomes": ["Specialist review remains the main next step despite faster accurate DECODE", "Unsupported skin temperature is visible with a quality limitation", "An existing review follow-up and restricted record-ID preview are available"]
+    }
+  ]
+}

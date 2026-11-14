@@ -1,0 +1,13 @@
+{
+  "description": "Synthetic DECODE verifier vectors. Response times are offsets from measurement start.",
+  "key": {"a": 1, "b": 2, "c": 3, "d": 4, "e": 5, "f": 6, "g": 7, "h": 8, "i": 9},
+  "events": [
+    {"id": "a0", "trial": 0, "symbol": "a", "answer": 1, "shown": 0, "pressed": 401, "rt": 401, "state": "correct", "accepted": true},
+    {"id": "duplicate", "trial": 0, "symbol": "a", "answer": 1, "shown": 0, "pressed": 408, "rt": 408, "state": "duplicate", "accepted": false},
+    {"id": "b1", "trial": 1, "symbol": "b", "answer": 9, "shown": 1000, "pressed": 1100, "rt": 100, "state": "incorrect", "accepted": true},
+    {"id": "missed", "trial": 2, "symbol": "c", "answer": null, "shown": 2000, "pressed": null, "rt": null, "state": "missed", "accepted": false},
+    {"id": "slow", "trial": 3, "symbol": "d", "answer": 4, "shown": 3000, "pressed": 89700, "rt": 86700, "state": "correct", "accepted": true},
+    {"id": "edge", "trial": 4, "symbol": "e", "answer": 5, "shown": 89800, "pressed": 89999.5, "rt": 199.5, "state": "correct", "accepted": true},
+    {"id": "late", "trial": 4, "symbol": "e", "answer": 5, "shown": 89800, "pressed": 90000, "rt": 200, "state": "late", "accepted": false}
+  ]
+}
