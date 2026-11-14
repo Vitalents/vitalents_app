@@ -1,0 +1,303 @@
+{
+  "schema_version": "1.0",
+  "generated_at_utc": "2026-11-14T09:12:51Z",
+  "generated_by": "science/validate.py",
+  "seed": 42,
+  "areas": {
+    "execution_integrity": {
+      "checks": [
+        {
+          "id": "units_present",
+          "label": "Every measurement has a unit",
+          "method": "Measurements in the five app scenario bundles (S1-S4 exported from the replay, S5 fixture); 'UNVERIFIED' counts as no unit",
+          "value": 1.0,
+          "unit": "rate",
+          "numerator": 20,
+          "denominator": 20,
+          "passed": true,
+          "scenario": null
+        },
+        {
+          "id": "timestamps_ordered",
+          "label": "Timestamps are in order",
+          "method": "Decode start before end and end minus start equal to the monotonic elapsed time; stimulus before response; schedule start before end; follow-up opened before its review date; reference period before its target date",
+          "value": 1.0,
+          "unit": "rate",
+          "numerator": 1779,
+          "denominator": 1779,
+          "passed": true,
+          "scenario": null
+        },
+        {
+          "id": "versions_recorded",
+          "label": "Rule, reference, protocol and scenario versions are recorded",
+          "method": "Status ruleset, reference version, finding rule version, Decode protocol, key and app version, scenario version",
+          "value": 1.0,
+          "unit": "rate",
+          "numerator": 149,
+          "denominator": 149,
+          "passed": true,
+          "scenario": null
+        },
+        {
+          "id": "schema_valid",
+          "label": "Records match the data contract",
+          "method": "Each record in the five app scenario bundles (S1-S4 exported from the replay, S5 fixture) against contracts/*.schema.json",
+          "value": 1.0,
+          "unit": "rate",
+          "numerator": 1978,
+          "denominator": 1978,
+          "passed": true,
+          "scenario": null
+        },
+        {
+          "id": "id_realm_rules",
+          "label": "ID and realm rules hold in every bundle",
+          "method": "scripts/validate_data.py rules: unique IDs, one realm per subject, no cross-realm links, provenance matches realm",
+          "value": 1.0,
+          "unit": "rate",
+          "numerator": 5,
+          "denominator": 5,
+          "passed": true,
+          "scenario": null
+        },
+        {
+          "id": "decode_ledgers_verified",
+          "label": "Decode scores recomputed from their response ledgers",
+          "method": "science/decode.py verify() on every replayed session with the capture seal; stored summary equals the recomputed one",
+          "value": 1.0,
+          "unit": "rate",
+          "numerator": 24,
+          "denominator": 24,
+          "passed": true,
+          "scenario": null
+        },
+        {
+          "id": "information_status_reproduced",
+          "label": "Stored information statuses reproduced by the status engine",
+          "method": "science/status.py evaluate() on each record of the exported S1-S4 bundles with its subject and ledger context",
+          "value": 1.0,
+          "unit": "rate",
+          "numerator": 44,
+          "denominator": 44,
+          "passed": true,
+          "scenario": null
+        },
+        {
+          "id": "s5_fixture_status_reproduced",
+          "label": "Hand-made S5 fixture statuses reproduced by the status engine",
+          "method": "Same check on the hand-made S5 fixture; its Decode sessions carry no response events, so the engine cannot verify them (listed in science/tests/test_fixtures_status.py)",
+          "value": 0.7045454545454546,
+          "unit": "rate",
+          "numerator": 31,
+          "denominator": 44,
+          "passed": false,
+          "scenario": "S5"
+        },
+        {
+          "id": "permission_tests",
+          "label": "Role permission tests",
+          "method": "Run by the app test suite (app/src/store/permissions.test.ts, npm test); this script does not run TypeScript tests",
+          "value": null,
+          "unit": "rate",
+          "numerator": null,
+          "denominator": null,
+          "passed": null,
+          "scenario": null
+        },
+        {
+          "id": "sync_dedupe_test",
+          "label": "Resending a summary creates no duplicate",
+          "method": "Run by the app test suite (app/src/sync, npm test); this script does not run TypeScript tests",
+          "value": null,
+          "unit": "rate",
+          "numerator": null,
+          "denominator": null,
+          "passed": null,
+          "scenario": null
+        },
+        {
+          "id": "golden_vectors_python",
+          "label": "Shared test vectors reproduced in Python",
+          "method": "science/contract_logic.py on every file in contracts/vectors/ (score_decode, build_reference, compare_to_reference, rest_opportunity), tolerance from each file",
+          "value": 1.0,
+          "unit": "rate",
+          "numerator": 10,
+          "denominator": 10,
+          "passed": true,
+          "scenario": null
+        }
+      ]
+    },
+    "measurement_analysis": {
+      "checks": [
+        {
+          "id": "holdout_no_overlap",
+          "label": "Training and held-out sets share no member and no day",
+          "method": "Training member sim:crew:04 on days before 2026-11-20; held-out members sim:crew:01, sim:crew:02, sim:crew:03 on 2026-11-20 only",
+          "value": 0,
+          "unit": "count",
+          "numerator": null,
+          "denominator": null,
+          "passed": true,
+          "scenario": null
+        },
+        {
+          "id": "reference_from_earlier_days",
+          "label": "Personal references use earlier days only",
+          "method": "Every source record of every replayed reference candidate (science/reference.py) is dated before the target day",
+          "value": 1.0,
+          "unit": "rate",
+          "numerator": 5,
+          "denominator": 5,
+          "passed": true,
+          "scenario": null
+        },
+        {
+          "id": "reference_no_absorb_s1",
+          "label": "The reference does not absorb the S1 decline",
+          "method": "S1 Decode reference has a freeze decision, the follow-up is open, and today's session is not among its sources",
+          "value": null,
+          "unit": null,
+          "numerator": null,
+          "denominator": null,
+          "passed": true,
+          "scenario": "S1"
+        },
+        {
+          "id": "detection_hits",
+          "label": "Simulated changes found by the personal reference on held-out members",
+          "method": "Training member sim:crew:04 on days before 2026-11-20; held-out members sim:crew:01, sim:crew:02, sim:crew:03 on 2026-11-20 only; a simulated change is a replay member whose fixture sets today's median_correct_rt_ms apart from its history; found = the rules engine reports a descriptive change against the personal reference",
+          "value": 1,
+          "unit": "count",
+          "numerator": 1,
+          "denominator": 1,
+          "passed": null,
+          "scenario": null
+        },
+        {
+          "id": "detection_false_alarms",
+          "label": "Flags on held-out member-days without a simulated change",
+          "method": "Training member sim:crew:04 on days before 2026-11-20; held-out members sim:crew:01, sim:crew:02, sim:crew:03 on 2026-11-20 only; personal reference",
+          "value": 0,
+          "unit": "count",
+          "numerator": 0,
+          "denominator": 1,
+          "passed": null,
+          "scenario": null
+        },
+        {
+          "id": "fixed_threshold_hits",
+          "label": "Simulated changes found by one fixed band for everyone",
+          "method": "Training member sim:crew:04 on days before 2026-11-20; held-out members sim:crew:01, sim:crew:02, sim:crew:03 on 2026-11-20 only; flagged when outside the fixed band",
+          "value": 1,
+          "unit": "count",
+          "numerator": 1,
+          "denominator": 1,
+          "passed": null,
+          "scenario": null
+        },
+        {
+          "id": "fixed_threshold_false_alarms",
+          "label": "Fixed-band flags without a simulated change",
+          "method": "Training member sim:crew:04 on days before 2026-11-20; held-out members sim:crew:01, sim:crew:02, sim:crew:03 on 2026-11-20 only; flagged when outside the fixed band",
+          "value": 1,
+          "unit": "count",
+          "numerator": 1,
+          "denominator": 1,
+          "passed": null,
+          "scenario": null
+        },
+        {
+          "id": "detection_lead_days_median",
+          "label": "Days the personal reference flags before the fixed band, median",
+          "method": "Over hits flagged by both methods; the replay scores one later day per member, so the lead can only be 0",
+          "value": 0,
+          "unit": "days",
+          "numerator": null,
+          "denominator": 1,
+          "passed": null,
+          "scenario": null
+        },
+        {
+          "id": "detection_not_scorable",
+          "label": "Held-out member-days that could not be scored",
+          "method": "A session whose information status is not valid (for example interrupted) is never scored",
+          "value": 1,
+          "unit": "count",
+          "numerator": null,
+          "denominator": 3,
+          "passed": null,
+          "scenario": null
+        },
+        {
+          "id": "detection_threshold",
+          "label": "Fixed band for everyone, upper edge (median_correct_rt_ms)",
+          "method": "One fixed band for everyone: min-max of the training member's 10 valid session medians before 2026-11-20 = 620-620 ms",
+          "value": 620,
+          "unit": "ms",
+          "numerator": null,
+          "denominator": null,
+          "passed": null,
+          "scenario": null
+        }
+      ]
+    },
+    "knowledge_assistant": null,
+    "use": {
+      "checks": [
+        {
+          "id": "daily_check_seconds_median",
+          "label": "Daily check time, median",
+          "method": "Not computable: the replay stores one submission time for each of its 4 daily checks and no start time; the 3-minute target (NFR-02) needs the timed hallway test",
+          "value": null,
+          "unit": "s",
+          "numerator": null,
+          "denominator": 0,
+          "passed": null,
+          "scenario": null
+        },
+        {
+          "id": "decode_round_seconds_median",
+          "label": "Decode round length from its timestamps, median",
+          "method": "End minus start UTC of every completed replayed session",
+          "value": 90.0,
+          "unit": "s",
+          "numerator": null,
+          "denominator": 23,
+          "passed": null,
+          "scenario": null
+        },
+        {
+          "id": "alerts_per_member_month",
+          "label": "Findings per member-month in the replay",
+          "method": "11 findings over 28 simulated member-days (30 days = one month); every finding kind counts",
+          "value": 11.785714285714286,
+          "unit": "per member-month",
+          "numerator": 11,
+          "denominator": null,
+          "passed": null,
+          "scenario": null
+        },
+        {
+          "id": "follow_up_completion",
+          "label": "Follow-ups completed in the scenarios",
+          "method": "Replay follow-ups S1-S4 with status closed; the scenarios end while follow-ups are open",
+          "value": 0.0,
+          "unit": "rate",
+          "numerator": 0,
+          "denominator": 4,
+          "passed": null,
+          "scenario": null
+        }
+      ]
+    }
+  },
+  "illustrative_parameters": [
+    "science/simulator.py DEMO_POLICIES['sleep']: sim-sleep-v1, 5 valid days within 14 (demo policy)",
+    "science/simulator.py DEMO_POLICIES['decode']: sim-decode-v1, 5 valid days within 14 (demo policy)",
+    "science/fixtures/mission_s1_s4.json: every crew value is a fictional fixture input",
+    "science/validate.py TRAINING_CREW = sim:crew:04 (sets the fixed band)",
+    "science/validate.py detection metric = median_correct_rt_ms; fixed band = training min-max"
+  ]
+}
