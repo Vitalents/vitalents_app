@@ -46,3 +46,24 @@ def test_diagnosis_questions_are_refused_before_retrieval():
     c = _client()
     r = c.post("/ask", json={"question": yes[0]}).json()
     assert r["status"] == "blocked" and "Request help" in r["limits"]
+
+
+def test_corpus_keeps_only_verbatim_quotes():
+    note = """# Title
+
+Publisher: NASA
+URL: https://example.org
+Licence: US government work
+
+## Verbatim excerpts (NASA, US government work)
+
+- [p. 1] "Quoted sentence one."
+
+## Neutral summary (written by the library agent from this source; not a quotation; needs review)
+
+A paraphrase that must never be cited.
+"""
+    kept = ask_nasa.quoted_sections(note)
+    assert '"Quoted sentence one."' in kept
+    assert "Publisher" not in kept and "paraphrase" not in kept and "Licence" not in kept
+    assert ask_nasa.quoted_sections("plain text without headings") == "plain text without headings"

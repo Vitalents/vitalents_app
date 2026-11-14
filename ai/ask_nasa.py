@@ -235,6 +235,26 @@ def is_diagnosis_question(q: str) -> bool:
     return bool(DIAGNOSIS_Q.search(q or ""))
 
 
+def quoted_sections(markdown: str) -> str:
+    """Keep only the verbatim-quote sections of a corpus note.
+
+    The file header (title, publisher, URL, licence) is already in sources.json, and the library agent's
+    "Neutral summary" is a paraphrase, not the source: neither may be retrieved or cited as evidence.
+    Notes without section headings are kept as they are (plain text or PDF-derived files).
+    """
+    if not re.search(r"^## ", markdown, re.M):
+        return markdown
+    keep, out = False, []
+    for line in markdown.splitlines():
+        if line.startswith("## "):
+            title = line[3:].strip().lower()
+            keep = ("verbatim" in title or "excerpt" in title or "quote" in title) and "summary" not in title
+            continue
+        if keep:
+            out.append(line)
+    return "\n".join(out).strip()
+
+
 def fence(text: str) -> str:
     """Neutralise tag-like text inside a source so it can't close or open the data delimiters."""
     return re.sub(r"<\s*(/?)\s*(sources?|system|instructions?|crew_data|question)\b", r"&lt;\1\2", text, flags=re.I)
@@ -308,7 +328,10 @@ def build(corpus: pathlib.Path | None = None, index: pathlib.Path | None = None)
 
             pages = PyPDFLoader(str(path)).load()
         elif path.suffix.lower() in (".md", ".txt"):
-            pages = [Document(page_content=path.read_text(encoding="utf-8"), metadata={"page": 0})]
+            text = quoted_sections(path.read_text(encoding="utf-8"))
+            if not text.strip():
+                continue
+            pages = [Document(page_content=text, metadata={"page": 0})]
         else:
             continue
         for p in pages:
