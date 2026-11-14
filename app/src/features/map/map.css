@@ -25,3 +25,34 @@
 
 .legend-due { align-items: flex-start; }
 .legend-due-marks { display: inline-flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; flex-basis: 100%; }
+
+/* One next step from the actual measurement plan, separate from the family story. */
+.today-start { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin: 0 0 2rem; background: var(--card); }
+.today-task { padding: clamp(1.25rem, 2.5vw, 2rem); background: var(--tint-soft); display: grid; align-content: start; justify-items: start; gap: 0.8rem; }
+.today-task h2 { font-family: var(--font-display); font-size: clamp(1.7rem, 2.5vw, 2.3rem); line-height: 1.12; max-width: 24ch; margin: 0; text-wrap: balance; }
+.today-task p { max-width: 48ch; margin: 0; color: var(--ink); }
+.today-task .btn { margin-top: 0.25rem; text-decoration: none; }
+.today-home { padding: clamp(1.25rem, 2.5vw, 2rem); display: grid; align-content: center; gap: 0.5rem; border-left: 1px solid var(--line); }
+.today-home h2 { font-family: var(--font-display); font-size: 1.25rem; margin: 0; }
+.today-home p { font-size: 0.9rem; color: var(--muted); max-width: 36ch; margin: 0; }
+.today-home .link-btn { width: fit-content; text-underline-offset: 0.2em; }
+.map-section-head { margin-bottom: 1rem; }
+.map-section-head h2 { font-size: 1.25rem; margin-bottom: 0.3rem; }
+.map-section-head p { font-size: 0.9rem; max-width: 65ch; margin: 0; }
+.today-page .map-grid { grid-template-columns: minmax(230px, 0.9fr) minmax(0, 1.7fr); gap: 1.5rem; }
+.today-page .map-card { box-shadow: none; background: transparent; }
+.today-page .bodymap { max-width: 270px; }
+.today-page .domain-row { box-shadow: none; min-height: 76px; }
+.map-legend summary { cursor: pointer; min-height: 44px; align-content: center; color: var(--deep); font-weight: 600; }
+.map-legend[open] summary { margin-bottom: 0.5rem; }
+@media (max-width: 1100px) {
+  .today-page .map-grid { grid-template-columns: minmax(190px, 0.8fr) minmax(0, 1.4fr); gap: 1rem; }
+}
+@media (max-width: 960px) and (min-width: 761px), (max-width: 560px) {
+  .today-start { grid-template-columns: 1fr; }
+  .today-home { border-left: 0; border-top: 1px solid var(--line); padding-block: 1rem; }
+  .today-home p { max-width: 52ch; }
+  .today-page .map-grid { grid-template-columns: 1fr; }
+  .today-page .map-card { order: 2; }
+  .today-page .domain-list { order: 1; }
+}

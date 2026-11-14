@@ -1,27 +1,156 @@
 {
-  "content_version": "1.0-draft",
-  "review_status": "TODO(review: Amr reads all 20 for tone. Rules for this file: shown after every completed Decode round whatever the result (FR-DEC-09); no health or sleep talk, no score or result talk, no judgement, no real names, no agency names or insignia.)",
+  "content_version": "2.0-story",
+  "review_status": "Fictional mission story for the demo. Access is independent of Decode performance, completion and storage. Local prepared content; no delivery event.",
   "display": "{from}: {text}",
   "messages": [
-    { "id": "msg-01", "from": "Ground team", "text": "The photos from the window last night made our whole shift. Thank you for sending them." },
-    { "id": "msg-02", "from": "From home", "text": "The kids drew the station on the fridge again. You're in the top corner, waving." },
-    { "id": "msg-03", "from": "Mission control", "text": "The long-range antenna test finished on schedule. Thanks for your help with yesterday's setup." },
-    { "id": "msg-04", "from": "From your training class", "text": "We watched the docking replay together. Same jokes as always." },
-    { "id": "msg-05", "from": "Ground team", "text": "It rained here all morning. We are saving the view from the roof for when you're back." },
-    { "id": "msg-06", "from": "From home", "text": "Your balcony plants are doing well. Apparently better than the ones up there." },
-    { "id": "msg-07", "from": "From the night shift", "text": "The station passed right over us tonight, and everyone in the room waved at the ceiling." },
-    { "id": "msg-08", "from": "From home", "text": "The neighbours asked about you again. They want to hear every story when you visit." },
-    { "id": "msg-09", "from": "Ground team", "text": "Someone brought homemade bread to the control room today. We saved a slice in your name." },
-    { "id": "msg-10", "from": "From your old school", "text": "The science club built the station out of cardboard. It even has a hatch that opens." },
-    { "id": "msg-11", "from": "From home", "text": "The cat has been sitting on your chair all week. We think she is keeping it warm for you." },
-    { "id": "msg-12", "from": "Mission control", "text": "Your sunrise pictures are now the background on half the screens in this room." },
-    { "id": "msg-13", "from": "From home", "text": "We tried your soup recipe tonight. It wasn't quite the same without you in the kitchen." },
-    { "id": "msg-14", "from": "Ground team", "text": "A school group visited and asked what the stars look like from up there. We told them to wait for your answer." },
-    { "id": "msg-15", "from": "From your training class", "text": "We found the old photo from field training. Everyone in it still looks lost." },
-    { "id": "msg-16", "from": "From home", "text": "The lemon tree finally has flowers. A picture is on its way to you." },
-    { "id": "msg-17", "from": "Ground team", "text": "Clear skies tonight. A few of us went outside to look for the station as it went by." },
-    { "id": "msg-18", "from": "From home", "text": "Your nephew learned the names of all the planets so he could explain your job to his friends." },
-    { "id": "msg-19", "from": "Mission control", "text": "The note you sent the team last week is pinned on the wall by the coffee machine." },
-    { "id": "msg-20", "from": "From home", "text": "There is a map on the wall now, and every evening someone moves a small pin to show where you are." }
+    {
+      "id": "msg-01",
+      "from": "Ground team",
+      "text": "The photos from the window last night made our whole shift. Thank you for sending them."
+    },
+    {
+      "id": "msg-02",
+      "from": "From home",
+      "text": "The kids drew the station on the fridge again. You're in the top corner, waving."
+    },
+    {
+      "id": "msg-03",
+      "from": "Mission control",
+      "text": "The long-range antenna test finished on schedule. Thanks for your help with yesterday's setup."
+    },
+    {
+      "id": "msg-04",
+      "from": "From your training class",
+      "text": "We watched the docking replay together. Same jokes as always."
+    },
+    {
+      "id": "msg-05",
+      "from": "Ground team",
+      "text": "It rained here all morning. We are saving the view from the roof for when you're back."
+    },
+    {
+      "id": "msg-06",
+      "from": "From home",
+      "text": "Your balcony plants are doing well. Apparently better than the ones up there."
+    },
+    {
+      "id": "msg-07",
+      "from": "From the night shift",
+      "text": "The station passed right over us tonight, and everyone in the room waved at the ceiling."
+    },
+    {
+      "id": "msg-08",
+      "from": "From home",
+      "text": "The neighbours asked about you again. They want to hear every story when you visit."
+    },
+    {
+      "id": "msg-09",
+      "from": "Ground team",
+      "text": "Someone brought homemade bread to the control room today. We saved a slice in your name."
+    },
+    {
+      "id": "msg-10",
+      "from": "From your old school",
+      "text": "The science club built the station out of cardboard. It even has a hatch that opens."
+    },
+    {
+      "id": "msg-11",
+      "from": "From home",
+      "text": "The cat has been sitting on your chair all week. We think she is keeping it warm for you."
+    },
+    {
+      "id": "msg-12",
+      "from": "Mission control",
+      "text": "Your sunrise pictures are now the background on half the screens in this room."
+    },
+    {
+      "id": "msg-13",
+      "from": "From home",
+      "text": "We tried your soup recipe tonight. It wasn't quite the same without you in the kitchen."
+    },
+    {
+      "id": "msg-14",
+      "from": "Ground team",
+      "text": "A school group visited and asked what the stars look like from up there. We told them to wait for your answer."
+    },
+    {
+      "id": "msg-15",
+      "from": "From your training class",
+      "text": "We found the old photo from field training. Everyone in it still looks lost."
+    },
+    {
+      "id": "msg-16",
+      "from": "From home",
+      "text": "The lemon tree finally has flowers. A picture is on its way to you."
+    },
+    {
+      "id": "msg-17",
+      "from": "Ground team",
+      "text": "Clear skies tonight. A few of us went outside to look for the station as it went by."
+    },
+    {
+      "id": "msg-18",
+      "from": "From home",
+      "text": "Your nephew learned the names of all the planets so he could explain your job to his friends."
+    },
+    {
+      "id": "msg-19",
+      "from": "Mission control",
+      "text": "The note you sent the team last week is pinned on the wall by the coffee machine."
+    },
+    {
+      "id": "msg-20",
+      "from": "From home",
+      "text": "There is a map on the wall now, and every evening someone moves a small pin to show where you are."
+    }
+  ],
+  "stories": [
+    {
+      "id": "home-drawing-v1",
+      "story_id": "fahim-home",
+      "mission_day": 27,
+      "locale": "en",
+      "fictional": true,
+      "sender_label": "Your daughter",
+      "title": "The biggest star is yours.",
+      "transcript": "Hi Dad! I made you a drawing today. It is on the fridge, right beside your photo. I gave you the biggest star. Send me a little story when you can. I miss you.",
+      "image": {
+        "src": "/media/decode/daughter-home-v1.webp",
+        "alt": "A fictional daughter holding a colourful drawing at home.",
+        "caption": "A little piece of home."
+      },
+      "audio": {
+        "src": "/media/decode/daughter-message-v1.mp3",
+        "production": "synthetic"
+      },
+      "next_episode_id": "home-old-friend-v1",
+      "teaser_text": "Someone else has a story for you tomorrow. Any guesses?",
+      "subject_scopes": [
+        "sim:crew:fahim",
+        "sim:crew:c2",
+        "sim:crew:c3",
+        "sim:crew:c4"
+      ],
+      "actor_subject_id": "sim:crew:fahim",
+      "observer_sender_label": "Fahim’s daughter"
+    },
+    {
+      "id": "home-old-friend-v1",
+      "story_id": "fahim-home",
+      "mission_day": 28,
+      "locale": "en",
+      "fictional": true,
+      "sender_label": "An old friend",
+      "title": "Some things never change.",
+      "transcript": "Remember the tiny café near our old training room? I went back today. Same crooked table, same terrible clock, same excellent tea. I saved the window seat for our next visit. There is a lot to catch up on.",
+      "subject_scopes": [
+        "sim:crew:fahim",
+        "sim:crew:c2",
+        "sim:crew:c3",
+        "sim:crew:c4"
+      ],
+      "actor_subject_id": "sim:crew:fahim",
+      "observer_sender_label": "Fahim’s old friend"
+    }
   ]
 }

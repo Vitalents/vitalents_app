@@ -1,5 +1,6 @@
 // Result (FR-DEC-10/11): the Decode result BESIDE today's self-rating (ValuePair), never combined, with the data status.
 import type { DecodeSession, PersonalReference } from '../../data/contract'
+import { Link } from 'react-router-dom'
 import { TASK_VERSION, type Quality } from '../../engine/decodeSession'
 import { compareToReference } from '../../engine/reference'
 import { S } from './strings'
@@ -24,6 +25,7 @@ export function ResultView(props: {
   selfRating: number | null
   reference: PersonalReference | null
   onAgain: () => void
+  onStory?: () => void
 }) {
   const { session, quality, selfRating, reference } = props
   const comparable = quality.status === 'valid' && !session.is_practice
@@ -54,6 +56,9 @@ export function ResultView(props: {
               <span className="dc-small dc-block-text">{S.comparisonLimits}</span>
             </p>
           )}
+          {comparable && (!cmp || cmp.position === 'not_comparable') && <p className="dc-reference-note">
+            {reference?.reference_status === 'provisional' ? S.referencePending : S.noReference}
+          </p>}
           <details className="dc-why">
             <summary>{S.why}</summary>
             <p>{S.whyCounted(session.accepted_responses ?? 0, session.correct_count ?? 0)}</p>
@@ -73,7 +78,11 @@ export function ResultView(props: {
         <p>{S.sideBySide}</p>
         <p className="dc-small">{S.validationLabel}</p>
       </div>
-      <button type="button" className="dc-btn dc-btn-secondary" onClick={props.onAgain}>{S.playAgain}</button>
+      <div className="dc-result-actions">
+        <Link className="dc-btn" to="/review">{S.reviewDay}</Link>
+        {props.onStory && <button type="button" className="dc-text-button" onClick={props.onStory}>{S.openStory}</button>}
+        <button type="button" className="dc-text-button" onClick={props.onAgain}>{S.playAgain}</button>
+      </div>
     </section>
   )
 }

@@ -1,3 +1,11 @@
+/* Canonical brand display face; self-hosted for the offline app. */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  src: url('/brand/bricolage-semibold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
 /* Vitalents design tokens (NFR-13). Amr's app/src/ui will build on these names. */
 :root {
   --ink: #18363d;
@@ -35,6 +43,7 @@
 
   --font-head: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-body: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Bricolage Grotesque', 'Instrument Sans', sans-serif;
   /* Arabic (RTL) later: 'Noto Sans Arabic' via @fontsource/noto-sans-arabic, as in the brand files. */
   --font-ar: 'Noto Sans Arabic', 'Instrument Sans', system-ui, sans-serif;
   --brand-cover: #31b9d4; /* the teal of the brand covers; ink text on it */

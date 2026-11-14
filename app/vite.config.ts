@@ -20,7 +20,9 @@ export default defineConfig({
       manifest: false, // hand-written: public/manifest.webmanifest, linked from index.html
       workbox: {
         globPatterns: [
-          '**/*.{js,css,html,woff2,svg,png,webmanifest}',
+          '**/*.{js,css,html,woff,woff2,svg,png,webmanifest}',
+          'media/decode/daughter-home-v1.webp',
+          'media/decode/daughter-message-v1.mp3',
           'data/fixtures/*.json',
           'data/cached_answers.json',
         ],

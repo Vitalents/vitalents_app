@@ -1,5 +1,5 @@
 // Daily check (FR-CHK-01..03): imported sleep with its source, alertness 1-10, mood, private note.
-import { useState, type KeyboardEvent } from 'react'
+import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import type { SelfReport, SleepRecord } from '../../data/contract'
 import { useStore } from '../../store/store'
 import { S } from '../decode/strings'
@@ -64,14 +64,24 @@ export function DailyCheck({ ctx, onDone }: { ctx: CheckContext; onDone: () => v
   const [mood, setMood] = useState<string | null>(null)
   const [note, setNote] = useState('')
   const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState(false)
+  const pendingId = useRef<string | null>(null)
+  const saveLock = useRef(false)
+  const mounted = useRef(true)
+  useEffect(() => {
+    mounted.current = true
+    return () => { mounted.current = false }
+  }, [])
 
   const save = async () => {
-    if (alertness === null) return
+    if (alertness === null || saveLock.current) return
+    saveLock.current = true
     setSaving(true)
+    setSaveError(false)
     const realm = ctx.subjectId.split(':', 1)[0]
     const now = new Date().toISOString()
     const rec: SelfReport = {
-      self_report_id: `${realm}:self_report:${crypto.randomUUID()}`,
+      self_report_id: pendingId.current ?? `${realm}:self_report:${crypto.randomUUID()}`,
       schema_version: '1.0',
       subject_id: ctx.subjectId,
       data_origin: 'application_generated',
@@ -85,9 +95,16 @@ export function DailyCheck({ ctx, onDone }: { ctx: CheckContext; onDone: () => v
       mood_code: mood,
       private_note: note.trim() ? note.trim() : null,
     }
-    await put('self_report', [rec])
-    setSaving(false)
-    onDone()
+    pendingId.current = rec.self_report_id
+    try {
+      await put('self_report', [rec])
+      if (mounted.current) onDone()
+    } catch {
+      if (mounted.current) setSaveError(true)
+    } finally {
+      saveLock.current = false
+      if (mounted.current) setSaving(false)
+    }
   }
 
   const hours = sleep?.recorded_interval_ms != null ? (sleep.recorded_interval_ms / 3_600_000).toFixed(1) : null
@@ -125,7 +142,7 @@ export function DailyCheck({ ctx, onDone }: { ctx: CheckContext; onDone: () => v
         </div>
       )}
 
-      <fieldset className="dc-block">
+      <fieldset className="dc-block" disabled={saving}>
         <legend><SectionHead n={2} title={S.alertnessTitle} /></legend>
         <div className="dc-scale" role="radiogroup" aria-label={S.alertnessTitle}>
           {SCALE.map((n) => (
@@ -146,7 +163,7 @@ export function DailyCheck({ ctx, onDone }: { ctx: CheckContext; onDone: () => v
         <p className="dc-small">{S.alertnessScale}</p>
       </fieldset>
 
-      <fieldset className="dc-block">
+      <fieldset className="dc-block" disabled={saving}>
         <legend><SectionHead n={3} title={S.moodTitle} /></legend>
         <div className="dc-pills" role="radiogroup" aria-label={S.moodTitle}>
           {S.moods.map((m) => (
@@ -161,12 +178,13 @@ export function DailyCheck({ ctx, onDone }: { ctx: CheckContext; onDone: () => v
 
       <div className="dc-block">
         <label htmlFor="dc-note"><SectionHead n={4} title={S.noteTitle} /></label>
-        <textarea id="dc-note" className="dc-textarea" rows={3} value={note} onChange={(e) => setNote(e.target.value)} />
+        <textarea id="dc-note" className="dc-textarea" rows={3} value={note} disabled={saving} onChange={(e) => setNote(e.target.value)} />
         <p className="dc-small">{S.noteHelp}</p>
       </div>
 
-      <button type="button" className="dc-btn" disabled={alertness === null || saving} onClick={save}>
-        {S.saveCheck}
+      {saveError && <p className="dc-save-error" role="alert">{S.saveCheckError}</p>}
+      <button type="button" className="dc-btn" disabled={alertness === null || saving} onClick={() => void save()}>
+        {saving ? S.savingCheck : S.saveCheck}
       </button>
     </section>
   )

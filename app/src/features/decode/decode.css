@@ -167,11 +167,6 @@
 .dc-digit:disabled { opacity: 0.5; }
 
 /* After the round */
-.dc-message {
-  margin: 0; font-family: var(--font-head, 'Instrument Sans', ui-sans-serif, system-ui, sans-serif); font-size: 1.375rem; line-height: 1.35;
-  border-left: 3px solid var(--dc-deep); padding-left: 16px; max-width: 40ch;
-}
-.dc-streak { font-weight: 600; }
 .dc-side { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; }
 @media (max-width: 600px) { .dc-side { grid-template-columns: 1fr; } }
 .dc-panel { border: 1px solid var(--dc-line); border-radius: 12px; padding: 16px; display: grid; gap: 12px; align-content: start; min-width: 0; }
@@ -192,3 +187,71 @@
 .dc-page .eyebrow { margin-bottom: -8px; }
 .dc-page .emblem { justify-self: start; }
 .dc-unit-tight { margin-left: 1px; }
+
+/* The personal letter is a quiet ending. These styles do not animate the round. */
+.dc-page-story { max-width: 1120px; }
+.dc-page, .dc-card, .dc-reward { min-width: 0; }
+.dc-page h2:focus { outline: none; }
+.dc-btn { text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
+.dc-text-button {
+  appearance: none; background: none; border: 0; border-radius: 4px; color: var(--dc-deep);
+  font: inherit; font-weight: 600; text-align: left; padding: 10px 0; min-height: 44px;
+  text-decoration: underline; text-underline-offset: 4px; text-decoration-color: transparent; cursor: pointer;
+}
+.dc-text-button:hover { text-decoration-color: currentColor; }
+.dc-story-entry { display: flex; align-items: baseline; gap: 8px 20px; flex-wrap: wrap; border-top: 1px solid var(--dc-line); padding-top: 8px; }
+.dc-story-entry > span { font-size: .875rem; color: var(--dc-muted); }
+.dc-save-note { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 20px; color: var(--dc-muted); font-size: .875rem; }
+.dc-save-error { color: var(--dc-review); }
+.dc-reward { display: grid; gap: 24px; }
+.dc-reward-top { display: flex; gap: 16px; align-items: baseline; justify-content: space-between; color: var(--dc-muted); }
+.dc-reward-top p { color: var(--dc-deep); font-weight: 600; }
+.dc-reward-top > span { font-size: .875rem; }
+.dc-letter { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); background: var(--dc-card); border: 1px solid var(--dc-line); border-radius: 16px; overflow: hidden; }
+.dc-letter-photo { margin: 0; display: grid; grid-template-rows: 1fr auto; background: var(--dc-paper); min-width: 0; }
+.dc-letter-photo img { display: block; width: 100%; height: 100%; min-height: 360px; max-height: 600px; object-fit: cover; object-position: center 38%; }
+.dc-letter-photo figcaption { padding: 14px 24px; color: var(--dc-muted); font-size: .875rem; }
+.dc-photo-fallback { min-height: 340px; padding: 32px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 24px; text-align: center; color: var(--dc-muted); }
+.dc-letter-body { padding: clamp(24px, 3.5vw, 48px); display: flex; flex-direction: column; gap: 24px; align-items: flex-start; min-width: 0; }
+.dc-letter-from { color: var(--dc-deep); font-size: 1rem; font-weight: 600; }
+.dc-letter-body h2 { font-family: var(--font-display, var(--font-head, 'Instrument Sans', sans-serif)); font-size: clamp(2rem, 3vw, 2.75rem); line-height: 1.08; max-width: 13ch; letter-spacing: -.03em; }
+.dc-letter-body .dc-letter-transcript { font-size: clamp(1rem, 1.65vw, 1.125rem); line-height: 1.75; max-width: 40ch; }
+.dc-letter-audio { width: 100%; margin-top: auto; display: grid; gap: 8px; }
+.dc-audio-label { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: .875rem; font-weight: 600; color: var(--dc-deep); font-variant-numeric: tabular-nums; }
+.dc-letter-audio audio { display: block; width: 100%; max-width: 100%; height: 44px; border-radius: 8px; }
+.dc-letter-body .dc-story-disclosure { font-size: .75rem; line-height: 1.5; color: var(--dc-muted); }
+.dc-letter-text { grid-template-columns: 1fr; }
+.dc-letter-text .dc-letter-body { min-height: 360px; padding: clamp(24px, 5vw, 64px); }
+.dc-letter-text .dc-letter-transcript { max-width: 58ch; }
+.dc-letter-text .dc-story-disclosure { margin-top: auto; }
+.dc-next-story { display: flex; align-items: center; gap: 20px; padding: 20px 0; border-top: 1px solid var(--dc-line); border-bottom: 1px solid var(--dc-line); }
+.dc-next-icon { display: grid; place-items: center; flex: 0 0 48px; height: 48px; color: var(--dc-deep); }
+.dc-next-icon svg { width: 32px; height: 32px; stroke: currentColor; stroke-width: 1.5; }
+.dc-next-story > div:nth-child(2) { flex: 1; }
+.dc-next-story h3 { font-size: 1rem; line-height: 1.4; }
+.dc-next-story p { margin-top: 4px; color: var(--dc-muted); font-size: .9375rem; }
+.dc-next-story button { flex-shrink: 0; }
+.dc-preview-note { padding: 12px 16px; border-radius: 8px; background: var(--dc-tint-soft); color: var(--dc-ink); font-size: .875rem; }
+.dc-reward-actions, .dc-result-actions { display: flex; align-items: center; justify-content: flex-end; gap: 12px 24px; flex-wrap: wrap; }
+.dc-result-actions { justify-content: flex-start; }
+.dc-reference-note { padding-top: 12px; border-top: 1px solid var(--dc-line); font-size: .875rem; color: var(--dc-muted); }
+/* Ten 44px choices cannot fit every medium-width card; wrap by the available width. */
+.dc-scale { display: flex; flex-wrap: wrap; gap: 6px; }
+.dc-scale-btn { flex: 1 0 44px; }
+@media (max-width: 680px) {
+  .dc-letter { grid-template-columns: 1fr; }
+  .dc-letter-photo img { min-height: 0; height: auto; max-height: 460px; object-fit: cover; aspect-ratio: 4 / 5; }
+  .dc-letter-photo figcaption { padding: 12px 20px; }
+  .dc-letter-body { padding: 24px; gap: 20px; }
+  .dc-letter-body h2 { max-width: 18ch; }
+  .dc-next-story { flex-wrap: wrap; gap: 12px; }
+  .dc-next-story > div:nth-child(2) { flex-basis: calc(100% - 60px); }
+  .dc-next-story button { margin-left: 60px; }
+  .dc-reward { gap: 20px; }
+  .dc-reward-actions .dc-btn { flex: 1; }
+  .dc-scale-btn { flex-basis: calc((100% - 24px) / 5); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dc-letter { animation: dc-letter-arrive 180ms ease-out; }
+  @keyframes dc-letter-arrive { from { opacity: .65; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+}

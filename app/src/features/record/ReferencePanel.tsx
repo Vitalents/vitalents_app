@@ -31,6 +31,12 @@ export function ReferencePanel({ reference: r, versions, followUps, excluded, do
         <>
           <p className="muted">{T.ref.none}</p>
           <p className="tr-limits"><span className="why-k">{T.ref.limits}</span> {limitsNote}</p>
+          {versions.length > 0 && (
+            <details className="why tr-reference-details">
+              <summary>{T.ref.details}</summary>
+              <VersionHistory versions={versions} unit={unit} />
+            </details>
+          )}
         </>
       ) : (
         <>
@@ -39,18 +45,22 @@ export function ReferencePanel({ reference: r, versions, followUps, excluded, do
             <div><dt>{T.ref.status}</dt><dd>{S.refStatus[r.reference_status] ?? r.reference_status}</dd></div>
             <div><dt>{T.ref.value}</dt><dd className="num">{r.reference_value === null ? S.refStatus.not_built : formatValue(r.reference_value, unit)}</dd></div>
             <div><dt>{T.ref.range}</dt><dd className="num">{r.range_low == null || r.range_high == null ? '—' : `${formatNumber(r.range_low)}–${formatNumber(r.range_high)}`}</dd></div>
-            <div><dt>{T.ref.period}</dt><dd>{T.ref.periodValue(formatDay(r.start_date), formatDay(r.end_date))}</dd></div>
             <div><dt>{T.ref.data}</dt><dd>{T.ref.dataValue(r.valid_record_count)}</dd></div>
+          </dl>
+          <div className="tr-limits">
+            <p><span className="why-k">{T.ref.limits}</span> {limitsNote}</p>
+            {r.eligibility_notes && <p className="muted small">{r.eligibility_notes}</p>}
+          </div>
+          <details className="why tr-reference-details">
+            <summary>{T.ref.details}</summary>
+            <dl className="facts tr-facts">
+            <div><dt>{T.ref.period}</dt><dd>{T.ref.periodValue(formatDay(r.start_date), formatDay(r.end_date))}</dd></div>
             <div><dt>{T.ref.method}</dt><dd>{r.method}</dd></div>
             <div><dt>{T.ref.version}</dt><dd><code className="tr-code">{r.reference_version}</code></dd></div>
             <div><dt>{T.ref.lastChange}</dt><dd>{formatDay(r.created_at_utc)}, {formatTime(r.created_at_utc)}</dd></div>
             {r.comparison_target_date && <div><dt>{T.ref.target}</dt><dd>{formatDay(r.comparison_target_date)}</dd></div>}
             <div><dt>{T.ref.approvedBy}</dt><dd>{r.approved_by_role ? S.owner[r.approved_by_role] ?? r.approved_by_role : T.ref.notApproved}</dd></div>
           </dl>
-          <div className="tr-limits">
-            <p><span className="why-k">{T.ref.limits}</span> {limitsNote}</p>
-            {r.eligibility_notes && <p className="muted small">{r.eligibility_notes}</p>}
-          </div>
           <WhyRecords ids={r.source_record_ids} caption={T.whyRef} summary={`${T.why} ${T.ref.usedList} (${r.source_record_ids.length})`}>
             <SourceLinks ids={r.source_record_ids} domainId={domainId} />
             {excluded.length > 0 && (
@@ -68,9 +78,10 @@ export function ReferencePanel({ reference: r, versions, followUps, excluded, do
             )}
           </WhyRecords>
           <p className="muted small">{T.ref.rule}</p>
+          <VersionHistory versions={versions} unit={unit} />
+          </details>
         </>
       )}
-      <VersionHistory versions={versions} unit={unit} />
     </aside>
   )
 }

@@ -10,6 +10,7 @@ import { formatDay } from '../../engine/mission'
 import { infoStatusOf } from '../../engine/view'
 import { DataBadge, FollowChip } from '../../shell/StatusChips'
 import { useDataSet, useRecordIndex, useReviewView } from '../../store/selectors'
+import { R } from './strings'
 
 export function ReviewPage() {
   const view = useReviewView()
@@ -17,19 +18,17 @@ export function ReviewPage() {
   if (!view) return <div className="page"><p className="muted">{S.review.noReview}</p></div>
   const nextFinding = view.nextStep?.finding_id ? data.finding.find((f) => f.finding_id === view.nextStep!.finding_id) : undefined
   return (
-    <div className="page">
+    <div className="page review-page">
       <header className="page-head">
         <p className="eyebrow">{formatDay(view.date)}</p>
         <h1>{S.review.title}</h1>
         <p className="muted">{S.review.subtitle}</p>
-        {view.nextStep && (
-          <a href="#block-4" className="jump">
-            <span className="jump-label">{S.review.next}:</span> {view.nextStep.action_text}
-          </a>
-        )}
       </header>
 
       <div className="review-grid">
+        <Block title={S.review.next} n={4} area="next" highlight>
+          {view.nextStep ? <ActionCard action={view.nextStep} finding={nextFinding} /> : <p className="muted">{S.review.noneNext}</p>}
+        </Block>
         <Block title={S.review.recorded} n={1} area="recorded">
           {view.recorded.length === 0 ? (
             <p className="muted">{S.review.noneRecorded}</p>
@@ -81,9 +80,6 @@ export function ReviewPage() {
           )}
         </Block>
 
-        <Block title={S.review.next} n={4} area="next" highlight>
-          {view.nextStep ? <ActionCard action={view.nextStep} finding={nextFinding} /> : <p className="muted">{S.review.noneNext}</p>}
-        </Block>
       </div>
 
       <section className="card pad other" aria-labelledby="other-title">
@@ -103,7 +99,7 @@ export function ReviewPage() {
 function Block({ title, n, area, highlight, children }: { title: string; n: number; area: string; highlight?: boolean; children: React.ReactNode }) {
   return (
     <section className={`card pad block block-${area} ${highlight ? 'highlight' : ''}`} aria-labelledby={`block-${n}`}>
-      <h2 id={`block-${n}`} tabIndex={-1}><span className="num-badge" aria-hidden="true">{String(n).padStart(2, '0')}</span>{title}</h2>
+      <h2 id={`block-${n}`} tabIndex={-1}>{title}</h2>
       {children}
     </section>
   )
@@ -121,6 +117,7 @@ function ActionCard({ action, finding }: { action: Action; finding?: Finding }) 
         {action.follow_up_due_utc && <div><dt>{S.review.due}</dt><dd className="num">{formatDay(action.follow_up_due_utc)}</dd></div>}
         <div><dt>{S.review.sourceLabel}</dt><dd>{sourceTitle(action.source_reference_id)}</dd></div>
       </dl>
+      <Link to="/plan" className="btn primary action-open-plan">{R.openPlan}</Link>
       {finding && <Why finding={finding} />}
     </div>
   )

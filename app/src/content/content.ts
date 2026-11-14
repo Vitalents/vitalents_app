@@ -49,5 +49,24 @@ export const domainById = (id: string) => DOMAINS.find((d) => d.id === id)
 export const RULES = rulesJson.rules as unknown as Rule[]
 /** Messages from Earth (content/messages.json), shown after every completed round regardless of the result. */
 export const EARTH_MESSAGES = messagesJson.messages.map((m) => `${m.from}: ${m.text}`)
+/** Prepared fiction, independent of measurements, data quality and transport receipts. */
+export interface EarthStory {
+  id: string
+  story_id: string
+  subject_scopes: string[]
+  actor_subject_id: string
+  observer_sender_label: string
+  mission_day: number
+  locale: string
+  fictional: true
+  sender_label: string
+  title: string
+  transcript: string
+  image?: { src: string; alt: string; caption: string }
+  audio?: { src: string; production: 'synthetic' | 'performed' }
+  next_episode_id?: string
+  teaser_text?: string
+}
+export const EARTH_STORIES = messagesJson.stories as EarthStory[]
 /** Shared wording (content/language.json). */
 export const LANGUAGE = languageJson

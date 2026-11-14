@@ -2,6 +2,11 @@
    follow-up or data colours, so a schedule item never looks like a health state. */
 .profile .pf-sim { margin-bottom: 1.25rem; max-width: 72ch; }
 .profile .pf-sim p { margin: 0 0 0.25rem; }
+.profile .pf-sim { background: none; border: 0; padding: 0; }
+.profile .pf-sim p { max-width: 68ch; font-size: 0.9rem; color: var(--muted); }
+.profile .card { box-shadow: none; }
+.pf-record-details { margin-top: 1.25rem; }
+.pf-record-details[open] .pf-dl { margin-top: 0.5rem; }
 
 .pf-grid {
   display: grid; gap: 1rem; align-items: start;

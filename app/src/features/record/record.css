@@ -2,6 +2,9 @@
 .tr-page { display: grid; gap: 1.25rem; }
 .tr-page .page-head { margin-bottom: 0; }
 .tr-pattern { margin: 0; max-width: 68ch; }
+.tr-pattern-disclosure { margin: 0; border-bottom: 1px solid var(--line); }
+.tr-pattern-disclosure > summary { min-height: 48px; }
+.tr-pattern-disclosure > .pattern-card { margin-block: 0.5rem 1rem; }
 
 /* In-page jump list: one link per indicator, 44 px targets. */
 .tr-jump ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
@@ -21,7 +24,7 @@
 .tr-cards { display: grid; gap: 1rem; }
 
 /* Card: trend on the left, the reference panel beside it on wide screens and below it on narrow ones. */
-.tr-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(16rem, 20rem); gap: 1.5rem; padding: 1.25rem 1.5rem; scroll-margin-top: 96px; }
+.tr-card { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; padding: 1.25rem 1.5rem; scroll-margin-top: 96px; box-shadow: none; }
 .tr-card:not(:has(.tr-ref)) { grid-template-columns: minmax(0, 1fr); }
 .tr-main { min-width: 0; display: grid; gap: 0.9rem; align-content: start; }
 .tr-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem 0.75rem; flex-wrap: wrap; }
@@ -67,14 +70,17 @@
 .tr-entry-list .tr-why { grid-column: 1 / -1; margin-top: 0; }
 
 /* Reference panel */
-.tr-ref { min-width: 0; display: grid; gap: 0.75rem; align-content: start; border-left: 1px solid var(--line); padding-left: 1.5rem; }
+.tr-ref { min-width: 0; display: grid; gap: 0.75rem; align-content: start; border-top: 1px solid var(--line); padding-top: 1.25rem; }
 .tr-ref p { margin: 0; }
 .tr-ref-title { margin: 0; font-family: var(--font-head); font-size: 1rem; font-weight: 600; line-height: 1.25; }
-.tr-facts { margin: 0; }
+.tr-facts { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem 2rem; }
 .tr-facts div { grid-template-columns: 7.5rem minmax(0, 1fr); }
 .tr-code { font-size: 0.85em; color: var(--ink); word-break: normal; }
 .tr-limits { display: grid; gap: 0.35rem; font-size: 0.875rem; }
 .tr-updating { padding: 0.5rem 0.7rem; border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.tr-reference-details { margin-top: 0; }
+.tr-reference-details > summary { width: auto; }
+.tr-reference-details[open] > .tr-facts { margin-block: 0.5rem 1rem; }
 
 .tr-frozen { display: grid; gap: 0.45rem; padding: 0.75rem 0.85rem; border-radius: var(--radius-sm); background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--deep); }
 .tr-frozen-label { display: flex; align-items: center; gap: 0.45rem; font-weight: 600; color: var(--ink); }
@@ -113,6 +119,7 @@
   .tr-card { padding: 1rem; gap: 1rem; }
   .tr-stat-value { font-size: 1.5rem; }
   .tr-facts div { grid-template-columns: 6.5rem minmax(0, 1fr); gap: 0.5rem; }
+  .tr-facts { grid-template-columns: 1fr; }
   /* Table rows on phones: date, then value and data status, then the change from the reference. */
   .tr-table .why-table tr { grid-template-columns: minmax(5.5rem, auto) minmax(0, 1fr); }
   .tr-table .why-table td:last-child { grid-column: 1 / -1; color: var(--muted); }

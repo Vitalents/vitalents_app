@@ -7,6 +7,7 @@ import {
 import { deviceClassFrom, type DeviceClass, type Span } from '../../engine/decodeValidity'
 
 export const HELP_EVENT = 'vitalents:request-help'
+export const REPORT_EVENT = 'vitalents:report-something'
 const LATE_GRACE_MS = 400
 
 export interface RoundEnd {
@@ -155,7 +156,9 @@ export function useRound(opts: {
     st.timers.push(window.setTimeout(() => { if (!st.ended) end('completed') }, durationMs + 50))
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) return
+      if (e.defaultPrevented || e.isComposing || e.repeat || e.metaKey || e.ctrlKey || e.altKey) return
+      // A dialog, field or editable region owns its typing; numeric shortcuts must never consume it.
+      if (e.composedPath().some((target) => target instanceof Element && target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])'))) return
       const d = Number(e.key)
       if (Number.isInteger(d) && d >= 1 && d <= 9) {
         e.preventDefault()
@@ -180,13 +183,16 @@ export function useRound(opts: {
       }
     }
     const onHelp = () => { if (!st.ended) end('interrupted', ['interrupted_help'], now()) }
+    const onReport = () => { if (!st.ended) end('interrupted', ['reported_interruption'], now()) }
     window.addEventListener('keydown', onKey)
     document.addEventListener('visibilitychange', onVisibility)
     window.addEventListener(HELP_EVENT, onHelp)
+    window.addEventListener(REPORT_EVENT, onReport)
     return () => {
       window.removeEventListener('keydown', onKey)
       document.removeEventListener('visibilitychange', onVisibility)
       window.removeEventListener(HELP_EVENT, onHelp)
+      window.removeEventListener(REPORT_EVENT, onReport)
       st.timers.forEach((t) => window.clearTimeout(t))
       cancelAnimationFrame(st.raf)
       st.ended = true

@@ -7,6 +7,7 @@ export const P = {
   readOnly: 'Read only: this screen cannot change the profile.',
   noProfile: 'No profile is loaded. Load a scenario in Settings.',
   notSet: 'Not set',
+  recordDetails: 'Profile and record details',
 
   identityTitle: 'Crew member',
   missionTitle: 'Mission',

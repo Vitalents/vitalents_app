@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-14",
+  "kind": "fictional_mission_story",
+  "image": {
+    "file": "app/public/media/decode/daughter-home-v1.webp",
+    "provider": "OpenAI built-in image generation",
+    "prompt": "Use case: photorealistic-natural. Asset: final in-app portrait for a fictional astronaut's daughter's prerecorded message from Earth, Vitalents demo. Generate one beautiful natural candid editorial photograph, portrait 4:5 composition. A completely fictional girl around 9 years old with warm medium skin and dark curly shoulder-length hair, dressed in a simple cream cotton shirt, standing in a cozy lived-in family kitchen. She is smiling gently toward her dad's camera and proudly holding a sheet of paper with a believable child's crayon drawing of a small house, a large gold star and tiny colorful stars. The paper and both hands are fully visible, fingers anatomically natural. Fridge behind her softly out of focus has a few drawings, no readable text or real portraits. Warm late-afternoon window light, intimate and believable, real skin and fabric texture, soft cream and muted teal home accents, no glamour retouching. Framing chest-up with generous head room and room around paper for responsive cropping; eyes and drawing must both remain clear. Emotion: a small ordinary moment from home, affectionate and quietly joyful. No lettering, captions, branding, NASA insignia, watermark, interface, astronaut costume or space background. Subject is fictional, not based on a real person. Opaque background.",
+    "originalDimensions": [
+      1122,
+      1402
+    ],
+    "delivery": "WebP quality 86; format optimization via ffmpeg; original generation retained outside application"
+  },
+  "audio": {
+    "file": "app/public/media/decode/daughter-message-v1.mp3",
+    "production": "synthetic",
+    "provider": "Microsoft Edge online TTS via edge-tts 7.3.1",
+    "voice": "en-US-AnaNeural",
+    "rate": "-5%",
+    "durationSeconds": 16.344,
+    "transcript": "Hi Dad! I made you a drawing today. It is on the fridge, right beside your photo. I gave you the biggest star. Send me a little story when you can. I miss you.",
+    "runtimeDependencies": "None. File served locally and precached; no TTS request from the app.",
+    "verification": "MP3 metadata and generated sentence timings checked. Production-build browser playback advanced with duration 16.344 seconds; offline reload/image/playback E2E passed. No claim of human listening-panel acceptance."
+  },
+  "identity": "Original fictional girl; no reference photograph, voice clone, agency insignia or representation of a real family."
+}

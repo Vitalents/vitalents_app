@@ -11,9 +11,8 @@ export function DecodeRound(props: {
   label: string
   onEnd: (end: RoundEnd) => void
 }) {
-  const { view, respond, quit, help } = useRound(props)
+  const { view, respond, quit } = useRound(props)
   const requestHelp = () => {
-    help()
     window.dispatchEvent(new CustomEvent(HELP_EVENT, { detail: { from: 'decode' } }))
   }
   return (
@@ -50,9 +49,20 @@ export function DecodeRound(props: {
             className="dc-digit"
             aria-label={`${S.digit} ${d}`}
             disabled={view.ended}
+            onKeyDown={(e) => {
+              // Ignoring repeat in the global digit listener is not enough: native buttons
+              // generate repeated Enter clicks unless their keyboard default is cancelled.
+              if (e.repeat && (e.key === 'Enter' || e.key === ' ')) e.preventDefault()
+            }}
             onPointerDown={(e) => {
+              if (e.button !== 0 || e.isPrimary === false) return
               e.preventDefault()
               respond(d, e.pointerType === 'mouse' ? 'other' : 'touch')
+            }}
+            onClick={(e) => {
+              // Enter/Space and assistive activation click with detail 0. Pointer clicks were
+              // already timed on pointerdown; accepting those again would create duplicates.
+              if (e.detail === 0) respond(d, 'keyboard')
             }}
           >
             {d}

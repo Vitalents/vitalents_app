@@ -22,6 +22,8 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
+html { scrollbar-color: var(--quiet-line) var(--paper); }
+::selection { background: var(--tint); color: var(--ink); }
 body {
   background: var(--paper);
   color: var(--ink);
@@ -35,7 +37,7 @@ h1 { font-size: 1.75rem; font-weight: 600; letter-spacing: -0.02em; }
 h2 { font-size: 1.12rem; font-weight: 600; margin-bottom: 0.6rem; }
 h3 { font-size: 0.95rem; font-weight: 600; margin: 0.9rem 0 0.4rem; }
 p { margin: 0 0 0.6rem; }
-a { color: var(--deep); }
+a { color: var(--deep); text-underline-offset: 0.2em; }
 code { font-size: 0.78em; color: var(--muted); word-break: break-all; }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
 .num, .ind-value, .bar-val, .bar-day, .rec-value { font-variant-numeric: tabular-nums; }
@@ -82,8 +84,9 @@ a.crew:hover { color: var(--deep); text-decoration: underline; }
 .nav-short { display: none; }
 .draft-note { margin-top: auto; font-size: 0.75rem; color: var(--muted); padding: 0.5rem 0.75rem; border: 1px dashed var(--line); border-radius: var(--radius-sm); }
 .main { min-width: 0; padding: 1.5rem 1.75rem 3rem; }
-.page { max-width: 1080px; margin: 0 auto; }
+.page { max-width: 1120px; margin: 0 auto; }
 .page-head { margin-bottom: 1.2rem; display: grid; gap: 0.35rem; }
+.page-head h1 { font-family: var(--font-display); font-size: clamp(1.85rem, 2.6vw, 2.4rem); font-weight: 600; line-height: 1.12; text-wrap: balance; }
 .page-head .muted { max-width: 60ch; margin: 0; }
 .eyebrow { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--deep); margin: 0; }
 .back { display: inline-flex; min-height: 44px; align-items: center; text-decoration: none; font-weight: 500; }
@@ -96,6 +99,7 @@ a.crew:hover { color: var(--deep); text-decoration: underline; }
 }
 .btn:hover { border-color: var(--deep); }
 .btn.primary { background: var(--deep); color: var(--on-deep); border-color: var(--deep); }
+a.btn { text-decoration: none; }
 /* Request help: the review colour, never a health "danger" signal (DESIGN.md Button). */
 .btn.danger { background: var(--review-strong); color: var(--on-review); border-color: var(--review-strong); }
 .btn.danger:hover { border-color: var(--ink); }
@@ -227,8 +231,8 @@ a.crew:hover { color: var(--deep); text-decoration: underline; }
 .review-grid {
   display: grid; gap: 1rem; margin-bottom: 1rem; align-items: start;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-areas: 'recorded changed' 'missing changed' 'next next';
-  grid-template-rows: auto 1fr auto;
+  grid-template-areas: 'next next' 'recorded changed' 'missing changed';
+  grid-template-rows: auto auto 1fr;
 }
 .block-recorded { grid-area: recorded; }
 .block-changed { grid-area: changed; }
@@ -242,6 +246,11 @@ a.crew:hover { color: var(--deep); text-decoration: underline; }
 .block.highlight .num-badge { background: var(--deep); color: var(--on-deep); }
 .block.highlight .why { border-top-color: color-mix(in srgb, var(--deep) 30%, transparent); }
 .block.highlight .why-table { background: var(--card); }
+.review-page .block { box-shadow: none; }
+.review-page .block.highlight { background: var(--tint-soft); border: 1px solid var(--line); }
+.review-page .block-next > h2 { color: var(--deep); font-size: 1rem; }
+.review-page .action-text { font-family: var(--font-display); font-size: clamp(1.6rem, 2.5vw, 2rem); max-width: 36ch; }
+.action-open-plan { margin-top: 1rem; }
 .rec-list, .miss-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.7rem; }
 .rec-list li { display: grid; grid-template-columns: minmax(7rem, 1fr) auto minmax(4.5rem, auto); gap: 0.15rem 0.75rem; align-items: center; }
 .rec-label { color: var(--muted); font-size: 0.9rem; }
@@ -304,7 +313,7 @@ a.crew:hover { color: var(--deep); text-decoration: underline; }
 /* ---------- responsive ---------- */
 @media (max-width: 960px) {
   .map-grid { grid-template-columns: 1fr; }
-  .review-grid { grid-template-columns: 1fr; grid-template-areas: 'recorded' 'changed' 'missing' 'next'; grid-template-rows: none; }
+  .review-grid { grid-template-columns: 1fr; grid-template-areas: 'next' 'recorded' 'changed' 'missing'; grid-template-rows: none; }
 }
 @media (max-width: 560px) {
   /* The Why table becomes labelled rows on narrow screens. */
@@ -348,6 +357,7 @@ a.crew:hover { color: var(--deep); text-decoration: underline; }
     background: var(--card); border-right: 0; border-top: 1px solid var(--line);
   }
   .nav-item { flex: 1; flex-direction: column; gap: 0.1rem; padding: 0.3rem 0.1rem; min-height: calc(var(--nav-h) - 0.6rem); font-size: 0.72rem; justify-content: center; text-align: center; }
+  .nav-item { min-width: 0; }
   .nav-full { display: none; }
   .nav-short { display: inline; }
   .draft-note, .nav .pwa-note { display: none; }

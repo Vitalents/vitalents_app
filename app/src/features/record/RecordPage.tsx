@@ -29,7 +29,10 @@ export function RecordPage() {
         <h1>{T.title}</h1>
         <p className="muted">{T.lead}</p>
       </header>
-      <PatternCard />
+      <details className="why tr-pattern-disclosure">
+        <summary>{T.explorePattern}</summary>
+        <PatternCard />
+      </details>
       <nav className="tr-jump" aria-label={T.jumpLabel}>
         <ul>
           {live.flatMap((v) => v.indicators.map((i) => (

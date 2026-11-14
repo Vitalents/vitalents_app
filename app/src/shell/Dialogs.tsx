@@ -7,19 +7,52 @@ import { useStore } from '../store/store'
 
 function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null)
+  const close = useRef(onClose)
+  useEffect(() => { close.current = onClose }, [onClose])
   useEffect(() => {
     const prev = document.activeElement as HTMLElement | null
-    ref.current?.querySelector<HTMLElement>('textarea, input, button')?.focus()
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
-    window.addEventListener('keydown', onKey)
-    return () => {
-      window.removeEventListener('keydown', onKey)
-      prev?.focus()
+    const modal = ref.current!
+    const controls = () => [...modal.querySelectorAll<HTMLElement>('a[href], button, input, select, textarea, [tabindex]')]
+      .filter((el) => el.tabIndex >= 0 && !el.matches(':disabled') && !el.closest('[hidden], [inert], [aria-hidden="true"]') && getComputedStyle(el).display !== 'none' && getComputedStyle(el).visibility !== 'hidden')
+    const focusFirst = () => (controls()[0] ?? modal).focus({ preventScroll: true })
+    focusFirst()
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        e.stopPropagation()
+        close.current()
+      } else if (e.key === 'Tab') {
+        const items = controls()
+        const first = items[0] ?? modal
+        const last = items[items.length - 1] ?? modal
+        const current = document.activeElement
+        if (!modal.contains(current) || current === modal || (e.shiftKey ? current === first : current === last)) {
+          e.preventDefault()
+          ;(e.shiftKey ? last : first).focus()
+        }
+      }
     }
-  }, [onClose])
+    const onFocus = (e: FocusEvent) => {
+      if (e.target instanceof Node && !modal.contains(e.target)) focusFirst()
+    }
+    document.addEventListener('keydown', onKey, true)
+    document.addEventListener('focusin', onFocus)
+    return () => {
+      document.removeEventListener('keydown', onKey, true)
+      document.removeEventListener('focusin', onFocus)
+      if (prev?.isConnected) prev.focus({ preventScroll: true })
+    }
+  }, [])
+  // A save can replace the form with a confirmation. Keep focus inside that new content,
+  // while leaving normal typing and parent re-renders at the user's chosen control.
+  useEffect(() => {
+    if (ref.current && !ref.current.contains(document.activeElement)) {
+      ;(ref.current.querySelector<HTMLElement>('button:not(:disabled), textarea, input') ?? ref.current).focus({ preventScroll: true })
+    }
+  })
   return (
     <div className="modal-backdrop" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" ref={ref}>
+      <div className="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabIndex={-1} ref={ref}>
         <h2 id="modal-title">{title}</h2>
         {children}
       </div>

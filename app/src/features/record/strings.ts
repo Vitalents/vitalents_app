@@ -5,6 +5,7 @@ export const T = {
   title: 'Record & trends',
   lead: 'Each indicator over time, drawn against your personal reference. A line shows a change from your reference; it never says why.',
   patternNote: 'Two observations that happen together are a pattern in your record, not a cause.',
+  explorePattern: 'Explore the pattern in your record',
   jumpLabel: 'Indicators in your record',
   sampleDomains: (names: string) => `Not measured in this demo: ${names}.`,
 
@@ -59,6 +60,7 @@ export const T = {
 
   ref: {
     title: 'Your reference and what the system relies on',
+    details: 'Reference method, sources and version history',
     none: 'No personal reference for this indicator yet. Values are shown without comparison.',
     status: 'Reference status',
     value: 'Reference (median)',

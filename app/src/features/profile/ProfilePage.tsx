@@ -80,7 +80,6 @@ export function ProfileView({ profile, schedule, date }: { profile: SubjectProfi
           <dl className="facts pf-dl">
             <Fact k={P.f.phase}>{label(P.phase, profile.mission_phase)}</Fact>
             <Fact k={P.f.timezone}>{label(P.timezone, profile.timezone_basis)}</Fact>
-            <Fact k={P.f.version}>{profile.mission_profile_version ?? P.notSet}</Fact>
             <Fact k={P.f.language}>{lang == null ? P.notSet : P.language[lang] ? `${P.language[lang]} (${lang})` : lang}</Fact>
           </dl>
 
@@ -88,6 +87,11 @@ export function ProfileView({ profile, schedule, date }: { profile: SubjectProfi
           <dl className="facts pf-dl">
             <Fact k={P.f.crew}>{profile.crew_label ?? P.notSet}</Fact>
             <Fact k={P.f.mode}>{label(P.mode, profile.subject_mode)}</Fact>
+          </dl>
+          <details className="why pf-record-details">
+            <summary>{P.recordDetails}</summary>
+            <dl className="facts pf-dl">
+            <Fact k={P.f.version}>{profile.mission_profile_version ?? P.notSet}</Fact>
             <Fact k={P.f.origin}>{label(P.origin, profile.data_origin)}</Fact>
             <Fact k={P.f.realm}>{label(P.realm, realmOf(profile.subject_profile_id))}</Fact>
             <Fact k={P.f.id}><code>{profile.subject_profile_id}</code></Fact>
@@ -95,7 +99,8 @@ export function ProfileView({ profile, schedule, date }: { profile: SubjectProfi
             {profile.profile_source_uri && (
               <Fact k={P.f.source}><a href={profile.profile_source_uri} target="_blank" rel="noreferrer">{profile.profile_source_uri}</a></Fact>
             )}
-          </dl>
+            </dl>
+          </details>
         </section>
 
         <section className="card pad pf-schedule" aria-labelledby="pf-schedule">

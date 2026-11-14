@@ -1,5 +1,6 @@
 // Dev-only entry: renders CheckPage without the shell (served by `npm run dev` at /decode-dev.html).
 import { StrictMode, useEffect } from 'react'
+import { BrowserRouter } from 'react-router-dom'
 import { createRoot } from 'react-dom/client'
 // same self-hosted font and shared styles as the app (main.tsx), so the dev page looks like the real screen
 import '@fontsource/instrument-sans/400.css'
@@ -31,6 +32,6 @@ function Dev() {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Dev />
+    <BrowserRouter><Dev /></BrowserRouter>
   </StrictMode>,
 )
