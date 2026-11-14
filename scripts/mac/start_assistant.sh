@@ -21,7 +21,17 @@ say() { printf '\n\033[1;36m==> %s\033[0m\n' "$*"; }
 need_brew() { command -v brew >/dev/null || { echo "Homebrew is required: https://brew.sh"; exit 1; }; }
 
 say "1/6 Checking tools"
-command -v python3 >/dev/null || { need_brew; brew install python@3.11; }
+# The assistant needs Python 3.10+ (macOS ships 3.9 in /usr/bin and Command Line Tools).
+py_ok() { "$1" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)' 2>/dev/null; }
+PY=""
+for c in python3.13 python3.12 python3.11 python3.10 /opt/homebrew/bin/python3 /usr/local/bin/python3 python3; do
+  if command -v "$c" >/dev/null 2>&1 && py_ok "$(command -v "$c")"; then PY="$(command -v "$c")"; break; fi
+done
+if [[ -z "$PY" ]]; then
+  need_brew; echo "Installing Python 3.12 with Homebrew…"; brew install python@3.12
+  PY="$(brew --prefix python@3.12)/bin/python3.12"
+fi
+echo "Python: $PY ($("$PY" --version))"
 command -v ollama  >/dev/null || { need_brew; brew install ollama; }
 if [[ $LOCAL_ONLY == 0 ]]; then command -v cloudflared >/dev/null || { need_brew; brew install cloudflared; }; fi
 
@@ -36,7 +46,9 @@ done
 
 say "3/6 Python environment (ai/.venv)"
 cd "$ROOT/ai"
-[[ -d .venv ]] || python3 -m venv .venv
+# Rebuild the environment if it was made with an older Python (for example macOS's 3.9).
+if [[ -x .venv/bin/python ]] && ! py_ok .venv/bin/python; then echo "Rebuilding ai/.venv with $PY"; rm -rf .venv; fi
+[[ -d .venv ]] || "$PY" -m venv .venv
 # shellcheck disable=SC1091
 source .venv/bin/activate
 python -m pip install -q --upgrade pip

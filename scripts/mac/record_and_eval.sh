@@ -13,8 +13,8 @@ python record_answers.py
 python ask_nasa.py --eval ../content/eval.json --out ../science/out/assistant_eval_gptoss.json
 python eval_summary.py ../science/out/assistant_eval_gptoss.json || true
 cd "$ROOT"
-python3 scripts/publish_proof.py
-python3 scripts/check_language.py
+python scripts/publish_proof.py
+python scripts/check_language.py
 git add app/public/data/cached_answers.json app/public/data/proof.json science/out/assistant_eval_gptoss.json
 git commit -m "FR-AS-08: recorded answers and assistant evaluation from the onboard model"
 git push
