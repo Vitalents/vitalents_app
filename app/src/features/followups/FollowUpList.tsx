@@ -4,8 +4,8 @@ import type { Action, FollowUp } from '../../data/contract'
 import { useStore } from '../../store/store'
 import { Emblem } from '../../shell/Logo'
 import { ActionCard, type ActionWrites } from './ActionCard'
-import { laterReading } from './later'
-import { visibleTo, type Role } from './records'
+import { laterReading, readingsSince } from './later'
+import { reviewDue, visibleTo, type Role } from './records'
 import { T } from './strings'
 import './act.css'
 
@@ -30,12 +30,18 @@ export function FollowUpList({ role = 'astronaut', scheduleHref = '/rest-window'
   const { open, earlier, fuOf } = useMemo(() => {
     const fuOf = new Map<string, FollowUp>()
     for (const f of [...data.follow_up].sort((x, y) => x.opened_at_utc.localeCompare(y.opened_at_utc))) fuOf.set(f.action_id, f)
+    const t = (now ?? (() => new Date().toISOString()))()
+    const dueFirst = (a: Action) => (reviewDue(a, fuOf.get(a.action_id) ?? null, t) ? 0 : 1)
     const list = visibleTo(data.action, role).sort((x, y) =>
-      ORDER[x.execution_status] - ORDER[y.execution_status] || KIND[x.step_category] - KIND[y.step_category]
+      dueFirst(x) - dueFirst(y) || ORDER[x.execution_status] - ORDER[y.execution_status] || KIND[x.step_category] - KIND[y.step_category]
       || (fuOf.get(x.action_id)?.next_review_due_utc ?? x.follow_up_due_utc ?? '').localeCompare(fuOf.get(y.action_id)?.next_review_due_utc ?? y.follow_up_due_utc ?? ''))
-    const isOpen = (a: Action) => fuOf.get(a.action_id)?.followup_status !== 'closed' && !['rejected', 'completed', 'unable'].includes(a.execution_status)
+    // an open follow-up keeps its step in Open until the owner closes it (FR-FU-04/06), whatever the step's status
+    const isOpen = (a: Action) => {
+      const f = fuOf.get(a.action_id)
+      return f ? f.followup_status !== 'closed' : !['rejected', 'completed', 'unable'].includes(a.execution_status)
+    }
     return { open: list.filter(isOpen), earlier: list.filter((a) => !isOpen(a)), fuOf }
-  }, [data.action, data.follow_up, role])
+  }, [data.action, data.follow_up, role, now])
 
   const opensSchedule = (a: Action) => {
     const f = data.finding.find((x) => x.finding_id === a.finding_id)
@@ -55,6 +61,7 @@ export function FollowUpList({ role = 'astronaut', scheduleHref = '/rest-window'
         followUp={fuOf.get(a.action_id) ?? null}
         role={role}
         laterReading={(x, after) => laterReading(data, x, after)}
+        readingsSince={(x, since, until) => readingsSince(data, x, since, until)}
         onWrite={onWrite}
         scheduleHref={role === 'astronaut' ? opensSchedule(a) : null}
         now={now}

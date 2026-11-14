@@ -129,8 +129,48 @@
 .act-sync::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--a-deep); }
 .act-notice { border-left: 4px solid var(--a-ink); }
 
+/* follow-up date reached (FR-FU-04): the question on the left, the readings since the step on the right */
+.act-review { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 24px; padding-top: 16px; border-top: 1px solid var(--a-line); align-items: start; }
+.act-review-form { display: grid; gap: 14px; min-width: 0; }
+.act-review-kicker { font-size: 0.8125rem; font-weight: 600; color: var(--a-deep); }
+.act-choices { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; min-width: 0; }
+.act-choices legend { font-family: var(--a-head); font-size: 1.125rem; font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; padding: 0; margin-bottom: 10px; }
+.act-choice { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; min-height: 52px; padding: 10px 14px; border: 1px solid var(--a-control-line); border-radius: var(--a-radius-sm); background: var(--a-card); cursor: pointer; transition: background-color 150ms ease-out, border-color 150ms ease-out; }
+.act-choice:hover { border-color: var(--a-deep); }
+.act-choice:has(input:checked) { background: var(--a-tint-soft); border-color: var(--a-deep); box-shadow: inset 0 0 0 1px var(--a-deep); }
+.act-choice:has(input:focus-visible) { outline: 3px solid var(--a-focus); outline-offset: 2px; }
+.act-choice input { width: 20px; height: 20px; margin: 0; accent-color: var(--a-deep); }
+.act-choice input:focus-visible { outline: none; }
+.act-choice > span { display: grid; gap: 1px; }
+.act-choice-label { font-weight: 600; }
+.act-choice-hint { font-size: 0.8125rem; color: var(--a-muted); }
+.act-review .act-form { max-width: none; }
+
+.act-since { display: grid; gap: 12px; background: var(--a-paper); border: 1px solid var(--a-line); border-radius: var(--a-radius-sm); padding: 16px; min-width: 0; }
+.act-since-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; }
+.act-since-head h3 { font-size: 1rem; }
+.act-since-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.act-since-col { display: grid; gap: 6px; align-content: start; min-width: 0; background: var(--a-card); border: 1px solid var(--a-line); border-radius: var(--a-radius-sm); padding: 12px 14px; }
+.act-since-ind { font-size: 0.8125rem; font-weight: 600; color: var(--a-deep); }
+.act-since-col ul { list-style: none; margin: 0; padding: 0; display: grid; }
+.act-since-col li { display: grid; gap: 2px; padding: 8px 0; border-top: 1px solid var(--a-line); }
+.act-since-col li:first-child { border-top: 0; padding-top: 0; }
+.act-since-date { font-size: 0.8125rem; color: var(--a-muted); }
+.act-since-val { font-family: var(--a-head); font-size: 1.25rem; font-weight: 600; line-height: 1.2; overflow-wrap: anywhere; }
+.act-since-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 0.8125rem; }
+
+.act-note p { margin: 0; }
+.act-why { margin-top: 6px; font-size: 0.875rem; }
+.act-why summary { cursor: pointer; color: var(--a-deep); font-weight: 600; min-height: 32px; display: inline-flex; align-items: center; }
+.act-why ul { margin: 4px 0 0; padding-left: 18px; color: var(--a-muted); overflow-wrap: anywhere; }
+
+@media (prefers-reduced-motion: reduce) {
+  .act-choice { transition: none; }
+}
+
 @media (max-width: 900px) {
   .act-rest { grid-template-columns: minmax(0, 1fr); }
+  .act-review { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 640px) {
   .act h1 { font-size: 1.5rem; }
