@@ -18,7 +18,7 @@ const pick = <M,>(load: () => Promise<M>, name: keyof M) =>
 
 const CheckPage = pick(() => import('./features/check/CheckPage'), 'CheckPage')
 const ReviewPage = pick(() => import('./features/review/ReviewPage'), 'ReviewPage')
-const RecordPage = pick(() => import('./features/placeholder/Placeholder'), 'RecordPage')
+const RecordPage = pick(() => import('./features/record/RecordPage'), 'RecordPage')
 const FollowUpList = pick(() => import('./features/followups/FollowUpList'), 'FollowUpList')
 const RestWindowPage = pick(() => import('./features/schedule/RestWindowPage'), 'RestWindowPage')
 const DomainPage = pick(() => import('./features/domain/DomainPage'), 'DomainPage')
