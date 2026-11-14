@@ -218,6 +218,7 @@ export const S = {
     medicalView: 'Medical team view',
     plannerView: 'Mission planner view',
     profileView: 'Mission profile',
+    proofView: 'Proof and limits',
     linkTitle: 'Link to Earth (simulated)',
   },
 

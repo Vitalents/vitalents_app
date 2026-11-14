@@ -66,6 +66,7 @@ export function SettingsPage() {
           <Link className="btn" to="/medical">{S.settings.medicalView}</Link>
           <Link className="btn" to="/planner">{S.settings.plannerView}</Link>
           <Link className="btn" to="/profile">{S.settings.profileView}</Link>
+          <Link className="btn" to="/proof">{S.settings.proofView}</Link>
         </div>
       </section>
 
