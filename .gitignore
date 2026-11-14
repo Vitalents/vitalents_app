@@ -8,3 +8,4 @@ ai/traces/
 .DS_Store
 .env.local
 *.zip
+.claude/worktrees/

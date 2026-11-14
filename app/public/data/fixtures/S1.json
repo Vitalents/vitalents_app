@@ -1478,7 +1478,7 @@
       "app_version": "demo-0.1",
       "accepted_responses": 36,
       "correct_count": 35,
-      "accuracy_percent": 97.2,
+      "accuracy_percent": 97.22222222222223,
       "median_correct_rt_ms": 1150.0
     },
     {
@@ -1501,7 +1501,7 @@
       "app_version": "demo-0.1",
       "accepted_responses": 39,
       "correct_count": 38,
-      "accuracy_percent": 97.4,
+      "accuracy_percent": 97.43589743589743,
       "median_correct_rt_ms": 1150.0
     },
     {
@@ -1524,7 +1524,7 @@
       "app_version": "demo-0.1",
       "accepted_responses": 42,
       "correct_count": 41,
-      "accuracy_percent": 97.6,
+      "accuracy_percent": 97.61904761904762,
       "median_correct_rt_ms": 1150.0
     },
     {
@@ -1547,7 +1547,7 @@
       "app_version": "demo-0.1",
       "accepted_responses": 44,
       "correct_count": 43,
-      "accuracy_percent": 97.7,
+      "accuracy_percent": 97.72727272727273,
       "median_correct_rt_ms": 1150.0
     },
     {
@@ -1570,7 +1570,7 @@
       "app_version": "demo-0.1",
       "accepted_responses": 43,
       "correct_count": 42,
-      "accuracy_percent": 97.7,
+      "accuracy_percent": 97.67441860465117,
       "median_correct_rt_ms": 1150.0
     },
     {
@@ -1593,7 +1593,7 @@
       "app_version": "demo-0.1",
       "accepted_responses": 45,
       "correct_count": 44,
-      "accuracy_percent": 97.8,
+      "accuracy_percent": 97.77777777777777,
       "median_correct_rt_ms": 1150.0
     },
     {
@@ -1616,7 +1616,7 @@
       "app_version": "demo-0.1",
       "accepted_responses": 44,
       "correct_count": 43,
-      "accuracy_percent": 97.7,
+      "accuracy_percent": 97.72727272727273,
       "median_correct_rt_ms": 1150.0
     },
     {
@@ -1639,7 +1639,7 @@
       "app_version": "demo-0.1",
       "accepted_responses": 43,
       "correct_count": 42,
-      "accuracy_percent": 97.7,
+      "accuracy_percent": 97.67441860465117,
       "median_correct_rt_ms": 1150.0
     },
     {
@@ -1662,7 +1662,7 @@
       "app_version": "demo-0.1",
       "accepted_responses": 45,
       "correct_count": 44,
-      "accuracy_percent": 97.8,
+      "accuracy_percent": 97.77777777777777,
       "median_correct_rt_ms": 1150.0
     },
     {
@@ -1685,7 +1685,7 @@
       "app_version": "demo-0.1",
       "accepted_responses": 44,
       "correct_count": 43,
-      "accuracy_percent": 97.7,
+      "accuracy_percent": 97.72727272727273,
       "median_correct_rt_ms": 1150.0
     },
     {
@@ -1710,7 +1710,7 @@
       "app_version": "demo-0.1",
       "accepted_responses": 31,
       "correct_count": 30,
-      "accuracy_percent": 96.8,
+      "accuracy_percent": 96.7741935483871,
       "median_correct_rt_ms": 1150.0
     },
     {
@@ -1733,7 +1733,7 @@
       "app_version": "demo-0.1",
       "accepted_responses": 43,
       "correct_count": 42,
-      "accuracy_percent": 97.7,
+      "accuracy_percent": 97.67441860465117,
       "median_correct_rt_ms": 1150.0
     },
     {
@@ -1756,7 +1756,7 @@
       "app_version": "demo-0.1",
       "accepted_responses": 38,
       "correct_count": 37,
-      "accuracy_percent": 97.4,
+      "accuracy_percent": 97.36842105263158,
       "median_correct_rt_ms": 1290.0
     },
     {
@@ -1779,7 +1779,7 @@
       "app_version": "demo-0.1",
       "accepted_responses": 37,
       "correct_count": 36,
-      "accuracy_percent": 97.3,
+      "accuracy_percent": 97.29729729729729,
       "median_correct_rt_ms": 1290.0
     }
   ],
