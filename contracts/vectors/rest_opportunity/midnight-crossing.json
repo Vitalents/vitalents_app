@@ -1,0 +1,48 @@
+{
+  "vector_id": "midnight-crossing",
+  "function": "rest_opportunity",
+  "contract_version": "1.0",
+  "description": "Window 22:00-05:00 crosses midnight. A fixed task at 04:00 with 15 min prep blocks 03:45-04:30; a movable downlink at 00:30-01:00 splits the night. Moving it to 21:30-22:00 (just before the window, smallest shift) gives 345 continuous minutes.",
+  "input": {
+    "rest_window": {
+      "start": "2026-11-14T22:00:00Z",
+      "end": "2026-11-15T05:00:00Z"
+    },
+    "items": [
+      {
+        "item_id": "sim:mission_schedule:downlink",
+        "start": "2026-11-15T00:30:00Z",
+        "end": "2026-11-15T01:00:00Z",
+        "is_fixed": false,
+        "prep_minutes": 0,
+        "travel_minutes": 0,
+        "movable_earliest_start": "2026-11-14T20:00:00Z",
+        "movable_latest_end": "2026-11-15T02:00:00Z"
+      },
+      {
+        "item_id": "sim:mission_schedule:check",
+        "start": "2026-11-15T04:00:00Z",
+        "end": "2026-11-15T04:30:00Z",
+        "is_fixed": true,
+        "prep_minutes": 15,
+        "travel_minutes": 0
+      }
+    ],
+    "step_minutes": 15
+  },
+  "expected": {
+    "status": "improved",
+    "current_minutes": 165,
+    "best_minutes": 345,
+    "current_total_minutes": 345,
+    "best_total_minutes": 375,
+    "changes": [
+      {
+        "item_id": "sim:mission_schedule:downlink",
+        "new_start": "2026-11-14T21:30:00Z",
+        "new_end": "2026-11-14T22:00:00Z"
+      }
+    ]
+  },
+  "tolerance": 0.001
+}

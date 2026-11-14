@@ -1,0 +1,43 @@
+{
+  "vector_id": "missing-window",
+  "function": "rest_opportunity",
+  "contract_version": "1.0",
+  "description": "No rest window is known: not computable, never 0.",
+  "input": {
+    "rest_window": null,
+    "items": [
+      {
+        "item_id": "sim:mission_schedule:meeting-d27",
+        "label": "Planning meeting",
+        "start": "2026-11-14T23:00:00Z",
+        "end": "2026-11-15T00:00:00Z",
+        "is_fixed": false,
+        "prep_minutes": 0,
+        "travel_minutes": 0,
+        "movable_earliest_start": "2026-11-14T21:00:00Z",
+        "movable_latest_end": "2026-11-15T00:00:00Z"
+      },
+      {
+        "item_id": "sim:mission_schedule:eva-prep-d27",
+        "label": "EVA procedure review",
+        "start": "2026-11-14T19:00:00Z",
+        "end": "2026-11-14T21:00:00Z",
+        "is_fixed": true,
+        "prep_minutes": 0,
+        "travel_minutes": 0,
+        "movable_earliest_start": null,
+        "movable_latest_end": null
+      }
+    ],
+    "step_minutes": 15
+  },
+  "expected": {
+    "status": "not_computable",
+    "current_minutes": null,
+    "best_minutes": null,
+    "current_total_minutes": null,
+    "best_total_minutes": null,
+    "changes": []
+  },
+  "tolerance": 0.001
+}
