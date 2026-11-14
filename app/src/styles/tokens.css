@@ -1,0 +1,73 @@
+/* Vitalents design tokens (NFR-13). Amr's app/src/ui will build on these names. */
+:root {
+  --ink: #18363d;
+  --muted: #52666b;
+  --paper: #f5f3eb;
+  --card: #ffffff;
+  --deep: #00687a;
+  --teal: #31b9d4;
+  --line: #cfdbdc;
+  --tint: #bfeaf0;
+  --tint-soft: #e4f4f6;
+
+  /* Follow-up status (always paired with a symbol and text) */
+  --fu-none-bg: #e6eced;
+  --fu-none-fg: #3d5459;
+  --fu-watch-bg: #f6ead2;
+  --fu-watch-fg: #7a4e0b;
+  --fu-watch-fill: #e9c27c;
+  --fu-review-bg: #f6dfe1;
+  --fu-review-fg: #93323b;
+  --fu-review-fill: #e59aa1;
+  --fu-none-fill: #d6e2e3;
+
+  /* Data problems: grey with a hatch */
+  --data-ok-bg: #e2f2f4;
+  --data-ok-fg: #0d5b67;
+  --data-bad-bg: #ecedee;
+  --data-bad-fg: #464f52;
+  --hatch: #5b6b6f;
+
+  --danger: #b3434b;
+  --danger-ink: #ffffff;
+  --focus: #00687a;
+  --shadow: 0 1px 2px rgb(24 54 61 / 6%), 0 6px 20px rgb(24 54 61 / 6%);
+
+  --font-head: 'Bricolage Grotesque', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --radius: 14px;
+  --radius-sm: 9px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e7f0f1;
+    --muted: #9fb3b7;
+    --paper: #0f1f23;
+    --card: #152a30;
+    --deep: #5fd0e3;
+    --teal: #31b9d4;
+    --line: #2a4249;
+    --tint: #173e47;
+    --tint-soft: #183238;
+    --fu-none-bg: #22383e;
+    --fu-none-fg: #c3d3d6;
+    --fu-none-fill: #2c464d;
+    --fu-watch-bg: #3a2e17;
+    --fu-watch-fg: #f0cd8a;
+    --fu-watch-fill: #8a6522;
+    --fu-review-bg: #3b1d21;
+    --fu-review-fg: #f2aab0;
+    --fu-review-fill: #8e3a42;
+    --data-ok-bg: #173a40;
+    --data-ok-fg: #9fe3ee;
+    --data-bad-bg: #2a3336;
+    --data-bad-fg: #c9d2d4;
+    --hatch: #b8c4c7;
+    --danger: #d4646c;
+    --focus: #5fd0e3;
+    --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 6px 20px rgb(0 0 0 / 25%);
+    color-scheme: dark;
+  }
+}
