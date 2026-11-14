@@ -1,10 +1,12 @@
-# Task 4 integration handoff for Ahmed
+# Personal-reference API
 
-Apply the six Task 4 files over a checkout containing the final Task 3 package. `science/reference.py` imports `science/status.py` from that checkout. The test suite uses the standard library. See [validation](reference_validation.md) for the commands and results.
+> **Scope:** Python science-module interface. The browser app uses its own versioned contract and D-10 policy. See [current data contract](../CONTRACT_P0.md), [integration notes](../reference/INTEGRATION_NOTES.md) and [validation guide](../validation.md).
+
+`science/reference.py` imports `science/status.py`. See [historical validation](reference_validation.md) for the original package results.
 
 ## Application flow
 
-1. Resolve each source record in its trusted subject and origin partition. Wrap the original Task 2 record and its record-specific context in `Observation(record, context)`. Supply the Task 3 adapter checks as documented in the final Task 3 handoff.
+1. Resolve each source record in its trusted subject and origin partition. Wrap the original Task 2 record and its record-specific context in `Observation(record, context)`. Supply the status adapter checks in the [information-status API](../data-status/api.md).
 2. Add the following evidence in memory. `context["conditions_compatible"]` must be literal true for an adapter-verified setting. Use documented Task 2 `measurement_context`, `sleep_metric_method` or `technical_context` on the record. The subject profile must identify the `timezone_basis`. Research profiles must carry `research_dataset_version` and their verified `source_participant_id`. DECODE needs the existing verified event ledger check plus `decode_familiarization_verified=True` and a versioned `decode_exposure_band` string from the adapter. Include relevant protocol, device, timing and environmental details in controlled context labels. Equality of user-supplied labels alone cannot establish comparability.
 3. Construct `Policy(kind, metric, version, lookback_days, minimum_days)`. Build with `build_reference(target, history, policy)`. Use the candidate's status and reason for an unavailable or insufficient comparison. Keep previous records as immutable source IDs. When replaying past decisions, pass the historical data snapshot known at that time so late-arriving corrections cannot leak into the replay.
 4. Record the authorized review via `series.activate(candidate, reference_id=..., decision=..., expected_reference_id=...)`. Start with `ReferenceSeries()` on first publication. Use `series.decide("freeze" | "request_review" | "resolve_review", reference_id=..., decision=...)` to append a documented lifecycle decision. A `Decision` contains a unique decision ID, actor ID, role, UTC time and reason. Bind the actor and role to the authenticated user before calling.
@@ -13,9 +15,9 @@ Apply the six Task 4 files over a checkout containing the final Task 3 package. 
 
 For replay, pass the as-of decision time and the record available at that time. Frozen baselines keep their original fit window across later comparisons. For an unavailable reference with a provisional build result, present the build status and counts alongside Task 3's current-reading information. These two states describe different questions.
 
-## Decisions for Ahmed
+## Integration requirements
 
-| Decision | Required at integration |
+| Area | Required at integration |
 |---|---|
 | Metric policy | Approve each minimum-day/lookback policy, its comparison question and any expiration or recertification policy. Decide whether and when to permit an automated change flag. This package uses an explicit decision and ships with no numeric decline cutoff. |
 | DECODE comparison | Approve the familiarization and exposure-band criteria, protocol/key equivalence and technical conditions that the adapter can attest. Exact matching ships as the conservative default. Define who verifies raw events and timing. |
@@ -23,5 +25,4 @@ For replay, pass the as-of decision time and the record available at that time. 
 | Persistence and roles | Approve lifecycle/audit storage, authorized roles, immutable IDs, transaction constraints and replay semantics. Task 2 reference rows use the existing field set. The audit log is a proposed persistence design outside the Task 2 record schema. |
 | Information Status identity | Approve storage keys before persisting separate raw and comparison assessments or several sleep-field assessments for one record. Existing `information_status.record_ref` does not identify a field. |
 
-The standalone module has been exercised against the shipped Python engine and the proposed Task 2 contract. App adapters, transactional storage, role permissions, screens and complete scenario journeys still require application-level tests.
-
+The standalone module has been exercised against the shipped Python engine and the proposed Task 2 contract. App adapters, transactional storage, role permissions, screens and complete scenario journeys are outside this standalone module’s test scope; current repository checks are described in the [validation guide](../validation.md).

@@ -1,7 +1,7 @@
 # Vitalents · Data contract v1.0 (P0)
 
-**Status:** frozen for P0 on 14 Nov 2026 · **Owner:** Ahmed (schemas) · **Source:** Shaimaa's Data Dictionary v0.9 (`Vitalents_Task2_Data_Dictionary.xlsx`)
-**Overrides** the enum names and data shapes in `docs/SRS.md`. Agents follow this file where the two differ.
+**Status:** frozen for P0 on 14 Nov 2026 · **Source:** [Data Dictionary v0.9](data-dictionary/Vitalents_Task2_Data_Dictionary.xlsx)
+**Overrides** the enum names and data shapes in `docs/SRS.md`. Use this contract where the two differ.
 
 The 21 JSON Schemas in `contracts/` are generated from the dictionary: same entity names, field names, types and enums. The only changes are the decisions below (D-3, D-6 to D-8, D-11). Validate any data file with:
 
@@ -25,14 +25,14 @@ python3 scripts/validate_data.py file.json  # one file
 | **D-7** | **Action status** | Dictionary values plus two: `proposed · accepted · in_progress · completed · deferred · rejected · unable · awaiting_impact_review`. `rejected` = the astronaut declined (with an optional reason). A completed action with no later reading stays `awaiting_impact_review` and never closes as recovered. |
 | **D-8** | **Field additions** | `mission_schedule`: `item_kind` (`task` / `rest_window`, required), `movable_earliest_start`, `movable_latest_end`. `personal_reference`: `range_low`, `range_high`, `frozen`. `decode_session`: `played_live_into_simulation`. |
 | **D-9** | **Decode event conventions** | Accepted = `correct` + `incorrect` only. A trial open when the 90 s window closes is `missed`. A response after 90 000 ms is `late`. A second response to the same trial is `duplicate`. Responses after an interruption are `interrupted`. Missed, late, duplicate and interrupted are never accepted and never counted as wrong. `accuracy_percent = 100 × correct / accepted`, **stored unrounded** (round only for display), **`null` when accepted = 0**. `median_correct_rt_ms` covers correct responses only, `null` if none. A session is `interrupted` after Request help or more than 2 s hidden, and `aborted` if quit early for any other reason. Practice rounds are `is_practice: true` and never enter a reference. |
-| **D-10** | **Personal reference v1** (demonstration heuristic, not a medical threshold; Shaimaa owns the final rule) | Use only `valid`, non-practice values strictly **before** the target date, within **14** days, excluding the **first 2** Decode sessions. Fewer than **5** values → `provisional` (shown, no comparison); 0 values → `not_built`; 5 or more → `usable_for_question`. Value = median; `range_low` and `range_high` = min and max. While a follow-up on the same indicator is open, the previous reference is returned unchanged with `frozen: true`, so a decline can never pull it down. Comparison says `below_range`, `within_range`, `above_range` or `not_comparable`, which is descriptive only. |
+| **D-10** | **Personal reference v1** (demonstration heuristic, not a medical threshold) | Use only `valid`, non-practice values strictly **before** the target date, within **14** days, excluding the **first 2** Decode sessions. Fewer than **5** values → `provisional` (shown, no comparison); 0 values → `not_built`; 5 or more → `usable_for_question`. Value = median; `range_low` and `range_high` = min and max. While a follow-up on the same indicator is open, the previous reference is returned unchanged with `frozen: true`, so a decline can never pull it down. Comparison says `below_range`, `within_range`, `above_range` or `not_comparable`, which is descriptive only. |
 | **D-11** | **Live Decode in the demo** | A judge can play a live round that is added to Fahim's **simulated** history. The record keeps `data_origin: live_decode`, `is_simulated: false` and `played_live_into_simulation: true`, and the UI labels it "Live round added to a simulated history". This is allowed **only** in simulation mode. A live result is never attached to a LifeSnaps participant. |
 | **D-12** | **Roles** | P0 uses the dictionary's three roles: `astronaut · medical · planner`. Splitting the medical role into crew medical officer and ground team is P1. |
 | **D-13** | **Scenarios** | The Scope Update's **S1–S5** replace the SC-1…7 numbering. S1 = Fahim. |
 
-### Old names → contract names (for agents)
+### Earlier terminology → contract names
 
-| Concept | Old (SRS / Team plan) | **Contract v1.0** |
+| Concept | Earlier SRS terminology | **Contract v1.0** |
 |---|---|---|
 | Information status | valid / limited / invalid / missing / stale / not_comparable | `valid` `limited` `stale` `not_comparable` `incomplete` `no_reading` |
 | Follow-up status | none, specialist_review | `no_open_follow_up`, `under_specialist_review` (others unchanged) |
@@ -43,9 +43,9 @@ python3 scripts/validate_data.py file.json  # one file
 
 ---
 
-### Status engine (Shaimaa, `science/status.py`, ruleset status-0.3.0)
+### Status engine (`science/status.py`)
 
-Phase-one alignment, 14 Nov: a missing (`null`) pulse is `no_reading`, including when weak sensor contact explains its absence. `limited` requires a present value usable with a caveat (D-3/D-6); it must not imply an absent measurement is usable. This explicitly supersedes the earlier null-pulse `limited` fixture example. Simulated Decode sessions now include response-event ledgers and are checked against the same scoring summaries as live rounds. The broader `stale`/`limited` quality rules remain demonstration policies, not clinically approved thresholds. Run the current suite with `python -m pytest -q science`.
+Current behavior, 14 Nov 2026: a missing (`null`) pulse is `no_reading`, including when weak sensor contact explains its absence. `limited` requires a present value usable with a caveat (D-3/D-6); it must not imply an absent measurement is usable. This explicitly supersedes the earlier null-pulse `limited` fixture example. Simulated Decode sessions now include response-event ledgers and are checked against the same scoring summaries as live rounds. The broader `stale`/`limited` quality rules remain demonstration policies, not clinically approved thresholds. Run the current suite with `python -m pytest -q science`.
 
 ## 2. What P0 builds
 
@@ -59,7 +59,7 @@ These live as **files**, not database rows: `rule_definition` → `content/rules
 
 ## 3. Fahim: input and output
 
-**Input** is one bundle per scenario: `app/public/data/fixtures/S1.json` (S2–S5 the same shape). The shape is in `contracts/examples/S1_fahim_minimal.json`, a valid minimal example. Shaimaa owns the full fixture. It must contain:
+**Input** is one bundle per scenario: `app/public/data/fixtures/S1.json` (S2–S5 the same shape). The shape is in `contracts/examples/S1_fahim_minimal.json`, a valid minimal example. The fixture contains:
 
 | Entity | Fahim, scenario S1 |
 |---|---|
@@ -79,7 +79,7 @@ These live as **files**, not database rows: `rule_definition` → `content/rules
 
 ## 4. The test API: functions + vectors (no server)
 
-Shaimaa's Python in `science/` is the **reference implementation**. The app runs a TypeScript port in the browser (Ahmed's agent). **There is no HTTP API for this logic**; the only HTTP API is the assistant (`/ask`). Both sides are tested against the same vector files.
+The browser engine and `science/contract_logic.py` share the scoring, D-10 reference, comparison and rest-opportunity vectors. The broader `science/reference.py` and `science/rules.py` implement separate research policies; see [integration notes](reference/INTEGRATION_NOTES.md). **The core logic runs locally, without an HTTP API.** The optional assistant exposes `/ask`, `/consult` and `/health`. The table below records the intended interface; only the four functions listed in `science/contract_logic.py` are shared-vector implementations.
 
 | Function (Python / TypeScript) | Input | Output | Needed by |
 |---|---|---|---|
@@ -108,7 +108,7 @@ Shaimaa's Python in `science/` is the **reference implementation**. The app runs
 }
 ```
 
-Six starter vectors are included. Shaimaa should check them by hand, fix them if her rule differs, and add the edge cases (missing, stale, device change, zero accepted, midnight-crossing schedule):
+Ten vectors cover reference construction and freezing, comparison, scoring, and schedule alternatives. Selected examples:
 
 - `build_reference/fahim-day25-build`: 9 valid sessions → median 43, range 41–44
 - `build_reference/fahim-day27-frozen`: follow-up open → day-25 reference returned, `frozen: true`
@@ -117,45 +117,26 @@ Six starter vectors are included. Shaimaa should check them by hand, fix them if
 - `score_decode/mixed-states`: correct, incorrect, duplicate, late → accepted 4, correct 3, 75.0 %, median 800 ms
 - `score_decode/zero-accepted`: missed only → accuracy `null`, not 0
 
-Test loop on both sides:
+Run the actual shared-vector tests from the repository root:
 
-```python
-# science/test_vectors.py
-import json, glob, pytest
-from science import logic
-@pytest.mark.parametrize("path", glob.glob("contracts/vectors/*/*.json"))
-def test_vector(path):
-    v = json.load(open(path))
-    out = getattr(logic, v["function"])(**v["input"])
-    assert_close(out, v["expected"], v["tolerance"])
+```bash
+python3 -m pytest -q science/tests/test_contract_logic.py
+cd app
+npx vitest run src/engine/vectors.test.ts
 ```
 
-```ts
-// app/src/engine/vectors.test.ts: same files, same expectations, camelCase function names
-```
+The Python tests dispatch through `science.contract_logic.FUNCTIONS` and compare numeric values with the vector tolerance. The TypeScript tests use the same files and camelCase function names.
 
 ---
 
-## 5. Scope Update (14 Nov): what we accept
+## 5. Data scope and remaining validation
 
 | Item | Decision |
 |---|---|
-| P0 = full simulation journey with **S1–S5** | **Accepted.** Matches increments 0–6. |
+| Demonstration scope | Full simulation journey with **S1–S5**. |
 | LifeSnaps licence | **Verified: CC BY 4.0** on Zenodo record 7229547 (version 4, open access). Reuse and redistribution are allowed **with attribution**. Cite the record and the Scientific Data paper. Still: don't commit the 615 MB archive or participant-level CSVs to GitHub; commit only a small derived daily subset if Real Data Mode is built, with an `ATTRIBUTION.md`. |
-| LifeSnaps role | **P1 as evidence first:** Shaimaa runs the same reference method (D-10) offline on the daily sleep and heart-rate data and reports, per participant, how often a reference can be built and how often values fall outside the personal range vs a single fixed range. These are descriptive numbers for the evidence slide. **In-app Real Data Mode only after P0 passes.** Questionnaires (STAI/PANAS) are P2. |
+| LifeSnaps role | Planned separate descriptive evaluation of terrestrial wearable data, not astronaut data. The current research examples are synthetic; no measured LifeSnaps evaluation is claimed here. Real-data integration and questionnaires remain future scope. |
 | Temperature from LifeSnaps | Not shown until the unit and meaning are verified. Simulation only in P0. |
 | EDA stress, readiness score, Decode as a medical test | Removed (agreed). |
-| Simulator owner | **Shaimaa** (Team plan v1.3). |
 | Feedback rating | Categorical `useful` / `not_useful`, not 1–5 (P2). |
-| NASA resource | LifeSnaps is not NASA data. **Amr confirms** which item from the official challenge Resources tab we use (the NASA Human Research Program risk pages in the Ask NASA library are the candidate) and cites it on the project page. |
-
----
-
-## 6. Who needs what
-
-| From | To | What | By |
-|---|---|---|---|
-| Ahmed | Shaimaa | This contract, the schemas, the validator, the example bundle, the vectors | Now |
-| Shaimaa | Ahmed | Full `S1.json` fixture (validates), Python for `info_status`, `build_reference`, `compare_to_reference`, `score_decode`, and checked vectors | 4 h from now |
-| Shaimaa | Ahmed | `evaluate_rules`, `rest_opportunity` + vectors; S2–S5 bundles | 6–8 h from now |
-| Amr | Shaimaa, Ahmed | Library files + `sources.json`, 15 eval questions **with expected source or expected refusal**, `rules.json` with wording and sources | Library by 6 h; rules by 3 h |
+| NASA resource | LifeSnaps is not NASA data. NASA background sources are credited in [credits](credits.md). Exact challenge-resource eligibility remains unconfirmed; source inclusion is not official approval. |

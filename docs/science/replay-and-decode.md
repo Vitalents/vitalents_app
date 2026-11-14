@@ -1,6 +1,8 @@
-# Tasks 8 and 9 handoff for Ahmed
+# Mission replay and Decode verification
 
-Run the commands in the root README. The generated JSON includes four fictional crew profiles, the input records and DECODE ledgers, the actual Python engine results, and the expected outcome descriptions. The tests check the outcomes independently. Stable IDs, fixed UTC dates, and seed 42 make the replay reproducible. Keep the **SIMULATED DATA** banner visible. Research participants, mission fixtures and live player sessions have distinct provenance and identity.
+> **Scope:** Python science-module interface. The browser app uses its own versioned contract and D-10 policy. See [current data contract](../CONTRACT_P0.md), [integration notes](../reference/INTEGRATION_NOTES.md) and [validation guide](../validation.md).
+
+Run the commands in the [science README](../../science/README.md). The generated JSON includes four fictional crew profiles, the input records and DECODE ledgers, the actual Python engine results, and the expected outcome descriptions. The tests check the outcomes independently. Stable IDs, fixed UTC dates, and seed 42 make the replay reproducible. Keep the **SIMULATED DATA** banner visible. Research participants, mission fixtures and live player sessions have distinct provenance and identity.
 
 | Scenario | What the replay verifies |
 |---|---|
@@ -21,8 +23,8 @@ Call `science.decode.verify(session, events, subject=subject, key_registry=regis
 - A verified empty ledger yields zero counts and undefined accuracy and median. If every accepted answer is wrong, accuracy is 0% and median correct RT is undefined. An unverified or unfinished session has no published summary. A verified practice session returns feedback as `practice_only` and stays outside personal references. Preserve repeats as separate sessions.
 - Use the verifier result for score publication and pass its ledger attestation to Information Status together with the original verified record and any trusted clock context. The result describes game performance. A valid ledger still needs a comparable context and sufficient history for a reference.
 
-The appendices in Task 2 leave interruption, duplicate, timing and event acceptance conventions open. These conventions apply to this standalone verifier. Confirm them against the actual client before live use. Use an independently captured browser/device trace to verify timer origin, visibility or focus interruptions, key mapping, and phase order from preparation through measurement to story/reward. Verify score formatting without rounding the persisted computation. No app or device timing implementation was supplied in the four attachments.
+These conventions apply to the standalone verifier. The browser app follows the current data contract; adapters must reconcile the two protocols explicitly. Use an independently captured browser/device trace to verify timer origin, visibility or focus interruptions, key mapping, and phase order from preparation through measurement to story/reward. Verify score formatting without rounding the persisted computation. The original standalone package did not evaluate browser/device capture; its results cannot establish timing validity on target devices.
 
-## S5 integration dependency
+## Application communication scenario
 
-Ahmed’s local-store and sync flow owns S5. Exercise a delayed and retried share package from saved to awaiting send, sent, arrived and reviewed. Check that each transition has the corresponding evidence, duplicate delivery creates a single record, offline restarts retain state, and specialist and planner access obey the preview and role boundaries. S5 is outside the four requested scenario replays. The Python test results cover standalone software behavior and synthetic examples. DECODE still requires independent validation for any clinical or readiness use.
+S5 uses the application’s local store and simulated sync flow. Its tests exercise delayed and retried packages through `saved_locally`, `queued`, `sent`, `delivered` and `reviewed`. Check that each transition has the corresponding evidence, duplicate delivery creates a single record, offline restarts retain state, and specialist and planner access obey the preview and role boundaries. S5 is outside the four requested scenario replays. The Python test results cover standalone software behavior and synthetic examples. DECODE still requires independent validation for any clinical or readiness use.

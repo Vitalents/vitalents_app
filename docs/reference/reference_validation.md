@@ -1,5 +1,7 @@
 # Personal reference validation
 
+> **Historical standalone report · 14 November 2026.** Counts, commands and package layouts below describe the original archive. They are not current repository test totals. Use [the current data contract](../CONTRACT_P0.md) and [validation guide](../validation.md) for the integrated implementation.
+
 ## Reproduce the test runs
 
 Apply this ZIP over a fresh extraction of `Vitalents-Task3-final.zip`. Run from the combined package root.
@@ -37,4 +39,3 @@ The supplied scope update and Product Scope ground the project behavior. The Tas
 - [LifeSnaps study and anonymization method](https://pmc.ncbi.nlm.nih.gov/articles/PMC9622868/)
 - [Fitbit sleep log fields](https://dev.fitbit.com/build/reference/web-api/sleep/get-sleep-log-by-date/)
 - [Repeated assessment and practice effects in the written Symbol Digit Modalities Test](https://pubmed.ncbi.nlm.nih.gov/25994156/)
-

@@ -1,6 +1,6 @@
-# Tasks 6 and 7 handoff for Ahmed
+# Rules and scheduling API
 
-Extract the ZIP into a fresh directory and run `python -B -m unittest discover -s tests -v`. The consolidated Tasks 3–5 package is included so both modules and all original tests run together.
+> **Scope:** Python science-module interface. The browser app uses its own versioned contract and D-10 policy. See [current data contract](../CONTRACT_P0.md), [integration notes](../reference/INTEGRATION_NOTES.md) and [validation guide](../validation.md).
 
 ## Python entry points
 
@@ -9,15 +9,9 @@ Extract the ZIP into a fresh directory and run `python -B -m unittest discover -
 - **Schedule** — Call `science.schedule.compare` with the simulated subject's complete Task 2 schedule snapshot, an explicit constraint horizon, linked target rest window, resource availability and named alternatives with one or more time-only moves. Supply resource calendars net of external bookings. Zero means a confirmed zero buffer. An empty resource list means no extra resources. Use `clock_basis="UTC"` for explicit UTC timestamps, including Task 2's "UTC demo clock", or `fixed_rate_mission_clock` for a verified offset-free clock with full dates and no discontinuities. Convert other clocks explicitly before calling. The calculator compares supplied moves. S3 applies to that candidate set.
 - **Adoption** — A feasible proposal stays pending until all required roles approve the exact `proposal_key`. Supply trusted `Approval` records from the application. Recheck against the current baseline, calendars, role grants and approvals in the application transaction before adoption. The result is a calculation and approval check. The module has no write path.
 
-The dataclasses and result dictionaries are runtime interfaces. Keep Task 2 persisted field names and enums. Ahmed's adapter owns generated IDs, timestamps, record links, the in-memory-to-persistence mapping, deduplication, authorization and lifecycle transitions. For a review request, prepare a restricted summary from authorized record references and let the user preview sharing. Planner-facing responses should contain operational schedule information only.
+The dataclasses and result dictionaries are runtime interfaces. Keep Task 2 persisted field names and enums. The application adapter owns generated IDs, timestamps, record links, the in-memory-to-persistence mapping, deduplication, authorization and lifecycle transitions. For a review request, prepare a restricted summary from authorized record references and let the user preview sharing. Planner-facing responses should contain operational schedule information only.
 
-## Unresolved approvals
 
-| Owner | Decision |
-|---|---|
-| Amr and team | Sign off on the workflow priority, tie order, rule wording and evidence. Confirm which rule versions and metric policies are eligible in each mode. |
-| Medical owner | Approve any actual plan, applicable predicate, permitted action and symptom or urgent handling protocol. Approved clinical limit sets and emergency protocols were absent from the handoff. The only approved-plan records in the new fixtures are synthetic. |
-| Planner and medical owners | Confirm schedule data completeness, clock and buffer conventions, resource booking/availability source, and which roles approve each move. The chosen buffer convention is prep before work and travel after work. Confirm any task move windows or dependencies when assembling permitted candidates. |
-| Ahmed | Confirm authenticated role and approval binding, immutable record revisions, approval revocation and transaction behavior, persistence mapping, and review/share privacy. Test app adapters and scenarios before declaring application integration. |
+## Integration boundaries
 
-The Task 2 and Tasks 3–5 open decisions continue to apply. This work uses synthetic fixtures and needs no LifeSnaps redistribution.
+The reference engine requires explicit metric policies, evidence versions and workflow priority. Clinical plans and emergency protocols are not supplied; plan approvals in the fixtures are synthetic. Scheduling requires complete calendars, explicit clock and buffer conventions, move windows and trusted role approvals. The buffer convention is preparation before work and travel after work. Application adapters must bind authenticated roles, record revisions and approval revocation to persistence and sharing boundaries. The browser demo’s role switching is not authentication.

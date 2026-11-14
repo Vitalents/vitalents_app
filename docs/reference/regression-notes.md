@@ -1,12 +1,8 @@
-# Task 5 tests and integration handoff
+# Status and reference regression history
 
-This ZIP is a standalone Python package containing both Vitalents engines, the original Task 3 and Task 4 tests and fixtures, and the added synthetic Task 5 tests. Extract it into a fresh folder and run from the package root.
+> These counts describe the original standalone package on 14 November 2026, not the current repository suite. Current behavior is governed by [the data contract](../CONTRACT_P0.md); current commands and evidence are in [validation](../validation.md).
 
-```console
-python -B -m unittest discover -s tests -v
-```
-
-## Verification
+## Historical verification (14 November 2026)
 
 | Suite | Passed | Failures | Errors | Skipped |
 |---|---:|---:|---:|---:|
@@ -28,5 +24,4 @@ The new reference suite includes six cross-engine tests. Counts use unittest tes
 
 Use `science/status.py` and `science/reference.py` together. They report versions `status-0.3.1` and `reference-1.0.1`. Record fields, enum values, the persisted reference schema and the audit shape follow the existing contract. Existing reference versions remain in the audit log. If a historical DECODE baseline used an impossible summary, use the existing documented review and replacement workflow, keeping the prior version in the log.
 
-Local tests cover comparison compatibility, source isolation, audit replay, and synthetic S1 and S2 through the Python APIs. Real application adapters, transactional persistence, permissions and end-to-end screens still require application-level verification.
-
+Local tests cover comparison compatibility, source isolation, audit replay, and synthetic S1 and S2 through the Python APIs. Application adapters, transactional persistence, permissions and end-to-end screens are outside the scope of these historical standalone results. See the current [validation guide](../validation.md).

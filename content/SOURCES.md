@@ -2,7 +2,7 @@
 
 Machine-readable entries: `content/library.json` (cognition, sleep, heart, symptoms and the general entries) and `content/library.extra.json` (nutrition, movement, radiation and general context, `lib:source:x-*`). Corpus files for the onboard assistant: `ai/corpus/*.md`, registered in `ai/corpus/sources.json` (34 files). Every URL below was fetched on 2026-11-14. Every entry is `approval_status: draft` and needs a human word-for-word check of its excerpts before it is marked reviewed.
 
-Corpus format: each file holds the citation header, short verbatim excerpts with section or page, and (except quote-only entries) a neutral summary labelled as written by the library agent, not a quotation. NASA documents are US government works. Non-NASA sources (University of Pennsylvania page, Basner et al. 2015, Dev et al. 2024, Mallis and DeRoshia 2005, ESA) carry short quotes only.
+Corpus format: each file holds a citation header, short excerpts with a section or page locator, and, where present, an explicitly labelled explanatory summary. Source-specific rights and third-party material must be checked; a NASA-hosted URL alone does not establish unrestricted reuse. The verification record distinguishes quote matching from source approval.
 
 ## Core library (`content/library.json`)
 
@@ -48,29 +48,18 @@ Corpus format: each file holds the citation header, short verbatim excerpts with
 | general | `lib:source:x-ntrs-comm-bandwidth-medical` | Communication Bandwidth Considerations for Exploration Medical Care During Space Missions | NASA (Krihak, Middour, Reyes, Nusbaum, Antonsen), NTRS | 2019-08-01 (NASA/TM-2019-220335) | <https://ntrs.nasa.gov/citations/20200001702> | Body-map frame and context for Ask NASA |
 | general | `lib:source:x-nasa-hera-comm-delay` | Houston, Do You Copy? HERA Crew Navigates Communication Delays | NASA | 2022-10-19 (web page, last updated 2023-09-25) | <https://www.nasa.gov/humans-in-space/houston-do-you-copy-hera-crew-navigates-communication-delays> | Body-map frame and context for Ask NASA |
 
-Merged duplicates: `lib:source:x-nasa-five-hazards` was the same page as `lib:nasa-hrp-hazards`, and `lib:source:x-ochmo-tb-behavioral-health` was the same PDF as `lib:nasa-std-3001-tb-behavioral-health`. The x- entries and their corpus files were removed and their extra excerpts were folded into the kept entries. Combined, the two files hold 34 sources, above the 15-25 range of FR-AS-01: the team decides whether the Library screen lists all of them (the app reads only `library.json` today).
+The core and extra catalogs contain 34 distinct sources. The app's library reads both catalogs through `app/src/content/content.ts`; the assistant corpus uses the same registered source collection. Duplicate hazard and behavioral-health entries were consolidated under their canonical IDs.
 
-## Challenge resources
+## Challenge context
 
-| Item | URL | Status |
-|---|---|---|
-| Official challenge page: Create Health Monitoring Software for Astronauts on Space Missions (NASA Space Apps 2026) | <https://www.spaceappschallenge.org/2026/challenges/health-monitoring-software/> | Found through web search (the result title matches). The agent could not fetch the page (the site blocks automated access), so its text and its Resources tab were not read. |
+[Create Health Monitoring Software for Astronauts on Space Missions](https://www.spaceappschallenge.org/2026/challenges/health-monitoring-software/) is the project challenge reference. The exact match between the sources above and the official challenge Resources list remains unverified here. These sources are cited for their scientific context, not as proof of submission eligibility.
 
-TODO(question: Amr opens the challenge page, copies every item on its Resources tab (title, publisher, URL), and marks which are already in the library. Likely overlaps: the NASA HRP risk pages and NASA-STD-3001 technical briefs. No item is claimed here as coming from the Resources tab until that check is done.)
+## Source review and limits
 
-## URLs tried and dropped
+The 14 November 2026 [verification record](../ai/source_verification.json) documents 34 retrieved sources, 97 displayed excerpt matches and 168 corpus fragment matches. It records corrected PDF locators, source hashes and rights uncertainties. These are automated traceability checks; all sources remain draft pending review.
 
-| URL | Why dropped |
-|---|---|
-| <https://www.spaceappschallenge.org/2026/challenges/health-monitoring-software/> | Site blocks automated fetching; kept above as the challenge link, not as a library source |
-| <https://humanresearchroadmap.nasa.gov/Risks/risk.aspx?i=179> (HRR cardiovascular risk) | Site blocks automated fetching |
-| <https://humanresearchroadmap.nasa.gov/Evidence/reports/Sleep.pdf> (HRR sleep evidence report) | Site blocks automated fetching |
-
-## Review notes for the human check
-
-- Excerpts came through a page-reading tool that returns short quotes. Check each one word for word against the URL, and confirm page numbers in the PDFs (several were inferred from the text layout).
-- OCHMO-MTB-004 (space adaptation sickness) gives different prevalence and onset figures in different sections (up to 73% in the first 2-3 days; 70-90%; first 3-7 days). Each is quoted with its page; never merge them into one number.
-- OCHMO-TB-016: "Ensuring crew behavioral health over the long term is essential." was placed on p. 1 by one fetch and p. 2 by the other; confirm.
-- Sentences left out on purpose: those naming supplements or medications (SANS and sensorimotor risk pages) and those using wording the product never shows (cardiovascular risk page, orthostatic intolerance brief, SANS brief).
-- Licences: Basner et al. 2015 is an author manuscript with no open licence stated; Mallis and DeRoshia 2005 is listed on NTRS with copyright "Other"; ESA reuse terms not checked; Dev et al. 2024 is CC BY.
-- The real-model eval (`python ask_nasa.py --eval ../content/eval.json`) was not run here (no Ollama). The corpus was built offline with keyword embeddings to confirm it parses.
+- Printed PDF pages differ from physical PDF indices. Markdown corpus pages are not original PDF page numbers.
+- The Food and Nutrition brief has a Rev E cover and quoted pages carrying Rev D; preserve this version conflict when citing it.
+- Space-adaptation-sickness figures refer to different populations or time windows. Keep each quotation with its original context and denominator.
+- Source-specific and third-party rights remain unresolved where the verification record says so. Do not infer blanket redistribution rights from an excerpt match or host domain.
+- Assistant evaluations measure expected source-title matches and abstentions, not scientific accuracy. See [validation and limitations](../docs/validation.md) and the [assistant guide](../ai/README.md).

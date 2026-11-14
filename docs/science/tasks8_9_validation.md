@@ -1,5 +1,7 @@
 # Tasks 8 and 9 validation
 
+> **Historical standalone report · 14 November 2026.** Counts, commands and package layouts below describe the original archive. They are not current repository test totals. Use [the current data contract](../CONTRACT_P0.md) and [validation guide](../validation.md) for the integrated implementation.
+
 | Suite | Passing unittest methods |
 |---|---:|
 | Original Tasks 3–7 | 197 |

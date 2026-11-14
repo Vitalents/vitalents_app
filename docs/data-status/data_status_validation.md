@@ -1,5 +1,7 @@
 # Data Status Validation
 
+> **Historical standalone report · 14 November 2026.** Counts, commands and package layouts below describe the original archive. They are not current repository test totals. Use [the current data contract](../CONTRACT_P0.md) and [validation guide](../validation.md) for the integrated implementation.
+
 Ruleset `status-0.3.0`. Suite command `python -B -m unittest discover -s tests -p 'test_*.py' -v`.
 Python 3.15.0. **88 executed, 88 passed, 0 failures, 0 errors, 0 skipped.**
 Includes the previous 71 tests and 17 new regressions.

@@ -1,8 +1,8 @@
-# Vitalents Task 10 — Final Validation Summary
+# Standalone science validation history
 
-**14 November 2026 · Standalone science package accepted for integration QA.** Both the supplied Tasks 3–9 archive and the final Tasks 10–11 ZIP were tested from fresh extractions on Windows with CPython 3.12.14. Each run executed **226 tests: 226 passed, 0 failed, 0 errors, 0 skipped, 0 expected failures, and 0 unexpected successes**. No blocking defect was confirmed in the delivered Python implementation. Application acceptance is pending.
+**14 November 2026 · Standalone science package accepted for integration QA.** Both the supplied Tasks 3–9 archive and the final Tasks 10–11 ZIP were tested from fresh extractions on Windows with CPython 3.12.14. Each run executed **226 tests: 226 passed, 0 failed, 0 errors, 0 skipped, 0 expected failures, and 0 unexpected successes**. No blocking defect was confirmed in the delivered Python implementation. This historical report covers the standalone package only; it is not the current application acceptance record.
 
-## Reproduction and evidence boundaries
+## Original reproduction and evidence boundaries
 
 From the extracted ZIP root, run:
 
@@ -34,7 +34,7 @@ Verified means directly exercised at the stated standalone boundary. Partially v
 | M2–M5, M7 — Application mapping and workflow | Partially verified | Engine output and fixture links exist. App schema validation, real LifeSnaps import, card rendering, provenance labels, action transitions and durable storage await integration. Some built-in findings omit rule/owner metadata required by the proposed app mapping. |
 | M8 — Share preview and permissions | Partially verified | S4 scopes a synthetic preview and excludes its private note. App authorization, role switching, export and storage boundaries, and negative access tests are outstanding. |
 | M6 — Library and assistant | Not tested | Citation grounding, abstention, gap logging and cached/offline answers have no application evidence. |
-| M9 / S5 — Delayed communication and offline restart | Blocked | Needs Ahmed’s local store, share queue, simulated transport receipts and review state. The packaged replay covers S1–S4. |
+| M9 / S5 — Delayed communication and offline restart | Blocked | Needs the application local store, share queue, simulated transport receipts and review state. The packaged replay covers S1–S4. |
 | M3 — Live DECODE capture | Blocked | Requires a playable client, a versioned key registry and an independent capture trace/seal from target browsers/devices. |
 | Measurement validity, usability and health impact | Not tested | No independent DECODE measurement study, usability study, astronaut cohort, or clinical outcomes were evaluated. |
 
@@ -49,11 +49,7 @@ Verified means directly exercised at the stated standalone boundary. Partially v
 
 Passing tests verify software behavior for the supplied inputs. The five prior valid days within 14 days are a demo policy. Sleep–game co-occurrence provides no causal inference, rest opportunity does not measure actual sleep, and DECODE scoring establishes neither medical readiness nor diagnostic validity. Rule approvals in the fixtures are fictional.
 
-## Open decisions and handoff to Ahmed
 
-1. Freeze Task 2 v0.9 adapter choices for IDs and foreign keys, per-mode namespaces, optional nulls and observed zero, UTC versus source-local time, duplicate handling, schema/enums and finding metadata. Import the replay and verify the full Body Map → Daily Check → Review → Act → Follow-up workflow, including provenance and separate information, follow-up and sync states.
-2. Agree live DECODE protocol/version, phase order and focus/interruption, late/duplicate, and device timing rules. Test the 90,000 ms measurement window on target devices, using an independently captured ordered event seal and checking no score publication on incomplete or unverified capture. Keep practice and repeat sessions distinct.
-3. Run S5 with the network off, restart, delay and retry. Require evidence for `saved_locally` → `queued` → `sent` → `delivered` → `reviewed` and a single logical delivery after retry. Check the astronaut preview against the delivered package, specialist scope, planner operational-only access and rejection of unauthorized or cross-subject/mode access through the app, storage and export paths. Keep medical data, DECODE and private notes out of planner views and exports.
-4. Team decisions still open include Scope Update approval and release priorities, simulator ownership, feedback scale and reference policy. Resolve source temperature semantics before physiological display. Resolve LifeSnaps publication rights and document the official NASA Resource-to-feature linkage before the corresponding public claims. See [Task 11](task11_data_sources_note.md) and [Task 2 open decisions](../task2_contract/Vitalents_Task2_Open_Decisions.md).
+## Current implementation
 
-Trace used for acceptance: Product Scope v1.2 (13 November 2026), M2–M10, the 14 November scope update §§4–11 as the working scope pending team approval, and the proposed Task 2 contract. The supplied Tasks 3–9 ZIP SHA-256 is `ab51cbbc1889b741482af7d0c49755a68194e49dd460b07b3a53bb2e6d882186`.
+IDs, null handling, timestamps, Decode conventions and application schema decisions are defined in [the current contract](../CONTRACT_P0.md). The current [validation guide](../validation.md) describes integrated application checks. This historical matrix preserves what the standalone run did and did not test; its pending/blocked statuses do not describe today’s browser implementation. Independent measurement validity, usability and clinical outcome evidence remain outside these software checks.

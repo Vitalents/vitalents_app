@@ -1,31 +1,22 @@
-# Vitalents · SRS and build plan (v1.5)
-
-Team: Ahmed Ehab · Amr Abd ElHaleem · Shaimaa Muhammed · Youssef Elbaz.
+# Vitalents · Software requirements specification
 
 ## 0. How to use this document
 
-This is the **Software Requirements Specification (SRS) and build plan** for the Vitalents hackathon MVP. It is written for two readers: **the four team members**, and **the Claude agents** they run. It is self-contained: an agent given this file and `CLAUDE.md` should be able to build its work package without any other document.
-
-**Requirement IDs.** Every requirement has an ID that agents cite in commits and tests:
+This specification preserves the original requirement IDs for traceability. It describes intended behavior, including requirements that may remain unimplemented; it is not a test report or evidence of clinical validity. The current [data contract](CONTRACT_P0.md) overrides earlier enum names, record shapes, scenario numbering and reference policy here. See [architecture](architecture.md) for the implemented components and [validation](validation.md) for evidence and limits.
 
 | Prefix | Meaning |
 |---|---|
-| `FR-xx-nn` | Functional requirement, grouped by module (SH shell, MAP body map, CHK check, DEC Decode, REF reference, REV review, FU follow-ups, SCH schedule, AS assistant, PE personalization, SHR sharing, SY sync, SIM simulation) |
+| `FR-xx-nn` | Functional requirement, grouped by module |
 | `NFR-nn` | Non-functional requirement |
-| `DR-nn` | Data requirement (an entity in the data model) |
-| `WP-nn` | Work package in the build plan |
+| `DR-nn` | Data requirement |
 
-**Priority.** **M** = must (the MVP fails without it). **S** = should (build after all M items pass). **C** = could (only if everything else is done, or explained in the pitch).
-
-**Build order.** The app is built in eight increments (Inc 0–7) grouped into four levels: **P0** (Inc 0–2, no demo without them), **P1** (Inc 3–5, the full loop), **P2** (Inc 6, proof), **P3** (Inc 7, polish). Section 16.3 maps every requirement to its increment. **Build order beats module order:** finish an increment end to end before starting the next.
-
-**Rules for agents (summary; the full list is in section 17 and in `CLAUDE.md`).** Implement only the requirements in your work package. Never invent numbers, sources or medical claims: take them from `content/` or leave a `TODO(question)`. The schemas in `contracts/` are binding. Every requirement you implement has a test or a manual check written down.
+**Priority:** M = must; S = should; C = could. Priorities are design intent, not completion status. Numeric thresholds are demonstration parameters unless a separately cited source establishes otherwise.
 
 ## 1. Introduction
 
 ### 1.1 Purpose
 
-Vitalents brings an astronaut’s physical indicators, cognitive performance and self-assessment together in a body map and a personal record. It helps the astronaut understand a change and its context, choose a suitable step, then follow up and share with a specialist when needed. This SRS defines the **MVP built in one day** for NASA Space Apps 2026, challenge “Create Health Monitoring Software for Astronauts on Space Missions”.
+Vitalents brings an astronaut’s physical indicators, cognitive performance and self-assessment together in a body map and a personal record. It helps the astronaut understand a change and its context, choose a suitable step, then follow up and share with a specialist when needed. This SRS defines the **demonstration prototype** for NASA Space Apps 2026, challenge “Create Health Monitoring Software for Astronauts on Space Missions”.
 
 ### 1.2 Product scope of the MVP
 
@@ -76,7 +67,7 @@ In the MVP, roles are switched with a **role switcher** in settings (no authenti
 ### 2.2 Operating environment
 
 - **Demo laptop** (32 GB unified memory): the web app served locally, the assistant service on `localhost:8008` with Ollama. Must work with the network **off**.
-- **Public link** (Cloudflare Pages at **vitalents.life**): the same app in **cached mode**: the assistant shows recorded answers labelled as such. Every branch also gets its own preview URL, which is how agent work is reviewed.
+- **Public link** (Cloudflare Pages at **vitalents.life**): the same app in **cached mode**: the assistant shows recorded answers labelled as such. Branch builds may have preview deployments.
 - Modern Chromium-based browser; screen widths from 390 px (phone) to 1440 px.
 
 ### 2.3 Constraints
@@ -85,7 +76,6 @@ In the MVP, roles are switched with a **role switcher** in settings (no authenti
 - No NASA logos or mission insignia.
 - AI use must be described in the submission, including the in-product language model.
 - Every number and every step shown to the user must carry its source.
-- Build time: one day.
 
 ### 2.4 MVP boundary
 
@@ -107,57 +97,40 @@ In the MVP, roles are switched with a **role switcher** in settings (no authenti
 
 ### 3.1 Components
 
-<pre>
-┌──────────────────────── Web app (Vite + React + TypeScript) ───────────────────────┐
-│  shell/ (nav, roles, settings)   features/ (map, check, decode, review, followups,  │
-│  ui/ (design system)              schedule, ask, sharing, reference, trends)        │
-│  engine/ (TS: info status, reference, change detection, rules, schedule)            │
-│  store/ (Zustand + IndexedDB via Dexie, local-first)   sync/ (simulated link)       │
-└───────────────▲───────────────────────────────▲─────────────────────────────────────┘
-                │ seed JSON (public/data)        │ HTTP localhost:8008 (optional)
-┌───────────────┴──────────────┐   ┌────────────┴───────────────────────────────┐
-│ science/ (Python)            │   │ ai/ (FastAPI + LangChain + Ollama)         │
-│ sim.py, reference.py,        │   │ /ask  /consult  /health                    │
-│ status.py, validate.py       │   │ library index · guardrails · eval          │
-│ → JSON + golden test vectors │   │ cached_answers.json for the public link    │
-└──────────────────────────────┘   └────────────────────────────────────────────┘
-</pre>
+```mermaid
+flowchart LR
+  Fixtures[Scenario bundles] --> App[React browser app]
+  App <--> Store[IndexedDB local records]
+  App --> Engine[TypeScript rule engine]
+  Python[Python simulation and checks] --> Proof[Proof artifacts]
+  Proof --> App
+  App -. optional .-> Assistant[Assistant API]
+  Assistant --> Sources[Source library]
+  Assistant --> Ollama[Local Ollama model]
+```
 
-**Key principle:** the Python science code is the **source of truth** for the reference and status calculations. It produces seed data **and golden test vectors**. The TypeScript `engine/` reproduces the same calculations for live sessions and must pass those vectors (NFR-11).
+**Implemented contract:** the browser engine and `science/contract_logic.py` reproduce the D-10 reference policy and shared vectors. The separate research estimator in `science/reference.py` has different eligibility and lifecycle semantics; it is not interchangeable with the app policy. See [integration notes](reference/INTEGRATION_NOTES.md).
 
 ### 3.2 Technology
 
 | Layer | Choice |
 |---|---|
-| App | Vite, React 18, TypeScript, React Router, Zustand, Dexie (IndexedDB), Recharts, CSS variables for brand tokens |
+| App | Vite, React 19, TypeScript, React Router, Zustand, Dexie (IndexedDB), Recharts, CSS variables for brand tokens |
 | Engine | Plain TypeScript, no UI imports, Vitest tests |
 | Science | Python 3.11, NumPy, pandas, SciPy, scikit-learn, pytest |
 | Assistant | FastAPI, LangChain, Ollama; gpt-oss:20b (live), Qwen 27B (summaries, second candidate), nomic-embed-text (search) |
 | Hosting | Cloudflare Pages (static app, cached assistant mode), custom domain `vitalents.life`, preview deployment per branch |
 
-### 3.3 Repository layout and ownership
+### 3.3 Repository layout
 
-| Path | Contents | Owner |
-|---|---|---|
-| `contracts/` | JSON Schemas for every entity and seed file. Changes need everyone’s agreement. | Ahmed merges |
-| `content/` | domains.json, rules.json, library sources, messages.json, eval.json, language.json | Amr |
-| `app/src/shell/`, `store/`, `sync/`, `features/` | App screens and state | Ahmed |
-| `app/src/ui/` | Design tokens and components | Amr |
-| `app/src/engine/` | TS engine ported from `science/`, checked against Shaimaa’s test vectors | Ahmed |
-| `app/public/data/` | Generated seed data (never edited by hand) | Generated |
-| `science/reference.py`, `status.py`, `patterns.py` | Reference and status pipeline | Shaimaa |
-| `science/sim.py`, `validate.py` | Simulator, scenarios, validation | Youssef |
-| `ai/` | Assistant service, library index, eval | Ahmed |
-| `deck/` | Pitch outline and assets | Youssef |
-| `scripts/check_language.py` | Forbidden-wording check | Amr |
+See the [repository map](../README.md) and [architecture](architecture.md). Application code, simulation, source material and contract fixtures have separate directories. Generated records retain their source and origin labels.
 
 ### 3.4 Configuration
 
 | Variable | Values | Effect |
 |---|---|---|
-| `VITE_ASSISTANT_MODE` | `live` · `cached` | Live calls `localhost:8008`; cached reads `public/data/cached_answers.json` |
-| `VITE_ASSISTANT_URL` | URL | Default `http://localhost:8008` |
-| `VITE_DEMO` | `true` · `false` | Shows the scenario selector, day selector and role switcher |
+| `VITE_ASSISTANT_MODE` | `live` · `cached` · `auto` | Cached reads reviewed recordings; live calls the configured API; auto probes API health before falling back. Cloudflare builds force cached mode. |
+| `VITE_ASSISTANT_URL` | URL | Explicit API endpoint; local live mode defaults to `http://localhost:8008`, auto to the configured public tunnel. |
 
 ### 3.5 Deployment (Cloudflare Pages)
 
@@ -169,15 +142,15 @@ In the MVP, roles are switched with a **role switcher** in settings (no authenti
 | Root directory | `app` |
 | Build command | `npm ci && npm run build` |
 | Output directory | `dist` |
-| Environment variables | `VITE_ASSISTANT_MODE=cached`, `VITE_DEMO=true`, `NODE_VERSION=22` |
+| Environment variables | `VITE_ASSISTANT_MODE=cached`, `NODE_VERSION=22` |
 | SPA routing | `app/public/_redirects` containing `/* /index.html 200` |
 | Headers | `app/public/_headers`: a Content-Security-Policy allowing only same-origin scripts, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer` |
 | Analytics | Off (no tracking, NFR-09) |
 | Manual fallback | `npx wrangler pages deploy app/dist --project-name vitalents` |
 
-**Domain.** Register `vitalents.life` (Cloudflare Registrar, or any registrar with the nameservers pointed to Cloudflare), then add it under the Pages project’s custom domains; Cloudflare issues the certificate automatically. If the domain isn’t ready in time, the `vitalents.pages.dev` URL is a valid public link for the submission.
+**Domain.** The public demo is linked from the repository README. A successful build alone does not verify the deployed revision.
 
-**The assistant stays local.** The public site never calls the laptop: it uses cached answers. Do not expose Ollama to the internet through a tunnel; the live assistant is shown only on the demo laptop, where it also proves the offline story.
+**Assistant deployment.** Public Cloudflare builds use reviewed cached answers. Local live/auto mode may use the separately running assistant API. Only that API may be exposed through the optional tunnel; Ollama remains private. See [assistant setup](../ai/README.md).
 
 ## 4. Data requirements
 
@@ -277,32 +250,28 @@ All timestamps are ISO 8601 with time zone. All IDs are strings (UUID or readabl
 
 ### 4.2 Seed files (`app/public/data/`)
 
-Until a generated file exists, screens read a hand-written fixture with the same name in `app/public/data/fixtures/` (section 16.1, fixture first). Fixtures must validate against `contracts/`.
+The implemented demo stores flat contract bundles in `app/public/data/fixtures/S1.json` through `S5.json`, with scenario metadata in `index.json`. This supersedes the original per-entity seed-file proposal. Bundles must validate against `contracts/`.
 
-| File | Produced by | Contents |
-|---|---|---|
-| `profile.json` | Youssef (sim) | DR-16 for four crew members |
-| `observations.json` | sim | DR-01 records |
-| `decode_sessions.json` | sim | DR-02 records |
-| `references.json`, `findings.json` | Shaimaa (reference / status) | DR-03, DR-04 |
-| `schedule.json` | sim | DR-09 per day |
-| `scenarios/S1.json` … `S5.json` | sim | A bundle per scenario: crew member, day range, expected findings |
-| `domains.json` | Amr (content) | Seven domain cards (section 4.3) |
-| `rules.json` | Amr (content) | DR-05 rules |
-| `library.json` | Amr (content) | DR-15 sources with excerpts |
-| `messages.json` | Amr (content) | Messages from Earth for the Decode reward |
-| `cached_answers.json` | Ahmed (ai) | Recorded assistant answers for cached mode |
-| `medical_limits.json` | Amr + reviewer | Illustrative limits, each marked `illustrative: true` |
+| Location | Purpose |
+|---|---|
+| `app/public/data/fixtures/` | Simulated subjects, records, references, actions and scenarios |
+| `content/domains.json` | Seven domain cards (section 4.3) |
+| `content/rules.json` | Demonstration rule definitions |
+| `content/library.json`, `content/library.extra.json` | Source excerpts and metadata |
+| `content/messages.json` | Fictional Earth-message text for Decode |
+| `app/public/data/cached_answers.json` | Reviewed recorded assistant fallback |
+| `app/public/data/proof.json` | Published software and replay evidence |
+| `app/public/data/research/` | Synthetic research-model examples |
 
 ### 4.3 Domain card content (`domains.json`)
 
-Each domain: `id`, `name`, `icon`, `indicators[]` (`{id, name, unit, how_to_measure, frequency}`), `why_space` (2–3 sentences), `hazard`, `risk`, `limits_note` (e.g. “Pulse alone does not assess heart health”), `when_to_involve_specialist`, `sources[]` (at least one). Every text field is written by a person and reviewed; agents never draft medical content into this file without a `TODO(review)` marker.
+Each domain: `id`, `name`, `icon`, `indicators[]` (`{id, name, unit, how_to_measure, frequency}`), `why_space` (2–3 sentences), `hazard`, `risk`, `limits_note` (e.g. “Pulse alone does not assess heart health”), `when_to_involve_specialist`, `sources[]` (at least one). Source excerpts and explanatory content require review. Current source approval remains draft; inclusion in the app does not imply clinical or editorial approval.
 
 ## 5. Functional requirements
 
 Each requirement lists its acceptance criterion: the test or check that proves it is done.
 
-### 5.1 M1 · Shell, navigation and roles (owner: Ahmed)
+### 5.1 M1 · Shell, navigation and roles
 
 | ID | Requirement | P | Acceptance |
 |---|---|---|---|
@@ -315,7 +284,7 @@ Each requirement lists its acceptance criterion: the test or check that proves i
 | FR-SH-07 | Persistent banner: “Simulated data · not a medical device” | M | Visible on every screen in every mode |
 | FR-SH-08 | Scenario selector (S1–S5) and simulated-day selector in demo mode | M | Loading a scenario resets the local store to that bundle |
 
-### 5.2 M2 · Body map and domains (owner: Ahmed build, Amr content)
+### 5.2 M2 · Body map and domains
 
 | ID | Requirement | P | Acceptance |
 |---|---|---|---|
@@ -330,7 +299,7 @@ Each requirement lists its acceptance criterion: the test or check that proves i
 
 **Colors (always with text):** neutral = No open follow-up · amber = Watching / Action open · red = Review requested / Under specialist review · grey hatched badge = No reading / Incomplete / Not comparable.
 
-### 5.3 M3 · Daily check (owner: Ahmed)
+### 5.3 M3 · Daily check
 
 | ID | Requirement | P | Acceptance |
 |---|---|---|---|
@@ -338,7 +307,7 @@ Each requirement lists its acceptance criterion: the test or check that proves i
 | FR-CHK-02 | Missing imported sleep shows “No reading” and offers manual entry, marked `kind: self_report` | M | Scenario S2 |
 | FR-CHK-03 | The private note is stored as DR-17 and is never shared (FR-SHR-05) | M | Not visible in Medical or Planner role |
 
-### 5.4 M3 · Decode (owner: Ahmed; spec in section 7)
+### 5.4 M3 · Decode
 
 | ID | Requirement | P | Acceptance |
 |---|---|---|---|
@@ -355,7 +324,7 @@ Each requirement lists its acceptance criterion: the test or check that proves i
 | FR-DEC-11 | Label: “Inspired by the DSST. Our version needs independent validation.” | M | Visible on the Decode intro and result |
 | FR-DEC-12 | 30-second demo mode (`mode: demo`), labelled “Demo length, not a measurement” | S | Demo sessions never in references |
 
-### 5.5 M4 · Reference and change detection (owner: Shaimaa; spec in section 8)
+### 5.5 M4 · Reference and change detection
 
 | ID | Requirement | P | Acceptance |
 |---|---|---|---|
@@ -368,7 +337,7 @@ Each requirement lists its acceptance criterion: the test or check that proves i
 | FR-REF-07 | Reference screen “Your reference and what the system relies on”: period, data used, method, limits text, version, last change | M | Reachable from every Now tab |
 | FR-REF-08 | Information status computed for every observation and session (section 8.1) | M | Unit tests per rule |
 
-### 5.6 M4 · Today’s review and step selection (owner: Ahmed screen and engine port, Shaimaa logic, Amr rules)
+### 5.6 M4 · Today’s review and step selection
 
 | ID | Requirement | P | Acceptance |
 |---|---|---|---|
@@ -379,7 +348,7 @@ Each requirement lists its acceptance criterion: the test or check that proves i
 | FR-REV-05 | No readiness percentage, score or verdict anywhere | M | `check_language.py`; review |
 | FR-REV-06 | A REVIEW_REQUEST never waits for a Decode result or an automatic repeat | M | Request help before Decode → summary prepared at once |
 
-### 5.7 M5 · Actions and follow-ups (owner: Ahmed)
+### 5.7 M5 · Actions and follow-ups
 
 | ID | Requirement | P | Acceptance |
 |---|---|---|---|
@@ -391,7 +360,7 @@ Each requirement lists its acceptance criterion: the test or check that proves i
 | FR-FU-06 | The owner closes or continues the follow-up with a reason; “No reading” never closes a follow-up as recovered | M | Test |
 | FR-FU-07 | The astronaut can rate an action (`useful` / `not_useful`); ratings are logged | M | Stored in DR-07 |
 
-### 5.8 M5 · Schedule alternatives (owner: Ahmed UI and engine port, Shaimaa calculation; algorithm in section 10)
+### 5.8 M5 · Schedule alternatives
 
 | ID | Requirement | P | Acceptance |
 |---|---|---|---|
@@ -401,7 +370,7 @@ Each requirement lists its acceptance criterion: the test or check that proves i
 | FR-SCH-04 | When no valid alternative exists, the screen says so | M | S3 |
 | FR-SCH-05 | Choosing an alternative creates an **operational request** to the planner (DR-11, `kind: operational_request`) containing only the schedule change | M | Planner view shows the request with no health data |
 
-### 5.9 M6 · Library and assistant (owner: Ahmed service, Amr library; API in section 11)
+### 5.9 M6 · Library and assistant
 
 | ID | Requirement | P | Acceptance |
 |---|---|---|---|
@@ -415,7 +384,7 @@ Each requirement lists its acceptance criterion: the test or check that proves i
 | FR-AS-08 | Evaluation: 15 independent questions (10 answerable with expected source, 5 not answerable); report correct-source, abstention and blocked counts for both models | S | `ai/eval.py` output saved |
 | FR-AS-09 | Consult-summary drafting (`/consult`) from structured data, five fixed sections, with the number check | S | Note contains only input numbers |
 
-### 5.10 M7 · Personalization and feedback loops (owner: Ahmed UI, Shaimaa patterns)
+### 5.10 M7 · Personalization and feedback loops
 
 | ID | Requirement | P | Acceptance |
 |---|---|---|---|
@@ -428,7 +397,7 @@ Each requirement lists its acceptance criterion: the test or check that proves i
 | FR-PE-07 | One descriptive pattern in Record & trends, labelled “A pattern in your record, not a cause” | S | S1 shows the pattern |
 | FR-RT-01 | Research track: per-person performance model or action ranking, simulated data only, labelled “Research prototype on simulated data” | C | Separate screen, off by default |
 
-### 5.11 M8 · Sharing, medical review and privacy (owner: Ahmed, design Amr)
+### 5.11 M8 · Sharing, medical review and privacy
 
 | ID | Requirement | P | Acceptance |
 |---|---|---|---|
@@ -439,7 +408,7 @@ Each requirement lists its acceptance criterion: the test or check that proves i
 | FR-SHR-05 | Private notes never appear in any share or other role | M | Permission test |
 | FR-SHR-06 | No “ready / not ready” or readiness verdict exists for any role | M | `check_language.py`; review |
 
-### 5.12 M9 · Offline and sync (owner: Ahmed; state machine in section 12)
+### 5.12 M9 · Offline and sync
 
 | ID | Requirement | P | Acceptance |
 |---|---|---|---|
@@ -448,11 +417,11 @@ Each requirement lists its acceptance criterion: the test or check that proves i
 | FR-SY-03 | Share states: saved → awaiting send → sent → arrived → reviewed; each shown only with its proof | M | State log with timestamps |
 | FR-SY-04 | Sync keeps `measured_at`, `recorded_at`, `received_at` and edits; records are deduplicated by ID | M | Resending creates no duplicates |
 
-### 5.13 M10 · Simulation and validation (owner: Youssef; Shaimaa for reference tests)
+### 5.13 M10 · Simulation and validation
 
 | ID | Requirement | P | Acceptance |
 |---|---|---|---|
-| FR-SIM-01 | Simulator generates 30 days for four crew members (tolerant, vulnerable, slow-and-steady, average) from documented parameters (section 14.1) | M | `python science/sim.py --seed 42` reproducible |
+| FR-SIM-01 | Simulator generates 30 days for four crew members (tolerant, vulnerable, slow-and-steady, average) from documented parameters (section 14.1) | M | `python3 -m science.simulator --out mission_replay.json` reproducible (seed 42 in the replay fixture) |
 | FR-SIM-02 | Five scenario bundles S1–S5 (section 14.2) | M | Each loads and shows its expected findings |
 | FR-SIM-03 | Every simulated record has `simulated: true`; the UI banner is always shown | M | Schema check |
 | FR-SIM-04 | Validation scripts: integrity tests, reference and detection checks without leakage, assistant evaluation summary, daily-check timing | S | `science/validate.py` writes `validation.json` for the evidence slide |
@@ -492,7 +461,7 @@ Operators: `==`, `!=`, `>`, `>=`, `<`, `<=`, `in`. Groups: `all`, `any`. The eng
 
 `sleep.last_night_h` · `sleep.nights_under_6h_last3` · `sleep.info_status` · `decode.info_status` · `decode.reference_status` · `decode.below_reference_consecutive` · `decode.ewma_below_limit` · `decode.session_count_comparable` · `symptom.reported_today` · `symptom.severity_max` · `temperature.change_from_reference_c` · `pulse.info_status` · `limits.any_exceeded` · `followup.overdue_count` · `help.requested`.
 
-### 6.4 Starter rules (Amr writes the final text and sources)
+### 6.4 Demonstration rules
 
 | ID | Category | When | Step |
 |---|---|---|---|
@@ -716,165 +685,13 @@ Every number on the evidence slide must come from `validation.json`.
 | UI-13 | Planner view | Operational requests only | SHR-04, SCH-05 |
 | UI-14 | Settings (demo) | Role switcher, scenario and day selectors, link delay and up / down, preferences | SH-02, SH-08, SY-02 |
 
-## 16. Build plan
+## 16. Development and verification
 
-### 16.1 Build in increments
+Development setup and required checks are maintained in [CONTRIBUTING.md](../CONTRIBUTING.md). Requirement IDs remain stable so source comments and regression tests can refer to this specification.
 
-Time is the tightest constraint, so we build the app in **eight increments**. Each one ends with an app we could demo and submit if time ran out. **Never start the features of the next increment until the current one works end to end.** The only exception is preparation work on a parallel track: content, fixtures, the simulator and the engine.
+## 17. Contribution guidelines
 
-**Priority levels:**
-
-| Level | Increments | Meaning |
-|---|---|---|
-| **P0** | 0 – 2 | Without these there is no demo. Protect them above everything else. |
-| **P1** | 3 – 5 | The full loop: act, understand, share. This is the product the vision describes. |
-| **P2** | 6 | Proof: all scenarios, the reference screen, validation numbers. This wins the Validity score. |
-| **P3** | 7 | Polish. Only if every earlier increment works. |
-
-**Two rules that make increments possible:**
-
-1. **Fixture first.** Every screen first reads a small hand-written fixture JSON that already matches `contracts/`. Generated data from the simulator replaces the fixture later, with no UI change. Nobody waits for anybody.
-2. **Ship every increment.** At the end of each increment: merge to main (Cloudflare Pages deploys it to vitalents.life), record a 20-second screen capture and post it in the group. That capture is the fallback demo if the next increment fails.
-
-<div class="card dark" markdown="1">
-<div class="label">The minimum winning demo</div>
-<p class="big">Increments 0–3 give a demo that already tells the whole story: open the map, play Decode, see the result next to the self-rating, get one sourced step, open a follow-up. Everything after that makes it stronger.</p>
-</div>
-
-| Inc | Name | Timebox | What works at the end | If we stop here, the pitch shows |
-|---|---|---|---|---|
-| **0** | Skeleton | H0 – H1 | Repo, contracts frozen, six entries (placeholders), simulated-data banner, public link live | Nothing yet; this only removes setup risk |
-| **1** | Core story, read-only | H1 – H3 | S1 fixture loaded; body map with seven regions and both statuses; Now / Understand / Act cards for sleep and cognition; Today’s review with pre-computed findings and one sourced step | The whole concept on screen, clickable |
-| **2** | Play Decode | H3 – H5 | Daily check and the full 90-second Decode; session stored locally with quality data; result shown beside the self-rating; live comparison with the S1 reference band produces a finding | A judge plays, and the result appears in the system |
-| **3** | Act and follow | H5 – H7 | Rules engine live (four categories); accept / decline steps; follow-ups with result recording; rest-window alternative (6 h → 7 h); Request help and Report something | The full journey, from measurement to follow-up |
-| **4** | Understand | H7 – H8:30 | Library list; local assistant with citations and abstention; cached answers for the public link; reviewed fallback content; knowledge-gap log | The offline, cited NASA library |
-| **5** | Share and privacy | H8:30 – H10 | Consult summary from a template; share preview; sync states under delay; role switcher with Medical and Planner views; permission filtering | Privacy and Earth-delay handled. **Gate: full loop works with the network off.** |
-| **6** | Proof | H10 – H11:30 | Simulator output replaces fixtures; scenarios S1–S5; reference screen with versions and freeze; alert ratings → rule-review queue; tried-actions log; `validation.json` and assistant eval | Real numbers on the evidence slide |
-| **7** | Polish | H11:30 + | Trend chart and one descriptive pattern; preferences; source-problem counts; `/consult` wording by the model; 30-second demo mode; mission profile; research track | A smoother, richer demo |
-
-### 16.2 Parallel tracks inside each increment
-
-Today’s exact assignments are in the Team plan (`docs/TEAM_PLAN.md`), which overrides this table where they differ.
-
-Ahmed builds the screens of the current increment. The other three prepare what the **next** increment needs, so nothing blocks him.
-
-| Inc | Ahmed Ehab | Amr Abd ElHaleem | Shaimaa Muhammed | Youssef Elbaz |
-|---|---|---|---|---|
-| **0** | Repo, Vite app, six entries, banner, Cloudflare Pages deploy, CLAUDE.md | Freeze contracts with the team; design tokens; status chip and badge | Data dictionary for observations, sessions, references, findings | Hand-write the **S1 fixture** (one astronaut, days 20–28) matching the schemas |
-| **1** | Map, cards, review screens on the S1 fixture | Content for **sleep and cognition** cards; rules text for S1; screen designs for Inc 1–2 | Python reference and information status on the fixture; first test vectors | Simulator skeleton with `sim_params.yaml` (sources and status per parameter) |
-| **2** | Check and Decode | Decode intro, reward messages, validation label; designs for Inc 3 | Test vectors for status, reference and change (Ahmed’s agent ports them) | Simulator produces S1 to replace the fixture |
-| **3** | Rules, actions, follow-ups, rest window, help / report | Full `rules.json` with sources; **heart and symptoms** cards | Rules and schedule logic in Python with test vectors | Scenarios S2–S4 bundles |
-| **4** | Assistant service and Ask screen | Library: 8 core sources first, then up to 25; 15 eval questions | Reference versioning, freeze rule, change log | Scenario S5; validation script skeleton |
-| **5** | Sharing, sync, roles, permissions | Share preview and Medical / Planner view designs; sample-domain cards | Patterns and source-problem counts (for Inc 7) | Detection checks without leakage; daily-check timing |
-| **6** | Swap fixtures for generated data; reference screen; ratings and queues | Submission page text; screenshots | Final vectors; reference screen data | `validation.json`; assistant eval stats; deck outline |
-| **7** | Polish items in order | Backup video; slides | Support Q&A prep on data | Deck and rehearsal |
-
-### 16.3 Requirement-to-increment map
-
-Agents implement requirements in this order. Within an increment, M before S.
-
-| Inc | Requirements |
-|---|---|
-| **0** | FR-SH-01 (placeholders), FR-SH-07, NFR-06 (language check in place), NFR-13 (tokens) |
-| **1** | FR-MAP-01, 02, 03, 04, 06, 08 · FR-REV-01, 03, 04, 05 (from fixture data) · FR-SH-08 (S1 only) |
-| **2** | FR-CHK-01, 02, 03 · FR-DEC-01 – 11 · FR-REF-01, 02, 08 · FR-SY-01 (local store) · NFR-08 |
-| **3** | FR-REV-02, 06 · FR-FU-01 – 07 · FR-SCH-01 – 05 · FR-SH-05, 06 · FR-REF-05, 06 |
-| **4** | FR-AS-01 – 07 · FR-PE-04 · NFR-10 |
-| **5** | FR-SHR-01 – 06 · FR-SY-02 – 04 · FR-SH-02, 03 · NFR-01, 09 |
-| **6** | FR-SIM-01 – 04 · FR-REF-03, 04, 07 · FR-PE-01 – 03 · FR-AS-08 · FR-MAP-07 · NFR-11, 12 |
-| **7** | FR-PE-05 – 07 · FR-AS-09 · FR-DEC-12 · FR-SH-04 · FR-MAP-05 · FR-RT-01 |
-
-### 16.4 Inside a slipping increment
-
-If an increment overruns its timebox by more than 30 minutes, Amr calls it and the team cuts **inside** that increment rather than skipping it:
-
-| Inc | Cut first | Never cut |
-|---|---|---|
-| 1 | Sample-domain cards, “due today” labels | Both statuses, sources on cards |
-| 2 | Practice round, streak counter | Fixed 90 s, quality data, side-by-side display, validation label |
-| 3 | Decline reasons, ratings | Four categories, Request help, non-causal result wording, “no alternative” state |
-| 4 | Library beyond 8 sources, gap-log screen | Citations, abstention, fallback content |
-| 5 | Live delay slider (use one fixed delay) | Share preview, Planner sees schedule only, network-off run |
-| 6 | S5, alert-rating queue screen | S1, reference freeze, numbers from scripts |
-
-### 16.5 Work packages
-
-| WP | Name | Owner (+ agent) | FRs | Increments | Hours |
-|---|---|---|---|---|---|
-| WP-00 | Repo, contracts, CLAUDE.md, checks | Ahmed (contracts agreed by all) | NFR-06, NFR-11 | 0 | 1 |
-| WP-01 | App shell, store, roles, settings, sync simulation | Ahmed + agent A | SH-*, SY-*, SHR-04–06 | 0, 2, 5 | 4 |
-| WP-02 | Check and Decode | Ahmed + agent B | DEC-*, CHK-* | 2 | 4 |
-| WP-03 | Design system and components | Amr + agent | NFR-04, NFR-13, UI-* | 0 – 5 | 4 |
-| WP-04 | Content: domains, rules, library, messages, language, eval | Amr + research agent | MAP-07–08, AS-01, AS-08 | 1 – 4 | 5 |
-| WP-05 | Reference, status, rules and schedule logic (Python + test vectors); TS port by Ahmed’s agent | Shaimaa + agent; Ahmed (port) | REF-*, REV-02, SCH-02, PE-03, PE-06–07 | 0 – 6 | 5 |
-| WP-06 | Fixture, simulator and scenarios | Youssef + agent | SIM-01–03 | 0 – 4 | 4 |
-| WP-07 | Map, review, follow-ups, rest window, sharing screens | Ahmed (+ Amr’s components) | MAP-*, REV-*, FU-*, SCH-*, SHR-* | 1, 3, 5 | 5 |
-| WP-08 | Assistant service and Ask screen | Ahmed + agent C | AS-* | 4 | 4 |
-| WP-09 | Validation and evidence numbers | Youssef + agent | SIM-04 | 5, 6 | 3 |
-| WP-10 | Pitch, deck, project page, backup video | Youssef + Amr | — | 6, 7 | 4 |
-
-### 16.6 Definition of done
-
-**For an increment:** every requirement mapped to it passes its acceptance check; the app is merged, deployed and captured on video; `check_language.py` passes.
-
-**For a work package:**
-
-1. Every M requirement of the WP passes its acceptance check, written in the PR description.
-2. Data validates against `contracts/`.
-3. `scripts/check_language.py` passes.
-4. Tests pass (`npm test`, `pytest`).
-5. Reviewed by one other member; the WP ID and FR ID are in every commit message.
-
-## 17. Working with Claude agents
-
-### 17.1 Setup
-
-- `CLAUDE.md` at the repository root holds the always-on rules (provided with this SRS). This SRS lives at `docs/SRS.md`.
-- **One agent per work package**, each in its own branch (`wp-02-decode`). An agent only edits the folders its owner owns (section 3.3).
-- Members give each agent a task card, review its PR, and merge.
-- **Every task card names its increment.** An agent builds only the requirements mapped to that increment (section 16.3) and stops at the boundary. When an increment is done, the owner issues a new task card for the next one.
-- Screens read the fixture JSON until the generated data for that file exists.
-
-### 17.2 Task card template
-
-<pre>
-WP:            WP-02 Decode
-Owner:         Ahmed Ehab
-Read first:    CLAUDE.md; docs/SRS.md sections 5.3, 5.4, 7, 13
-Increment:     Inc 2 (P0). Build in the order of section 16.3; stop at the increment boundary
-Implement:     FR-CHK-01..03, FR-DEC-01..11 (M); FR-DEC-12 is Inc 7, do not start it
-Folders:       app/src/features/check, app/src/features/decode, app/src/engine/decode.ts (must pass Shaimaa’s vectors)
-Inputs:        contracts/decode_session.schema.json, content/messages.json
-Outputs:       sessions stored via store API; outputs per section 7.2
-Done when:     acceptance column of every listed FR passes; check_language passes
-Never:         invent numbers, wording or sources; change contracts/; show any score as good or bad
-If blocked:    write TODO(question: ...) and stop; do not guess
-</pre>
-
-### 17.3 Copy-paste prompts
-
-**Ahmed · WP-01 (Inc 0, then Inc 5)**: “Read CLAUDE.md and docs/SRS.md sections 2, 3, 5.1, 5.11, 5.12, 9, 12 and 16. For Inc 0 build only the shell with six placeholder entries, the banner and the deploy. For Inc 5 build WP-01 in full: the app shell with six entries, the role switcher, permission filtering per section 9, the Dexie store for every DR entity, the settings screen, and the simulated link with the five sync states. Write Vitest tests for permissions and sync dedupe. Only edit app/src/shell, app/src/store, app/src/sync. Stop and list open questions if anything is unclear.”
-
-**Ahmed · WP-08 (Inc 4)**: “Read CLAUDE.md and docs/SRS.md sections 5.9 and 11. Extend ai/ask_nasa.py to the /ask response shape in section 11 (your_data, science, citations with excerpts, limits), keep all guardrails, add GET /health, and write ai/eval.py for the 15-question evaluation in content/eval.json, writing results to science/out/assistant_eval.json. Then build the Ask screen and cached mode in app/src/features/ask.”
-
-**Amr · WP-03 (Inc 0 – 5, one component set per increment)**: “Read CLAUDE.md and docs/SRS.md sections 5.2, 13 (NFR-04, NFR-13) and 15. Create design tokens and components in app/src/ui: status chip (follow-up status, color + symbol + text), information badge, body-map region, card with three tabs, action card, sync state row, banner. Light and dark. No business logic. Storybook-free: one demo page at /ui.”
-
-**Amr · WP-04 (research agent, Inc 1 – 4)**: “Read docs/SRS.md sections 4.3, 6 and 11. Work in this order: sleep and cognition (Inc 1), heart and symptoms (Inc 3), 8 core library sources then up to 25 (Inc 4), sample domains (Inc 5). For each domain, collect NASA or research sources with title, publisher, version, date, URL and short excerpts into content/library.json. Draft domains.json fields marked TODO(review) for me to approve. Do not write any medical advice; quote or summarise sources only.”
-
-**Shaimaa · WP-05 (Inc 0 – 6)**: “Read CLAUDE.md and docs/SRS.md sections 4, 6, 8 and 10. Follow the Shaimaa column of section 16.2. Start with the information status and reference on the fixture (Inc 1), then test vectors (Inc 2), rules and schedule (Inc 3), versioning and freeze (Inc 4). Implement science/reference.py and science/status.py exactly as section 8 specifies, with pytest tests, producing references.json and findings.json from the simulator output, plus golden test vectors in contracts/vectors/. Then implement the rules evaluator (section 6) and the schedule algorithm (section 10) in Python with their own test vectors. Ahmed’s agent ports all of it to app/src/engine.”
-
-**Youssef · WP-06 (Inc 0 – 4)**: “Read CLAUDE.md and docs/SRS.md sections 4, 14 and 16. First (Inc 0) hand-write a small S1 fixture for one astronaut, days 20–28, that validates against contracts/, so screens can start immediately. Then: Implement science/sim.py with parameters in science/sim_params.yaml (each with source and status), seed 42, generating the seed files in section 4.2 and the five scenario bundles in section 14.2. Every record has simulated: true. Add pytest checks that each scenario produces its expected behavior inputs.”
-
-**Youssef · WP-09 (Inc 5 – 6)**: “Read docs/SRS.md section 14.3. Write science/validate.py producing science/out/validation.json with the four areas. Detection checks must hold out crew members and later days; report hits, false alarms and lead days against one fixed threshold. Never round numbers in a way that changes conclusions; include the count behind every rate.”
-
-### 17.4 Review checklist before merging an agent’s work
-
-- Does every new number on screen come from data or `content/`, with a source or “Why?” link?
-- Any forbidden wording? Run `scripts/check_language.py`.
-- Does anything combine the self-rating and Decode into one value, or show a verdict?
-- Does the Planner role see anything beyond operational requests?
-- Does anything change references, limits or rules from feedback?
-- Do the schemas still validate, and do the tests pass?
+See [CONTRIBUTING.md](../CONTRIBUTING.md) for product constraints, generated-data handling and verification. AI-assisted development is disclosed in [credits](credits.md).
 
 ## 18. Traceability to the vision
 
@@ -900,7 +717,7 @@ If blocked:    write TODO(question: ...) and stop; do not guess
 
 ## 19. Latest decisions (override earlier sections)
 
-These are the newest product decisions. **Where earlier sections of this SRS say otherwise, these win.** The seven scenarios and twelve acceptance tests are listed in the Team plan, section 10.
+These design decisions supersede earlier SRS prose, except where the newer [data contract](CONTRACT_P0.md) overrides them. The released demonstration uses three roles and five scenarios (S1–S5).
 
 | # | Decision | See |
 |---|---|---|
@@ -912,8 +729,8 @@ These are the newest product decisions. **Where earlier sections of this SRS say
 | 6 | Schedule: half-open intervals, preparation and transit included, midnight crossing, unknown window = not computable (never zero). | SRS 10 |
 | 7 | Action states add **in progress**, **unable** and **awaiting impact review**. | SRS 5.7 |
 | 8 | Connection states: draft → saved → awaiting send → sent → acknowledged → reviewed; “reviewed” only from a review event; idempotent resend. | SRS 12 |
-| 9 | Roles: the crew medical officer is separate from the ground medical team; technical administration never grants medical access. Permissions are enforced in the data layer and tested. | SRS 9 |
+| 9 | Three demonstration roles: astronaut, medical and planner (contract D-12). Separating onboard and ground medical roles is future scope. Role switching is not authentication. | Contract D-12 |
 | 10 | Library items add license, scope and approval status; assistant traces are kept; **retrieved text is data, not instructions**. | SRS 11 |
-| 11 | Seven simulation scenarios replace five (Team plan, section 10). | Plan 10 |
-| 12 | Interface language: the long-term product targets Arabic with right-to-left layout; the competition requires English. **We build in English today**, with strings kept in one file so Arabic and RTL can follow. | SRS 13 |
+| 11 | Five scenarios, S1–S5, with S1 = Fahim, supersede earlier scenario numbering. | Contract D-13 |
+| 12 | Interface language: the long-term product targets Arabic with right-to-left layout; the current demonstration uses English, with externalized strings to support later Arabic and RTL work. | SRS 13 |
 
