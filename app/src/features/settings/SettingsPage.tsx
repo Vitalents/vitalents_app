@@ -5,11 +5,15 @@ import { S } from '../../content/strings'
 import { useStore } from '../../store/store'
 import { RoleSwitcher } from '../roles/RoleSwitcher'
 import { SyncSettingsPanel } from '../sharing/SyncSettingsPanel'
+import { OfflineNote } from '../../pwa'
+import { completedCheckTimes, reminderNote, suggestReminderTime } from '../../store/preferences'
 
 interface ScenarioEntry { code: string; title: string; description: string }
 
 export function SettingsPage() {
-  const { scenario, loadScenario } = useStore()
+  const { scenario, loadScenario, data } = useStore()
+  const subjectId = data.subject_profile[0]?.subject_profile_id
+  const reminder = subjectId ? reminderNote(suggestReminderTime(completedCheckTimes(data.decode_session, subjectId))) : null
   const [list, setList] = useState<ScenarioEntry[]>([])
   const [pick, setPick] = useState(scenario)
   const [confirm, setConfirm] = useState(false)
@@ -68,6 +72,12 @@ export function SettingsPage() {
           <Link className="btn" to="/profile">{S.settings.profileView}</Link>
           <Link className="btn" to="/proof">{S.settings.proofView}</Link>
         </div>
+      </section>
+
+      <section className="card pad">
+        <h2>{S.settings.thisDevice}</h2>
+        <OfflineNote detail />
+        {reminder && <p className="muted small">{reminder}</p>}
       </section>
 
       <section className="card pad">

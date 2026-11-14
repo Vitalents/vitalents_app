@@ -220,6 +220,7 @@ export const S = {
     profileView: 'Mission profile',
     proofView: 'Proof and limits',
     linkTitle: 'Link to Earth (simulated)',
+    thisDevice: 'This device',
   },
 
   placeholder: {

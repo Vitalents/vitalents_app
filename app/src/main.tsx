@@ -9,6 +9,7 @@ import '@fontsource/instrument-sans/700.css'
 import './styles/tokens.css'
 import './styles/app.css'
 import { Layout } from './shell/Layout'
+import { registerPwa, UpdateToast } from './pwa'
 import { MapPage } from './features/map/MapPage'
 import { S } from './content/strings'
 import { useSubject } from './store/selectors'
@@ -63,8 +64,11 @@ const router = createBrowserRouter([
   },
 ])
 
+registerPwa() // offline after one visit; never caches the local assistant
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <RouterProvider router={router} />
+    <UpdateToast />
   </StrictMode>,
 )

@@ -12,6 +12,7 @@ import { Icon } from './Icons'
 import { Emblem, Logo, Mark } from './Logo'
 import { HELP_EVENT } from '../features/decode/useRound'
 import { useOutboxTicker } from '../sync/link'
+import { OfflineNote } from '../pwa'
 
 export const NAV = [
   { to: '/', key: 'map', end: true },
@@ -73,6 +74,7 @@ export function Layout() {
               <span className="nav-short">{S.nav[n.key].short}</span>
             </NavLink>
           ))}
+          <OfflineNote />
           {CONTENT_IS_DRAFT && <p className="draft-note">{S.draftContent}</p>}
         </nav>
         <main className="main" id="main">
