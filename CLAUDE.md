@@ -36,14 +36,17 @@ npm test                                     # Vitest (app + engine)
 npm run test:engine                          # engine golden vectors
 cd science && pytest && python sim.py --seed 42 && python reference.py && python status.py
 python validate.py                           # writes science/out/validation.json
-cd ai && python ask_nasa.py --build && uvicorn ask_nasa:app --port 8008
+bash scripts/mac/start_assistant.sh          # Mac: Ollama + assistant + tunnel to ask.vitalents.life (--local: no tunnel)
+bash scripts/mac/record_and_eval.sh          # Mac: record fallback answers + 15-question eval, publish proof, push
 python scripts/check_language.py             # forbidden wording check, must pass
 npx wrangler pages deploy app/dist --project-name vitalents   # manual deploy (normally automatic from main)
 ```
 
 ## Deployment
 
-Cloudflare Pages builds `app/` on every push: `main` → **vitalents.life**, every branch → its own preview URL. The public build uses `VITE_ASSISTANT_MODE=cached`. Keep `app/public/_redirects` (`/* /index.html 200`) and `app/public/_headers`. Never expose the local assistant to the internet.
+Cloudflare Pages builds `app/` on every push: `main` → **vitalents.life**, every branch → its own preview URL. The public build uses `VITE_ASSISTANT_MODE=auto` with `VITE_ASSISTANT_URL=https://ask.vitalents.life`: it uses the onboard model on the team laptop when that answers `/health`, and the recorded answers otherwise. Keep `app/public/_redirects` (`/* /index.html 200`) and `app/public/_headers`.
+
+**Assistant exposure (decided by Ahmed, 14 Nov 2026):** Ollama is never published. Only the assistant API (`ai/ask_nasa.py`, bound to 127.0.0.1:8008) may be published, and only through the Cloudflare Tunnel `vitalents-ask` → `ask.vitalents.life`, started with `bash scripts/mac/start_assistant.sh`. Keep its guards: allowed origins (our sites only), per-visitor rate limit, request size cap, private notes rejected.
 
 ## Folder ownership (edit only your work package’s folders)
 

@@ -29,7 +29,8 @@ import sys
 import time
 import uuid
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict, Field
 from langchain_core.documents import Document
@@ -314,11 +315,49 @@ def build(corpus: pathlib.Path | None = None, index: pathlib.Path | None = None)
 
 # ---------------------------------------------------------------- API
 app = FastAPI(title="Vitalents onboard library")
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+# Exposure rules (CLAUDE.md): Ollama itself is never published. This API may be published only through the
+# Cloudflare Tunnel (ask.vitalents.life); it binds to 127.0.0.1, accepts browser calls only from our own sites,
+# rate-limits per client, and caps request size.
+ALLOWED_ORIGINS = [o.strip() for o in os.environ.get(
+    "VITA_ALLOWED_ORIGINS",
+    "https://vitalents.life,https://www.vitalents.life,http://localhost:5173,http://localhost:4173,http://127.0.0.1:5173",
+).split(",") if o.strip()]
+ALLOWED_ORIGIN_REGEX = os.environ.get("VITA_ALLOWED_ORIGIN_REGEX", r"https://([a-z0-9-]+\.)?vitalents\.pages\.dev")
+RATE_LIMIT = int(os.environ.get("VITA_RATE_LIMIT", "20"))          # requests per window per client
+RATE_WINDOW_S = int(os.environ.get("VITA_RATE_WINDOW_S", "300"))   # window length in seconds
+MAX_BODY_BYTES = int(os.environ.get("VITA_MAX_BODY_BYTES", "32768"))
+MAX_QUESTION_CHARS = 500
+_hits: dict[str, list[float]] = {}
+
+app.add_middleware(CORSMiddleware, allow_origins=ALLOWED_ORIGINS, allow_origin_regex=ALLOWED_ORIGIN_REGEX,
+                   allow_methods=["GET", "POST"], allow_headers=["Content-Type"], max_age=600)
+
+
+def _client_id(request: Request) -> str:
+    # Behind the tunnel every request comes from 127.0.0.1; Cloudflare passes the visitor in CF-Connecting-IP.
+    return request.headers.get("cf-connecting-ip") or (request.client.host if request.client else "unknown")
+
+
+@app.middleware("http")
+async def _guard(request: Request, call_next):
+    if request.method == "POST":
+        size = request.headers.get("content-length")
+        if size is not None and size.isdigit() and int(size) > MAX_BODY_BYTES:
+            return JSONResponse({"status": "blocked", "reason": "request_too_large"}, status_code=413)
+        now = time.monotonic()
+        key = _client_id(request)
+        recent = [t for t in _hits.get(key, []) if now - t < RATE_WINDOW_S]
+        if len(recent) >= RATE_LIMIT:
+            _hits[key] = recent
+            return JSONResponse({"status": "blocked", "reason": "rate_limited"}, status_code=429,
+                                headers={"Retry-After": str(RATE_WINDOW_S)})
+        recent.append(now)
+        _hits[key] = recent
+    return await call_next(request)
 
 
 class AskIn(BaseModel):
-    question: str
+    question: str = Field(min_length=1, max_length=MAX_QUESTION_CHARS)
     context: dict | None = None
     readiness: dict | None = None  # older clients; treated as context
 

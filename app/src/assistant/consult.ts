@@ -2,7 +2,7 @@
 // five fixed sections. The app never depends on it: the caller builds the same sections from the record when
 // this returns anything but a checked live draft. Only labelled values are sent; never ids or private notes.
 import type { Summary, SummaryItem } from '../features/sharing/summary'
-import { assistantMode, assistantUrl, type AskMode } from './client'
+import { assistantMode, assistantUrl, resolveMode, type AskMode } from './client'
 
 /** One labelled value, as ConsultItem in ai/ask_nasa.py (extra fields are rejected there). */
 export interface ConsultItem {
@@ -105,9 +105,9 @@ export async function requestConsult(
   input: ConsultInput,
   opts: { mode?: AskMode; fetchImpl?: typeof fetch; timeoutMs?: number } = {},
 ): Promise<ConsultResult> {
-  const mode = opts.mode ?? assistantMode()
-  if (mode !== 'live') return { source: 'not_live' }
   const fetchImpl = opts.fetchImpl ?? fetch
+  const mode = await resolveMode(opts.mode ?? assistantMode(), fetchImpl)
+  if (mode !== 'live') return { source: 'not_live' }
   const ctrl = new AbortController()
   const timer = setTimeout(() => ctrl.abort(), opts.timeoutMs ?? LIVE_TIMEOUT_MS)
   try {

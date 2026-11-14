@@ -22,7 +22,7 @@ export const S = {
   page: 'p.',
   openSource: 'Open source',
   labelCached: 'Recorded from the onboard model',
-  labelLive: 'Onboard model · offline',
+  labelLive: 'Onboard model · live, local model (no cloud AI)',
   matchedRecorded: 'Closest recorded question:',
   noRecorded: 'The public site has no recorded answer for this question. On the demo laptop the onboard model answers it live; you can also add it for review.',
   notInLibrary: 'The onboard library does not cover this question, so there is no answer rather than a guess.',

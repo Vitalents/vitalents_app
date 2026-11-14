@@ -42,12 +42,38 @@ export interface AskResult {
   error?: string
 }
 
-export type AskMode = 'live' | 'cached'
+export type AskMode = 'live' | 'cached' | 'auto'
 
-export const assistantMode = (): AskMode => (import.meta.env.VITE_ASSISTANT_MODE === 'live' ? 'live' : 'cached')
+/**
+ * live: always the onboard model at VITE_ASSISTANT_URL · cached: recorded answers only ·
+ * auto: the onboard model when it answers /health (for example the team laptop through the tunnel),
+ * otherwise recorded answers, so the site keeps working when the laptop is off.
+ */
+export const assistantMode = (): AskMode => {
+  const m = import.meta.env.VITE_ASSISTANT_MODE
+  return m === 'live' || m === 'auto' ? m : 'cached'
+}
 export const assistantUrl = (): string => (import.meta.env.VITE_ASSISTANT_URL as string | undefined) ?? 'http://localhost:8008'
 
 const LIVE_TIMEOUT_MS = 60_000
+const HEALTH_TIMEOUT_MS = 4_000
+const HEALTH_TTL_MS = 30_000
+let lastHealth: { at: number; ok: boolean } | null = null
+
+/** Resolves auto mode by asking /health (cached for 30 s). live and cached pass through. */
+export async function resolveMode(mode: AskMode = assistantMode(), fetchImpl: typeof fetch = fetch): Promise<'live' | 'cached'> {
+  if (mode !== 'auto') return mode
+  const now = Date.now()
+  if (lastHealth && now - lastHealth.at < HEALTH_TTL_MS) return lastHealth.ok ? 'live' : 'cached'
+  const h = await health(fetchImpl, HEALTH_TIMEOUT_MS)
+  lastHealth = { at: now, ok: h.ok === true }
+  return lastHealth.ok ? 'live' : 'cached'
+}
+
+/** Test helper: forget the last health check. */
+export function resetHealthCache(): void {
+  lastHealth = null
+}
 
 export function normalizeQuestion(q: string): string {
   return q
@@ -100,8 +126,8 @@ export async function ask(
   context: Record<string, unknown>,
   opts: { mode?: AskMode; fetchImpl?: typeof fetch } = {},
 ): Promise<AskResult> {
-  const mode = opts.mode ?? assistantMode()
   const fetchImpl = opts.fetchImpl ?? fetch
+  const mode = await resolveMode(opts.mode ?? assistantMode(), fetchImpl)
   if (mode === 'cached') {
     const entry = matchCached(question, await loadCached(fetchImpl))
     if (!entry) return { source: 'cached', response: null }
@@ -130,12 +156,19 @@ export async function ask(
   }
 }
 
-export async function health(fetchImpl: typeof fetch = fetch): Promise<{ ok: boolean; model?: string; library_sources?: number }> {
+export async function health(
+  fetchImpl: typeof fetch = fetch,
+  timeoutMs = HEALTH_TIMEOUT_MS,
+): Promise<{ ok: boolean; model?: string; library_sources?: number }> {
+  const ctrl = new AbortController()
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs)
   try {
-    const res = await fetchImpl(`${assistantUrl()}/health`)
+    const res = await fetchImpl(`${assistantUrl()}/health`, { signal: ctrl.signal })
     return res.ok ? await res.json() : { ok: false }
   } catch {
     return { ok: false }
+  } finally {
+    clearTimeout(timer)
   }
 }
 

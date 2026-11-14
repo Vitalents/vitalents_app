@@ -109,3 +109,14 @@ python -m pytest -q
 ```
 
 The tests use keyword embeddings and scripted fake models. They prove the guardrails in code (threshold refusal, dose refusal, citation filtering, unsupported numbers, `your_data` from context only, injection fencing, and that a model which obeys an injected instruction still gets blocked). They do not prove answer quality with the real models; the eval does that. `VITA_FAKE=1` runs the service with keyword embeddings and a model that always abstains, for wiring tests.
+
+
+## Live on the public site (Cloudflare Tunnel)
+
+On the team Mac, one command runs Ollama (private, localhost only), the assistant on 127.0.0.1:8008 and a Cloudflare Tunnel that publishes the assistant at `https://ask.vitalents.life`:
+
+```bash
+bash scripts/mac/start_assistant.sh        # first run opens a browser once for `cloudflared tunnel login`
+```
+
+The site (`VITE_ASSISTANT_MODE=auto`) checks `/health`; when the laptop answers, questions go to the onboard model, otherwise the recorded answers are used. Guards in `ask_nasa.py`: allowed origins (`VITA_ALLOWED_ORIGINS`, `VITA_ALLOWED_ORIGIN_REGEX`), per-visitor rate limit (`VITA_RATE_LIMIT` per `VITA_RATE_WINDOW_S`, keyed on `CF-Connecting-IP`), body cap (`VITA_MAX_BODY_BYTES`), question length cap, and the existing private-note rejection and guardrails. Ollama (port 11434) is never published.
