@@ -1,0 +1,36 @@
+{
+  "vector_id": "fahim-day27",
+  "function": "compare_to_reference",
+  "contract_version": "1.0",
+  "description": "36 correct against a reference of 43 (range 41-44).",
+  "input": {
+    "value": 36,
+    "reference": {
+      "reference_status": "usable_for_question",
+      "reference_value": 43,
+      "range_low": 41,
+      "range_high": 44,
+      "valid_record_count": 9,
+      "start_date": "2026-10-29",
+      "end_date": "2026-11-11",
+      "frozen": true,
+      "source_record_ids": [
+        "sim:decode_session:d15",
+        "sim:decode_session:d16",
+        "sim:decode_session:d17",
+        "sim:decode_session:d18",
+        "sim:decode_session:d19",
+        "sim:decode_session:d20",
+        "sim:decode_session:d21",
+        "sim:decode_session:d22",
+        "sim:decode_session:d24"
+      ]
+    }
+  },
+  "expected": {
+    "absolute_change": -7,
+    "relative_change": -0.163,
+    "position": "below_range"
+  },
+  "tolerance": 0.001
+}

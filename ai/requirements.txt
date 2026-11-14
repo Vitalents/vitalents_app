@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+langchain-ollama
+langchain-community
+langchain-text-splitters
+pypdf

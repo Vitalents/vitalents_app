@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vitalents.life/contracts/rule_definition.schema.json",
+  "title": "rule_definition",
+  "description": "Vitalents contract v1.0 (from Data Dictionary v0.9). MVP priority: P0.",
+  "type": "object",
+  "properties": {
+    "rule_definition_id": {
+      "type": "string",
+      "pattern": "^(sim|live|research|lib|rule):[A-Za-z0-9_.:-]+$",
+      "description": "Immutable record identity"
+    },
+    "schema_version": {
+      "type": "string",
+      "description": "Record schema contract revision"
+    },
+    "data_origin": {
+      "enum": [
+        "real_research",
+        "simulated_mission",
+        "live_decode",
+        "application_generated",
+        "scientific_evidence"
+      ],
+      "description": "Provenance partition"
+    },
+    "created_at_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?Z$",
+      "description": "Persistence timestamp for app record (not biological measurement time). Unit: UTC."
+    },
+    "rule_version": {
+      "type": "string",
+      "description": "Immutable rule version"
+    },
+    "rule_class": {
+      "enum": [
+        "data_quality",
+        "descriptive_change",
+        "approved_plan",
+        "approved_medical_condition"
+      ],
+      "description": "Rule category"
+    },
+    "required_metric_codes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Named input fields"
+    },
+    "required_quality": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Allowed data status and reference quality"
+    },
+    "condition_description": {
+      "type": "string",
+      "description": "Inspectable predicate rationale (NOT runnable algorithm)"
+    },
+    "observation_template": {
+      "type": "string",
+      "description": "Safe observation wording"
+    },
+    "allowed_next_step": {
+      "enum": [
+        "complete_measurement",
+        "observe",
+        "approved_plan_step",
+        "request_review",
+        null
+      ],
+      "description": "Non-diagnostic output type"
+    },
+    "owner_role": {
+      "enum": [
+        "astronaut",
+        "medical",
+        "planner"
+      ],
+      "description": "Who may approve/apply this rule"
+    },
+    "evidence_source_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Cited evidence record if applicable",
+      "pattern": "^(sim|live|research|lib|rule):[A-Za-z0-9_.:-]+$"
+    },
+    "approval_state": {
+      "enum": [
+        "draft",
+        "reviewed",
+        "approved"
+      ],
+      "description": "Governance state"
+    }
+  },
+  "required": [
+    "rule_definition_id",
+    "schema_version",
+    "data_origin",
+    "created_at_utc",
+    "rule_version",
+    "rule_class",
+    "required_metric_codes",
+    "condition_description",
+    "observation_template",
+    "owner_role",
+    "approval_state"
+  ],
+  "additionalProperties": false
+}

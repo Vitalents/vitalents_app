@@ -1,0 +1,22 @@
+{
+  "vector_id": "no-reference",
+  "function": "compare_to_reference",
+  "contract_version": "1.0",
+  "description": "A provisional reference (3 sessions) gives no comparison.",
+  "input": {
+    "value": 36,
+    "reference": {
+      "reference_status": "provisional",
+      "reference_value": 41,
+      "range_low": 40,
+      "range_high": 42,
+      "valid_record_count": 3
+    }
+  },
+  "expected": {
+    "absolute_change": null,
+    "relative_change": null,
+    "position": "not_comparable"
+  },
+  "tolerance": 0.001
+}

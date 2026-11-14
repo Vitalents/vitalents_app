@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.venv/
+__pycache__/
+*.pyc
+ai/index.json
+ai/traces/
+.DS_Store
+.env.local
+*.zip

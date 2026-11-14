@@ -1,0 +1,29 @@
+{
+  "vector_id": "zero-accepted",
+  "function": "score_decode",
+  "contract_version": "1.0",
+  "description": "One trial shown, never answered. Missed is not wrong; accuracy is null, not 0.",
+  "input": {
+    "planned_duration_ms": 90000,
+    "session_state": "completed",
+    "events": [
+      {
+        "trial_index": 1,
+        "correct_digit": 4,
+        "response_digit": null,
+        "stimulus_monotonic_ms": 0,
+        "response_monotonic_ms": null
+      }
+    ]
+  },
+  "expected": {
+    "response_states": [
+      "missed"
+    ],
+    "accepted_responses": 0,
+    "correct_count": 0,
+    "accuracy_percent": null,
+    "median_correct_rt_ms": null
+  },
+  "tolerance": 0.001
+}

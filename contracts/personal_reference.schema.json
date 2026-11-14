@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vitalents.life/contracts/personal_reference.schema.json",
+  "title": "personal_reference",
+  "description": "Vitalents contract v1.0 (from Data Dictionary v0.9). MVP priority: P0.",
+  "type": "object",
+  "properties": {
+    "personal_reference_id": {
+      "type": "string",
+      "pattern": "^(sim|live|research|lib|rule):[A-Za-z0-9_.:-]+$",
+      "description": "Immutable record identity"
+    },
+    "schema_version": {
+      "type": "string",
+      "description": "Record schema contract revision"
+    },
+    "subject_id": {
+      "type": "string",
+      "description": "FK to subject_profile (mode-scoped)",
+      "pattern": "^(sim|live|research|lib|rule):[A-Za-z0-9_.:-]+$"
+    },
+    "data_origin": {
+      "enum": [
+        "real_research",
+        "simulated_mission",
+        "live_decode",
+        "application_generated",
+        "scientific_evidence"
+      ],
+      "description": "Provenance partition of this record"
+    },
+    "is_simulated": {
+      "type": "boolean",
+      "description": "Explicit simulation marker, independent of source label"
+    },
+    "created_at_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?Z$",
+      "description": "Persistence timestamp for app record (not biological measurement time). Unit: UTC."
+    },
+    "metric_code": {
+      "type": "string",
+      "description": "Metric reference applies to"
+    },
+    "reference_version": {
+      "type": "string",
+      "description": "Immutable version identifier"
+    },
+    "reference_status": {
+      "enum": [
+        "not_built",
+        "provisional",
+        "usable_for_question",
+        "needs_review"
+      ],
+      "description": "Reference sufficiency/review state"
+    },
+    "method": {
+      "type": "string",
+      "description": "Reference summary method and exclusions"
+    },
+    "start_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Earliest eligible historical observation"
+    },
+    "end_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Latest historical observation; before target"
+    },
+    "comparison_target_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Current date excluded from historical reference"
+    },
+    "source_record_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Exact immutable IDs used"
+    },
+    "valid_record_count": {
+      "type": "integer",
+      "description": "Number of prior eligible records. Unit: count."
+    },
+    "reference_value": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "Descriptive median/summary, or null if insufficient. Unit: source unit."
+    },
+    "unit": {
+      "type": "string",
+      "description": "Matching metric unit"
+    },
+    "eligibility_notes": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Reasons for selection and exclusions"
+    },
+    "freeze_reason": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Why previous reference is retained rather than silently updated"
+    },
+    "approved_by_role": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Decision owner for revision"
+    },
+    "range_low": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "range_high": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "frozen": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "personal_reference_id",
+    "schema_version",
+    "subject_id",
+    "data_origin",
+    "is_simulated",
+    "created_at_utc",
+    "metric_code",
+    "reference_version",
+    "reference_status",
+    "method",
+    "start_date",
+    "end_date",
+    "source_record_ids",
+    "valid_record_count",
+    "reference_value",
+    "unit"
+  ],
+  "additionalProperties": false
+}

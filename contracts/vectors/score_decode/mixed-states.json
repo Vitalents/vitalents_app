@@ -1,0 +1,69 @@
+{
+  "vector_id": "mixed-states",
+  "function": "score_decode",
+  "contract_version": "1.0",
+  "description": "Correct, incorrect, a duplicate press on trial 3 and a late answer after the 90 s window. Only correct + incorrect are accepted.",
+  "input": {
+    "planned_duration_ms": 90000,
+    "session_state": "completed",
+    "events": [
+      {
+        "trial_index": 1,
+        "correct_digit": 6,
+        "response_digit": 6,
+        "stimulus_monotonic_ms": 0,
+        "response_monotonic_ms": 800
+      },
+      {
+        "trial_index": 2,
+        "correct_digit": 3,
+        "response_digit": 5,
+        "stimulus_monotonic_ms": 950,
+        "response_monotonic_ms": 1900
+      },
+      {
+        "trial_index": 3,
+        "correct_digit": 1,
+        "response_digit": 1,
+        "stimulus_monotonic_ms": 2050,
+        "response_monotonic_ms": 2750
+      },
+      {
+        "trial_index": 3,
+        "correct_digit": 1,
+        "response_digit": 1,
+        "stimulus_monotonic_ms": 2050,
+        "response_monotonic_ms": 2800
+      },
+      {
+        "trial_index": 4,
+        "correct_digit": 9,
+        "response_digit": 9,
+        "stimulus_monotonic_ms": 2900,
+        "response_monotonic_ms": 3800
+      },
+      {
+        "trial_index": 5,
+        "correct_digit": 2,
+        "response_digit": 2,
+        "stimulus_monotonic_ms": 89500,
+        "response_monotonic_ms": 90200
+      }
+    ]
+  },
+  "expected": {
+    "response_states": [
+      "correct",
+      "incorrect",
+      "correct",
+      "duplicate",
+      "correct",
+      "late"
+    ],
+    "accepted_responses": 4,
+    "correct_count": 3,
+    "accuracy_percent": 75.0,
+    "median_correct_rt_ms": 800.0
+  },
+  "tolerance": 0.001
+}

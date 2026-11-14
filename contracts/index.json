@@ -1,0 +1,132 @@
+{
+  "contract_version": "1.0",
+  "source": "Vitalents_Task2_Data_Dictionary.xlsx v0.9",
+  "entities": [
+    {
+      "entity": "subject_profile",
+      "primary_key": "subject_profile_id",
+      "priority": "P0",
+      "fields": 13
+    },
+    {
+      "entity": "measurement",
+      "primary_key": "measurement_id",
+      "priority": "P0",
+      "fields": 20
+    },
+    {
+      "entity": "sleep_record",
+      "primary_key": "sleep_record_id",
+      "priority": "P0",
+      "fields": 18
+    },
+    {
+      "entity": "self_report",
+      "primary_key": "self_report_id",
+      "priority": "P0",
+      "fields": 18
+    },
+    {
+      "entity": "decode_session",
+      "primary_key": "decode_session_id",
+      "priority": "P0",
+      "fields": 24
+    },
+    {
+      "entity": "decode_response_event",
+      "primary_key": "decode_response_event_id",
+      "priority": "P0",
+      "fields": 18
+    },
+    {
+      "entity": "personal_reference",
+      "primary_key": "personal_reference_id",
+      "priority": "P0",
+      "fields": 23
+    },
+    {
+      "entity": "information_status",
+      "primary_key": "information_status_id",
+      "priority": "P0",
+      "fields": 15
+    },
+    {
+      "entity": "daily_review",
+      "primary_key": "daily_review_id",
+      "priority": "P0",
+      "fields": 14
+    },
+    {
+      "entity": "rule_definition",
+      "primary_key": "rule_definition_id",
+      "priority": "P0",
+      "fields": 14
+    },
+    {
+      "entity": "finding",
+      "primary_key": "finding_id",
+      "priority": "P0",
+      "fields": 14
+    },
+    {
+      "entity": "action",
+      "primary_key": "action_id",
+      "priority": "P0",
+      "fields": 19
+    },
+    {
+      "entity": "follow_up",
+      "primary_key": "follow_up_id",
+      "priority": "P0",
+      "fields": 15
+    },
+    {
+      "entity": "mission_schedule",
+      "primary_key": "mission_schedule_id",
+      "priority": "P1",
+      "fields": 21
+    },
+    {
+      "entity": "simulator_scenario",
+      "primary_key": "simulator_scenario_id",
+      "priority": "P0",
+      "fields": 12
+    },
+    {
+      "entity": "sync_event",
+      "primary_key": "sync_event_id",
+      "priority": "P0",
+      "fields": 14
+    },
+    {
+      "entity": "evidence_source",
+      "primary_key": "evidence_source_id",
+      "priority": "P0",
+      "fields": 13
+    },
+    {
+      "entity": "sharing_permission",
+      "primary_key": "sharing_permission_id",
+      "priority": "P0",
+      "fields": 14
+    },
+    {
+      "entity": "share_package",
+      "primary_key": "share_package_id",
+      "priority": "P0",
+      "fields": 13
+    },
+    {
+      "entity": "feedback_entry",
+      "primary_key": "feedback_entry_id",
+      "priority": "P2",
+      "fields": 11
+    },
+    {
+      "entity": "knowledge_gap",
+      "primary_key": "knowledge_gap_id",
+      "priority": "P1",
+      "fields": 9
+    }
+  ]
+}

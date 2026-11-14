@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vitalents.life/contracts/measurement.schema.json",
+  "title": "measurement",
+  "description": "Vitalents contract v1.0 (from Data Dictionary v0.9). MVP priority: P0.",
+  "type": "object",
+  "properties": {
+    "measurement_id": {
+      "type": "string",
+      "pattern": "^(sim|live|research|lib|rule):[A-Za-z0-9_.:-]+$",
+      "description": "Immutable record identity"
+    },
+    "schema_version": {
+      "type": "string",
+      "description": "Record schema contract revision"
+    },
+    "subject_id": {
+      "type": "string",
+      "description": "FK to subject_profile (mode-scoped)",
+      "pattern": "^(sim|live|research|lib|rule):[A-Za-z0-9_.:-]+$"
+    },
+    "data_origin": {
+      "enum": [
+        "real_research",
+        "simulated_mission",
+        "live_decode",
+        "application_generated",
+        "scientific_evidence"
+      ],
+      "description": "Provenance partition of this record"
+    },
+    "is_simulated": {
+      "type": "boolean",
+      "description": "Explicit simulation marker, independent of source label"
+    },
+    "created_at_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?Z$",
+      "description": "Persistence timestamp for app record (not biological measurement time). Unit: UTC."
+    },
+    "metric_code": {
+      "enum": [
+        "hr_daily_bpm",
+        "hr_resting_bpm",
+        "hr_hourly_bpm",
+        "nightly_skin_temperature",
+        "steps_daily",
+        "steps_hourly",
+        "skin_temperature_variation",
+        "activity_minutes"
+      ],
+      "description": "Named physical/activity measurement"
+    },
+    "value": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "Observed numeric measurement; null means absent"
+    },
+    "unit": {
+      "type": "string",
+      "description": "Verified source unit or UNVERIFIED"
+    },
+    "observation_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Local study day or mission date"
+    },
+    "hour_local": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 23,
+      "description": "Hour of local day, if hourly, without a UTC offset. Unit: hours."
+    },
+    "observed_at_utc": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?Z$",
+      "description": "UTC observation timestamp only if originally known. Unit: UTC."
+    },
+    "source_file": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Original file and revision for research"
+    },
+    "source_field": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Exact original CSV column"
+    },
+    "source_row_number": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "Original row number including header convention. Unit: count."
+    },
+    "capture_method": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Known device/method, if verified"
+    },
+    "source_metric_granularity": {
+      "enum": [
+        "daily",
+        "hourly",
+        "event"
+      ],
+      "description": "Resolution of the data"
+    },
+    "quality_record_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "FK to information status",
+      "pattern": "^(sim|live|research|lib|rule):[A-Za-z0-9_.:-]+$"
+    },
+    "reference_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "FK to reference used for comparison",
+      "pattern": "^(sim|live|research|lib|rule):[A-Za-z0-9_.:-]+$"
+    },
+    "measurement_context": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Known conditions or context (not inferred)"
+    }
+  },
+  "required": [
+    "measurement_id",
+    "schema_version",
+    "subject_id",
+    "data_origin",
+    "is_simulated",
+    "created_at_utc",
+    "metric_code",
+    "value",
+    "unit",
+    "observation_date",
+    "source_metric_granularity"
+  ],
+  "additionalProperties": false
+}

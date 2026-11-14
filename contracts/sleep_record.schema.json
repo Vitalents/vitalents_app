@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vitalents.life/contracts/sleep_record.schema.json",
+  "title": "sleep_record",
+  "description": "Vitalents contract v1.0 (from Data Dictionary v0.9). MVP priority: P0.",
+  "type": "object",
+  "properties": {
+    "sleep_record_id": {
+      "type": "string",
+      "pattern": "^(sim|live|research|lib|rule):[A-Za-z0-9_.:-]+$",
+      "description": "Immutable record identity"
+    },
+    "schema_version": {
+      "type": "string",
+      "description": "Record schema contract revision"
+    },
+    "subject_id": {
+      "type": "string",
+      "description": "FK to subject_profile (mode-scoped)",
+      "pattern": "^(sim|live|research|lib|rule):[A-Za-z0-9_.:-]+$"
+    },
+    "data_origin": {
+      "enum": [
+        "real_research",
+        "simulated_mission",
+        "live_decode",
+        "application_generated",
+        "scientific_evidence"
+      ],
+      "description": "Provenance partition of this record"
+    },
+    "is_simulated": {
+      "type": "boolean",
+      "description": "Explicit simulation marker, independent of source label"
+    },
+    "created_at_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?Z$",
+      "description": "Persistence timestamp for app record (not biological measurement time). Unit: UTC."
+    },
+    "observation_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Daily local date"
+    },
+    "source_file": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Exact LifeSnaps v4 file"
+    },
+    "recorded_interval_ms": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "Original Fitbit sleep_duration, recorded duration not identical to minutes asleep. Unit: ms."
+    },
+    "recorded_interval_hours": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "Calculated interval hours from milliseconds. Unit: h."
+    },
+    "minutes_asleep": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "Fitbit minutesAsleep. Unit: minutes."
+    },
+    "minutes_awake": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "Fitbit minutesAwake. Unit: minutes."
+    },
+    "minutes_to_fall_asleep": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "Fitbit minutesToFallAsleep. Unit: minutes."
+    },
+    "minutes_after_wakeup": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "Fitbit minutesAfterWakeup. Unit: minutes."
+    },
+    "sleep_efficiency_source": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "Original Fitbit sleep_efficiency; do not recompute on import. Unit: Fitbit score."
+    },
+    "sleep_metric_method": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Device/aggregation context"
+    },
+    "quality_record_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Related data quality",
+      "pattern": "^(sim|live|research|lib|rule):[A-Za-z0-9_.:-]+$"
+    },
+    "reference_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Reference to previous compatible nights",
+      "pattern": "^(sim|live|research|lib|rule):[A-Za-z0-9_.:-]+$"
+    }
+  },
+  "required": [
+    "sleep_record_id",
+    "schema_version",
+    "subject_id",
+    "data_origin",
+    "is_simulated",
+    "created_at_utc",
+    "observation_date",
+    "recorded_interval_ms",
+    "minutes_asleep",
+    "minutes_awake"
+  ],
+  "additionalProperties": false
+}

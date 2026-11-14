@@ -1,0 +1,138 @@
+{
+  "vector_id": "fahim-day25-build",
+  "function": "build_reference",
+  "contract_version": "1.0",
+  "description": "Day 25: no open follow-up. Exclude sessions 1-2 (learning) and the interrupted day 23; median of 9 valid sessions.",
+  "input": {
+    "metric_code": "decode_correct_count",
+    "target_date": "2026-11-12",
+    "history": [
+      {
+        "record_id": "sim:decode_session:d13",
+        "date": "2026-10-31",
+        "value": 35,
+        "info_status": "valid",
+        "is_practice": false,
+        "session_index": 1
+      },
+      {
+        "record_id": "sim:decode_session:d14",
+        "date": "2026-11-01",
+        "value": 38,
+        "info_status": "valid",
+        "is_practice": false,
+        "session_index": 2
+      },
+      {
+        "record_id": "sim:decode_session:d15",
+        "date": "2026-11-02",
+        "value": 41,
+        "info_status": "valid",
+        "is_practice": false,
+        "session_index": 3
+      },
+      {
+        "record_id": "sim:decode_session:d16",
+        "date": "2026-11-03",
+        "value": 43,
+        "info_status": "valid",
+        "is_practice": false,
+        "session_index": 4
+      },
+      {
+        "record_id": "sim:decode_session:d17",
+        "date": "2026-11-04",
+        "value": 42,
+        "info_status": "valid",
+        "is_practice": false,
+        "session_index": 5
+      },
+      {
+        "record_id": "sim:decode_session:d18",
+        "date": "2026-11-05",
+        "value": 44,
+        "info_status": "valid",
+        "is_practice": false,
+        "session_index": 6
+      },
+      {
+        "record_id": "sim:decode_session:d19",
+        "date": "2026-11-06",
+        "value": 43,
+        "info_status": "valid",
+        "is_practice": false,
+        "session_index": 7
+      },
+      {
+        "record_id": "sim:decode_session:d20",
+        "date": "2026-11-07",
+        "value": 42,
+        "info_status": "valid",
+        "is_practice": false,
+        "session_index": 8
+      },
+      {
+        "record_id": "sim:decode_session:d21",
+        "date": "2026-11-08",
+        "value": 44,
+        "info_status": "valid",
+        "is_practice": false,
+        "session_index": 9
+      },
+      {
+        "record_id": "sim:decode_session:d22",
+        "date": "2026-11-09",
+        "value": 43,
+        "info_status": "valid",
+        "is_practice": false,
+        "session_index": 10
+      },
+      {
+        "record_id": "sim:decode_session:d23",
+        "date": "2026-11-10",
+        "value": 30,
+        "info_status": "not_comparable",
+        "is_practice": false,
+        "session_index": 11
+      },
+      {
+        "record_id": "sim:decode_session:d24",
+        "date": "2026-11-11",
+        "value": 42,
+        "info_status": "valid",
+        "is_practice": false,
+        "session_index": 12
+      }
+    ],
+    "params": {
+      "lookback_days": 14,
+      "min_valid": 5,
+      "exclude_first_sessions": 2,
+      "method": "median"
+    },
+    "open_follow_up": false,
+    "previous_reference": null
+  },
+  "expected": {
+    "reference_status": "usable_for_question",
+    "reference_value": 43,
+    "range_low": 41,
+    "range_high": 44,
+    "valid_record_count": 9,
+    "start_date": "2026-10-29",
+    "end_date": "2026-11-11",
+    "frozen": false,
+    "source_record_ids": [
+      "sim:decode_session:d15",
+      "sim:decode_session:d16",
+      "sim:decode_session:d17",
+      "sim:decode_session:d18",
+      "sim:decode_session:d19",
+      "sim:decode_session:d20",
+      "sim:decode_session:d21",
+      "sim:decode_session:d22",
+      "sim:decode_session:d24"
+    ]
+  },
+  "tolerance": 0.001
+}
