@@ -1,0 +1,27 @@
+/* Map feature: the plan mark (FR-MAP-05). Plain text with a calendar symbol, no fill and no state colour,
+   so it never reads as a follow-up pill or a data tag (CLAUDE.md rule 2). */
+.due-mark {
+  display: inline-flex; align-items: center; gap: 0.3rem; white-space: nowrap;
+  font-size: 0.8rem; font-weight: 500; line-height: 1.4; color: var(--muted);
+}
+.due-mark svg { flex: none; }
+.due-mark.due-due { color: var(--ink); font-weight: 600; }
+.due-mark.due-due svg { color: var(--deep); }
+
+.domain-top {
+  grid-area: name; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+  gap: 0.15rem 0.75rem; min-width: 0;
+}
+.domain-top .domain-name { min-width: 0; }
+/* Phones: the plan mark always sits on its own line under the name, so rows read the same way. */
+@media (max-width: 560px) {
+  .domain-top { flex-direction: column; align-items: flex-start; }
+}
+
+/* On the figure: a small square-cornered calendar tile, offset from the follow-up badge. */
+.due-badge { pointer-events: none; color: var(--muted); }
+.due-badge.due-due { color: var(--deep); }
+.due-badge-bg { fill: var(--card); stroke: currentColor; stroke-width: 1.2; }
+
+.legend-due { align-items: flex-start; }
+.legend-due-marks { display: inline-flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; flex-basis: 100%; }
