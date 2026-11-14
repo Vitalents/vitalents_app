@@ -8,7 +8,7 @@
 #
 # Stop with Ctrl+C. The live site falls back to recorded answers whenever this is not running.
 set -euo pipefail
-trap 'echo "\nStopped at line $LINENO (exit $?). Paste this output to the team." >&2' ERR
+trap 'echo; echo "Stopped at line $LINENO (exit $?). Paste this output to the team." >&2' ERR
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 HOSTNAME_PUBLIC="${VITA_PUBLIC_HOST:-ask.vitalents.life}"
@@ -84,10 +84,13 @@ try:
     rows = json.load(sys.stdin) or []
 except Exception:
     rows = []
-print(next((r.get("id", "") for r in rows if r.get("name") == name and not r.get("deleted_at")), ""))
+def active(r):
+    d = r.get("deleted_at") or ""
+    return not d or d.startswith("0001-01-01")  # cloudflared uses the zero time for tunnels that are not deleted
+print(next((r.get("id", "") for r in rows if r.get("name") == name and active(r)), ""))
 ' "$TUNNEL_NAME"
 }
-TUNNEL_ID="$(tunnel_id || true)"
+TUNNEL_ID="${VITA_TUNNEL_ID:-$(tunnel_id || true)}"
 if [[ -z "$TUNNEL_ID" ]]; then
   echo "Creating tunnel $TUNNEL_NAME"
   cloudflared tunnel create "$TUNNEL_NAME"
