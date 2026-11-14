@@ -29,7 +29,7 @@ export interface PrefValues {
 export type PrefKey = keyof PrefValues
 
 export const PREF_DEFAULTS: PrefValues = {
-  theme: 'system',
+  theme: 'light', // light is the default; the header switch offers dark and the device setting
   scenario: null,
   demo_role: null,
   last_domain_tab: null,
@@ -104,9 +104,9 @@ export function applyStoredTheme(): void {
   applyTheme(getPreference('theme'))
 }
 
-/** Next theme for a single toggle button: system → light → dark → system. */
+/** Next theme for a single toggle button: light → dark → system → light. */
 export function nextTheme(t: Theme): Theme {
-  return t === 'system' ? 'light' : t === 'light' ? 'dark' : 'system'
+  return t === 'light' ? 'dark' : t === 'dark' ? 'system' : 'light'
 }
 
 // ---------- Reminder time learned from usage ----------

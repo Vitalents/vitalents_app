@@ -2,7 +2,6 @@
 // six navigation entries (FR-SH-01), and Request help / Report something on every screen.
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, Link } from 'react-router-dom'
-import { CONTENT_IS_DRAFT } from '../content/content'
 import { S } from '../content/strings'
 import { formatDate, missionDay } from '../engine/mission'
 import { useReviewDate, useSubject, useWaitingToSend } from '../store/selectors'
@@ -77,7 +76,6 @@ export function Layout() {
             </NavLink>
           ))}
           <OfflineNote />
-          {CONTENT_IS_DRAFT && <p className="draft-note">{S.draftContent}</p>}
         </nav>
         <main className="main" id="main">
           {!ready ? (

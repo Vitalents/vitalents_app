@@ -1,4 +1,4 @@
-// Theme switch (FR-PE-05): system → light → dark → system. Remembered on this device; the label says what is on now.
+// Theme switch (FR-PE-05): light (default) → dark → device setting → light. Remembered on this device; the label says what is on now.
 import { nextTheme, usePreferences, type Theme } from '../store/preferences'
 
 const LABEL: Record<Theme, string> = { system: 'Theme: follows your device', light: 'Theme: light', dark: 'Theme: dark' }

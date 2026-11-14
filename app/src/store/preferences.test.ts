@@ -94,7 +94,7 @@ describe('stored preferences (DR-14)', () => {
     expect(writePreference('theme', 'neon' as never)).toBeNull()
     localStorage.setItem('vitalents.pref.scenario', '{not json')
     localStorage.setItem('vitalents.pref.demo_role', JSON.stringify({ key: 'demo_role', value: 'admin', learned_from: 'explicit' }))
-    expect(getPreference('theme')).toBe('system')
+    expect(getPreference('theme')).toBe('light')
     expect(getPreference('scenario')).toBeNull()
     expect(getPreference('demo_role')).toBeNull()
   })
@@ -106,8 +106,8 @@ describe('stored preferences (DR-14)', () => {
     vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
       throw new Error('blocked')
     })
-    expect(() => writePreference('theme', 'light')).not.toThrow()
-    expect(getPreference('theme')).toBe('system')
+    expect(() => writePreference('theme', 'dark')).not.toThrow()
+    expect(getPreference('theme')).toBe('light')
   })
 })
 
@@ -135,7 +135,7 @@ describe('usePreferences store', () => {
 
 describe('theme helpers', () => {
   it('cycles system, light, dark', () => {
-    expect([nextTheme('system'), nextTheme('light'), nextTheme('dark')]).toEqual(['light', 'dark', 'system'])
+    expect([nextTheme('light'), nextTheme('dark'), nextTheme('system')]).toEqual(['dark', 'system', 'light'])
   })
   it('applyTheme ignores a missing root', () => {
     expect(() => applyTheme('dark', undefined)).not.toThrow()

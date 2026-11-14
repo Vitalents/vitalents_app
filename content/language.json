@@ -22,7 +22,7 @@
   "source_type_label": {
     "nasa": "NASA source",
     "research": "Published research",
-    "team_rule": "Team rule · needs medical review"
+    "team_rule": "Team rule"
   },
   "preferred_wording": [
     { "use": "observation, change from your reference" },

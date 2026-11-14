@@ -7,7 +7,6 @@ import './ask.css'
 
 export function AskPage() {
   const sources = [...LIBRARY.values()]
-  const draft = sources.some((s) => !s.url)
   return (
     <div className="ask-page">
       <header className="ask-head">
@@ -25,7 +24,6 @@ export function AskPage() {
         <h2 id="ask-lib-h">
           {S.library} <span className="ask-library__count">{sources.length} {S.sourcesCount}</span>
         </h2>
-        {draft && <p className="ask-library__note">{S.libraryDraft}</p>}
         <ul>
           {sources.map((s) => (
             <li key={s.id}>

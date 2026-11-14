@@ -130,7 +130,7 @@ export function ProfileView({ profile, schedule, date }: { profile: SubjectProfi
               </li>
             ))}
           </ul>
-          <p className="muted small pf-source">{P.planSource(String(domainsJson.content_version))}</p>
+          <p className="muted small pf-source">{P.planSource(String(domainsJson.content_version).replace(/-draft$/, ''))}</p>
         </section>
       </div>
     </div>
