@@ -8,9 +8,10 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "test": "vitest run",
+    "test": "vitest run --exclude \"e2e/**\"",
     "test:engine": "vitest run src/engine",
-    "test:acceptance": "vitest run tests/acceptance"
+    "test:acceptance": "vitest run tests/acceptance",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@fontsource/instrument-sans": "^5.3.0",
@@ -24,6 +25,7 @@
     "zustand": "^5.1.0"
   },
   "devDependencies": {
+    "@playwright/test": "1.63.0",
     "@testing-library/react": "^16.3.3",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
