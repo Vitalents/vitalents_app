@@ -9,6 +9,7 @@ export const S = {
   placeholder: 'Ask about an indicator, a measurement or a hazard',
   ask: 'Ask',
   asking: 'Searching the library…',
+  askingLive: 'The onboard model on the team laptop is reading the sources. This can take up to a minute.',
   suggested: 'Suggested questions',
   yourData: 'Your data',
   yourDataEmpty: 'No values from your record were used for this question.',

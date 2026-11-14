@@ -59,7 +59,8 @@ export const assistantUrl = (): string =>
   (import.meta.env.VITE_ASSISTANT_URL as string | undefined) ||
   (assistantMode() === 'auto' ? PUBLIC_ASSISTANT_URL : 'http://localhost:8008')
 
-const LIVE_TIMEOUT_MS = 60_000
+// Cloudflare closes proxied requests after 100 s; stop just before so the visitor gets the reviewed recording instead.
+const LIVE_TIMEOUT_MS = 95_000
 const HEALTH_TIMEOUT_MS = 4_000
 const HEALTH_TTL_MS = 30_000
 let lastHealth: { at: number; ok: boolean } | null = null
@@ -125,6 +126,25 @@ export const resetCachedForTests = () => {
   cachedEntries = null
 }
 
+async function fromRecordings(question: string, fetchImpl: typeof fetch): Promise<AskResult> {
+  const entry = matchCached(question, await loadCached(fetchImpl))
+  if (!entry) return { source: 'cached', response: null }
+  return {
+    source: 'cached',
+    response: entry.response,
+    label: entry.label,
+    matchedQuestion: normalizeQuestion(entry.question) === normalizeQuestion(question) ? undefined : entry.question,
+  }
+}
+
+/** Live call failed or timed out. In auto mode, use the reviewed recordings (and re-check /health next time). */
+async function liveFailed(question: string, fetchImpl: typeof fetch, mode: 'live' | 'cached', error: string): Promise<AskResult> {
+  if (assistantMode() !== 'auto' || mode !== 'live') return { source: 'unavailable', response: null, error }
+  lastHealth = null
+  const recorded = await fromRecordings(question, fetchImpl)
+  return recorded.response ? { ...recorded, error } : { source: 'unavailable', response: null, error }
+}
+
 export async function ask(
   question: string,
   context: Record<string, unknown>,
@@ -132,16 +152,7 @@ export async function ask(
 ): Promise<AskResult> {
   const fetchImpl = opts.fetchImpl ?? fetch
   const mode = await resolveMode(opts.mode ?? assistantMode(), fetchImpl)
-  if (mode === 'cached') {
-    const entry = matchCached(question, await loadCached(fetchImpl))
-    if (!entry) return { source: 'cached', response: null }
-    return {
-      source: 'cached',
-      response: entry.response,
-      label: entry.label,
-      matchedQuestion: normalizeQuestion(entry.question) === normalizeQuestion(question) ? undefined : entry.question,
-    }
-  }
+  if (mode === 'cached') return fromRecordings(question, fetchImpl)
   const ctrl = new AbortController()
   const timer = setTimeout(() => ctrl.abort(), LIVE_TIMEOUT_MS)
   try {
@@ -151,10 +162,10 @@ export async function ask(
       body: JSON.stringify({ question, context }),
       signal: ctrl.signal,
     })
-    if (!res.ok) return { source: 'unavailable', response: null, error: `HTTP ${res.status}` }
+    if (!res.ok) return liveFailed(question, fetchImpl, mode, `HTTP ${res.status}`)
     return { source: 'live', response: (await res.json()) as AskResponse }
   } catch (err) {
-    return { source: 'unavailable', response: null, error: String(err) }
+    return liveFailed(question, fetchImpl, mode, String(err))
   } finally {
     clearTimeout(timer)
   }

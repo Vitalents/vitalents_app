@@ -22,7 +22,12 @@ export function registerPwa(): void {
   const update = registerSW({
     onOfflineReady: () => usePwa.setState({ offlineCapable: true }),
     // registerType 'prompt': the new worker waits; update(true) sends SKIP_WAITING, then the page reloads.
-    onNeedRefresh: () => usePwa.setState({ updateWaiting: true }),
+    // Apply a new version straight away, except during a Decode round (/check), where a reload would interrupt the
+    // measurement: there the "New version available" toast waits for the astronaut.
+    onNeedRefresh: () => {
+      if (window.location.pathname.startsWith('/check')) usePwa.setState({ updateWaiting: true })
+      else void update(true)
+    },
     onRegisteredSW: (_url, reg) => {
       if (reg?.active) usePwa.setState({ offlineCapable: true })
     },

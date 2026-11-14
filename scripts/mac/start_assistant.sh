@@ -65,6 +65,8 @@ API_PID=$!
 trap 'kill $API_PID 2>/dev/null || true' EXIT
 for _ in $(seq 1 60); do curl -fsS "http://127.0.0.1:$PORT/health" >/dev/null 2>&1 && break; sleep 1; done
 curl -fsS "http://127.0.0.1:$PORT/health" && echo || { echo "Assistant did not start; see /tmp/vitalents-assistant.log"; exit 1; }
+echo "Warming up $LLM (loads it into memory and keeps it there for 2 h)…"
+curl -fsS http://127.0.0.1:11434/api/generate -d "{\"model\":\"$LLM\",\"prompt\":\"ok\",\"stream\":false,\"keep_alive\":\"2h\",\"options\":{\"num_predict\":1}}" >/dev/null && echo "Model ready." || echo "Warm-up skipped (the first question will be slower)."
 
 if [[ $LOCAL_ONLY == 1 ]]; then
   say "Running locally only at http://127.0.0.1:$PORT (Ctrl+C to stop)"; wait $API_PID; exit 0

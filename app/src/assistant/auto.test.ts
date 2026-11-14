@@ -30,3 +30,23 @@ describe('auto mode (team laptop through the tunnel)', () => {
     expect(f).not.toHaveBeenCalled()
   })
 })
+
+describe('auto mode when the laptop is slow or drops', () => {
+  beforeEach(() => resetHealthCache())
+
+  it('shows the reviewed recording instead of an error when the live call fails', async () => {
+    vi.stubEnv('VITE_ASSISTANT_MODE', 'auto')
+    const cached = [{ question: 'Why do we measure sleep on a long mission?', label: 'Recorded from the onboard model',
+      response: { question_id: 'q1', status: 'answered', your_data: '', science: 'Sleep matters. [S1]', citations: [], limits: '', model: 'm' } }]
+    const f = vi.fn((url: string) => {
+      if (url.endsWith('/health')) return ok({ ok: true })
+      if (url.endsWith('/ask')) return Promise.resolve(new Response('', { status: 524 }))
+      return ok(cached)
+    }) as unknown as typeof fetch
+    const { ask } = await import('./client')
+    const r = await ask('Why do we measure sleep on a long mission?', {}, { fetchImpl: f })
+    expect(r.source).toBe('cached')
+    expect(r.response?.science).toContain('Sleep matters')
+    vi.unstubAllEnvs()
+  })
+})

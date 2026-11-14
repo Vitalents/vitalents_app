@@ -1,6 +1,6 @@
 // Question box + answer. Used full-width on /ask and compact inside a domain card's Understand tab.
 import { useId, useState, type FormEvent } from 'react'
-import { ask, buildContext, type AskResult } from '../../assistant/client'
+import { ask, assistantMode, buildContext, type AskResult } from '../../assistant/client'
 import { domainById, DOMAINS, type DomainId } from '../../content/content'
 import { useVisibleStoreData } from '../../store/selectors'
 import { AnswerCard } from './AnswerCard'
@@ -70,7 +70,7 @@ export function AskBox({ domainId, compact = false }: { domainId?: DomainId; com
       </ul>
 
       <p className="ask-status" role="status" aria-live="polite">
-        {busy ? S.asking : ''}
+        {busy ? (assistantMode() === 'cached' ? S.asking : S.askingLive) : ''}
       </p>
       {result && result.source === 'unavailable' && <ReviewedFallback domainId={domainId} />}
       {result && result.source !== 'unavailable' && <AnswerCard question={asked} result={result} />}

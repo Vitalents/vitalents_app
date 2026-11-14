@@ -197,7 +197,16 @@ def llm():
         else:
             from langchain_ollama import ChatOllama
 
-            _cfg["llm"] = ChatOllama(model=LLM_MODEL, temperature=0)
+            # Fast enough for the public site (Cloudflare closes requests after 100 s): keep the model loaded between
+            # questions, ask gpt-oss for low reasoning effort, and cap the answer length. Override with env vars.
+            reasoning = os.getenv("VITA_REASONING", "low")
+            _cfg["llm"] = ChatOllama(
+                model=LLM_MODEL,
+                temperature=0,
+                keep_alive=os.getenv("VITA_KEEP_ALIVE", "2h"),
+                num_predict=int(os.getenv("VITA_NUM_PREDICT", "1200")),
+                reasoning=None if reasoning in ("", "none", "off") else reasoning,
+            )
     return _cfg["llm"]
 
 
@@ -235,10 +244,13 @@ def is_diagnosis_question(q: str) -> bool:
     return bool(DIAGNOSIS_Q.search(q or ""))
 
 
+def _sentences(text: str) -> list[str]:
+    return [p for p in re.split(r"(?<=[.!?])\s+(?=[A-Z0-9\"'(])", (text or "").strip()) if p.strip()]
+
+
 def uncited_sentences(text: str) -> list[str]:
     """Sentences of an answer that carry no [S#] marker (CLAUDE.md rule 7: every sentence has a source)."""
-    parts = re.split(r"(?<=[.!?])\s+(?=[A-Z0-9\"'(])", (text or "").strip())
-    return [p for p in parts if len(p.strip()) > 12 and not CITE.search(p)]
+    return [p for p in _sentences(text) if len(p.strip()) > 12 and not CITE.search(p)]
 
 
 def quoted_sections(markdown: str) -> str:
@@ -488,15 +500,15 @@ def ask(req: AskIn):
     )
     out = parse_json(llm().invoke([("system", ASK_RULES), ("human", msg)]).content)
     science = (out or {}).get("science") or (out or {}).get("answer")
-    if out and not out.get("not_in_library") and science and uncited_sentences(science):
-        # One retry: every sentence must carry its [S#] marker (FR-AS-02). The model sees its own draft and the rule.
-        retry = (f"{msg}\n\n<previous_answer>\n{fence(science)}\n</previous_answer>\n"
-                 "Rewrite the previous answer so that EVERY sentence ends with the [S#] id of the source it comes from. "
-                 "Drop any sentence that no source supports. Reply with the same JSON shape.")
-        out2 = parse_json(llm().invoke([("system", ASK_RULES), ("human", retry)]).content)
-        science2 = (out2 or {}).get("science") or (out2 or {}).get("answer")
-        if out2 and science2:
-            out, science = out2, science2
+    if science:
+        # Every sentence must carry its [S#] marker (FR-AS-02). Sentences without one are dropped, never rewritten:
+        # removing text cannot add an unsupported claim, and it avoids a second slow model call.
+        dropped = uncited_sentences(science)
+        if dropped:
+            trace["dropped_uncited"] = dropped
+            science = " ".join(p for p in _sentences(science) if p not in dropped).strip()
+            if not science:
+                return _respond("blocked", qid, your_data, limits=BLOCKED, trace=trace, reason="uncited")
     if not out or out.get("not_in_library") or not science:
         return _respond("not_in_library", qid, your_data, limits=NOT_IN_LIB, trace=trace)
 

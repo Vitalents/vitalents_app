@@ -15,7 +15,10 @@ python eval_summary.py ../science/out/assistant_eval_gptoss.json || true
 cd "$ROOT"
 python scripts/publish_proof.py
 python scripts/check_language.py
-git add app/public/data/cached_answers.json app/public/data/proof.json science/out/assistant_eval_gptoss.json ai/recordings/*.raw.json
+# The public fallback (app/public/data/cached_answers.json) is published only after a review against the sources
+# (ai/cache_review.json, see ai/README.md). Keep the reviewed version; commit the new raw recording as evidence.
+git checkout -- app/public/data/cached_answers.json 2>/dev/null || true
+git add app/public/data/proof.json science/out/assistant_eval_gptoss.json ai/recordings/*.raw.json
 git commit -m "FR-AS-08: recorded answers and assistant evaluation from the onboard model"
 git push
 echo "Done. New recordings stay withheld until a hash-bound editorial review in ai/cache_review.json. Review raw recordings and the published cache separately."
