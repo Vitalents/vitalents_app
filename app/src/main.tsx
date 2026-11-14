@@ -12,7 +12,8 @@ import { MapPage } from './features/map/MapPage'
 import { CheckPage } from './features/check/CheckPage'
 import { ReviewPage } from './features/review/ReviewPage'
 import { RecordPage, SharePage } from './features/placeholder/Placeholder'
-import { PlanPage } from './features/plan/PlanPage'
+import { FollowUpList } from './features/followups/FollowUpList'
+import { RestWindowPage } from './features/schedule/RestWindowPage'
 import { DomainPage } from './features/domain/DomainPage'
 import { SettingsPage } from './features/settings/SettingsPage'
 import { AskPage } from './features/ask/AskPage'
@@ -26,7 +27,8 @@ const router = createBrowserRouter([
       { path: 'check', element: <CheckPage /> },
       { path: 'review', element: <ReviewPage /> },
       { path: 'record', element: <RecordPage /> },
-      { path: 'plan', element: <PlanPage /> },
+      { path: 'plan', element: <FollowUpList scheduleHref="/rest-window" /> },
+      { path: 'rest-window', element: <RestWindowPage backHref="/plan" /> },
       { path: 'share', element: <SharePage /> },
       { path: 'domain/:id', element: <DomainPage /> },
       { path: 'settings', element: <SettingsPage /> },
