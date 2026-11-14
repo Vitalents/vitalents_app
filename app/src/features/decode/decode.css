@@ -1,0 +1,194 @@
+/* Check & Decode (docs/DESIGN.md v1: calm mission instrument).
+   Uses the shell's token names (app/src/styles/tokens.css) with DESIGN.md fallbacks, so the screens also render standalone. */
+.dc-page {
+  --dc-ink: var(--ink, #18363d);
+  --dc-muted: var(--muted, #52666b);
+  --dc-paper: var(--paper, #f5f3eb);
+  --dc-card: var(--card, #ffffff);
+  --dc-line: var(--line, #cfdbdc);
+  --dc-deep: var(--deep, #00687a);
+  --dc-teal: var(--teal, #31b9d4);
+  --dc-tint: var(--tint, #bfeaf0);
+  --dc-tint-soft: var(--tint-soft, #e4f4f6);
+  /* Focus uses --deep: --teal on white is below the 3:1 non-text contrast WCAG asks for a focus ring */
+  --dc-focus: var(--focus, var(--deep, #00687a));
+  --dc-data-bg: var(--data-bad-bg, #ecedee);
+  --dc-data-fg: var(--data-bad-fg, #464f52);
+  --dc-hatch: var(--hatch, #5b6b6f);
+  --dc-review: var(--fu-review-fg, #93323b);
+  --dc-review-bg: var(--fu-review-bg, #f6dfe1);
+  --dc-watch-bg: var(--fu-watch-bg, #f6ead2);
+  --dc-watch: var(--fu-watch-fg, #7a4e0b);
+
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 16px;
+  display: grid;
+  gap: 16px;
+  color: var(--dc-ink);
+  font-family: var(--font-body, 'Instrument Sans', ui-sans-serif, system-ui, sans-serif);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+@media (min-width: 768px) { .dc-page { padding: 32px; } }
+@media (prefers-color-scheme: dark) {
+  .dc-page {
+    --dc-ink: var(--ink, #e7f0f1);
+    --dc-muted: var(--muted, #9fb3b7);
+    --dc-paper: var(--paper, #0f1f23);
+    --dc-card: var(--card, #152a30);
+    --dc-line: var(--line, #2a4249);
+    --dc-deep: var(--deep, #5fd0e3);
+    --dc-tint: var(--tint, #173e47);
+    --dc-tint-soft: var(--tint-soft, #183238);
+    --dc-focus: var(--focus, var(--deep, #5fd0e3));
+    --dc-data-bg: var(--data-bad-bg, #2a3336);
+    --dc-data-fg: var(--data-bad-fg, #c9d2d4);
+    --dc-hatch: var(--hatch, #b8c4c7);
+    --dc-review: var(--fu-review-fg, #f2aab0);
+    --dc-review-bg: var(--fu-review-bg, #3b1d21);
+    --dc-watch-bg: var(--fu-watch-bg, #3a2e17);
+    --dc-watch: var(--fu-watch-fg, #f0cd8a);
+  }
+}
+
+/* type: DESIGN.md scale */
+.dc-page h2, .dc-page h3 {
+  font-family: var(--font-head, 'Instrument Sans', ui-sans-serif, system-ui, sans-serif);
+  font-weight: 600; line-height: 1.15; margin: 0; letter-spacing: -0.02em; text-wrap: balance;
+}
+.dc-page h2 { font-size: 1.75rem; }
+.dc-page h3 { font-size: 1.125rem; }
+.dc-page p { margin: 0; max-width: 68ch; }
+.dc-muted { color: var(--dc-muted); }
+.dc-small { font-size: 0.875rem; color: var(--dc-muted); }
+.dc-block-text { display: block; margin-top: 4px; font-weight: 400; }
+.dc-big {
+  font-family: var(--font-head, 'Instrument Sans', ui-sans-serif, system-ui, sans-serif);
+  font-size: 2.25rem; font-weight: 600; line-height: 1.1; font-variant-numeric: tabular-nums;
+}
+.dc-unit { font-family: var(--font-body, 'Instrument Sans', system-ui, sans-serif); font-size: 1rem; font-weight: 500; color: var(--dc-muted); margin-left: 6px; }
+.dc-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dc-deep); }
+
+/* Card */
+.dc-card { background: var(--dc-card); border: 1px solid var(--dc-line); border-radius: 12px; padding: 24px; display: grid; gap: 16px; }
+@media (max-width: 480px) { .dc-card { padding: 16px; } }
+.dc-block { border: 0; padding: 16px 0 0; margin: 0; display: grid; gap: 8px; border-top: 1px solid var(--dc-line); min-width: 0; }
+.dc-block legend { float: left; width: 100%; padding: 0; margin-bottom: 8px; }
+.dc-block legend + * { clear: both; }
+.dc-note { background: var(--dc-watch-bg); border-radius: 8px; padding: 12px 16px; display: grid; gap: 12px; }
+.dc-story { font-family: var(--font-head, 'Instrument Sans', ui-sans-serif, system-ui, sans-serif); font-size: 1.375rem; line-height: 1.3; }
+.dc-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.dc-sleep { display: grid; gap: 8px; }
+
+/* DataBadge: square tag; Valid is plain muted text, problems are hatched grey. Never green. */
+.dc-badge { display: inline-block; font-size: 0.8125rem; font-weight: 600; line-height: 1.4; color: var(--dc-muted); }
+.dc-badge-problem {
+  padding: 1px 8px; border-radius: 2px; color: var(--dc-data-fg); border: 1px solid var(--dc-line);
+  background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--dc-hatch) 18%, transparent) 0 2px, transparent 2px 7px), var(--dc-data-bg);
+}
+
+/* Buttons */
+.dc-btn {
+  min-height: 48px; padding: 10px 20px; border-radius: 8px; border: 1px solid var(--dc-deep);
+  background: var(--dc-deep); color: var(--dc-card); font: inherit; font-weight: 600; cursor: pointer; justify-self: start;
+}
+.dc-btn-secondary { background: var(--dc-card); color: var(--dc-ink); border-color: var(--dc-line); }
+.dc-btn-secondary:hover { border-color: var(--dc-deep); }
+.dc-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.dc-page :focus-visible { outline: 2px solid var(--dc-focus); outline-offset: 2px; }
+
+/* Alertness scale and mood */
+.dc-scale { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; }
+@media (max-width: 480px) { .dc-scale { grid-template-columns: repeat(5, minmax(44px, 1fr)); } }
+.dc-scale-btn, .dc-pill {
+  min-height: 48px; min-width: 44px; border-radius: 8px; border: 1px solid var(--dc-line); background: var(--dc-card); color: var(--dc-ink);
+  font: inherit; font-weight: 600; cursor: pointer; font-variant-numeric: tabular-nums;
+}
+.dc-scale-btn:hover, .dc-pill:hover { border-color: var(--dc-deep); }
+.dc-scale-btn.is-on, .dc-pill.is-on { background: var(--dc-ink); border-color: var(--dc-ink); color: var(--dc-card); }
+.dc-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.dc-pill { padding: 0 18px; }
+.dc-textarea {
+  width: 100%; box-sizing: border-box; min-height: 88px; border: 1px solid var(--dc-line); border-radius: 8px; padding: 10px 12px;
+  font: inherit; background: var(--dc-card); color: var(--dc-ink); resize: vertical; border-color: var(--dc-muted);
+}
+.dc-textarea:hover { border-color: var(--dc-muted); }
+.dc-toggle { display: flex; align-items: center; gap: 12px; min-height: 44px; cursor: pointer; justify-self: start; }
+.dc-toggle input { width: 22px; height: 22px; margin: 0; accent-color: var(--dc-deep); }
+
+/* Round: no motion inside the measurement window (no transitions, no animation) */
+.dc-round {
+  display: grid; gap: 16px; user-select: none; -webkit-user-select: none; touch-action: manipulation;
+  background: var(--dc-card); border: 1px solid var(--dc-line); border-radius: 12px; padding: 16px;
+}
+.dc-round * { transition: none !important; animation: none !important; }
+.dc-round-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.dc-round-label { font-size: 0.875rem; font-weight: 600; color: var(--dc-muted); }
+.dc-actions { display: flex; gap: 8px; }
+.dc-link {
+  min-height: 44px; min-width: 44px; border-radius: 8px; border: 1px solid var(--dc-line); background: var(--dc-card);
+  color: var(--dc-ink); font: inherit; font-weight: 600; padding: 0 14px; cursor: pointer;
+}
+.dc-help {
+  min-height: 44px; border-radius: 8px; border: 1px solid var(--dc-review); background: var(--dc-review-bg);
+  color: var(--dc-review); font: inherit; font-weight: 600; padding: 0 14px; cursor: pointer;
+}
+.dc-progress { height: 4px; background: var(--dc-line); border-radius: 2px; overflow: hidden; }
+.dc-progress span { display: block; height: 100%; background: var(--dc-deep); }
+
+/* The key: a decoding table, glyph over digit, hairline cells */
+.dc-key {
+  list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr));
+  border: 1px solid var(--dc-line); border-radius: 8px; overflow: hidden;
+}
+.dc-key li { display: grid; justify-items: center; gap: 4px; padding: 8px 0 6px; border-left: 1px solid var(--dc-line); background: var(--dc-tint-soft); }
+.dc-key li:first-child { border-left: 0; }
+.dc-key .glyph { width: 100%; max-width: 32px; height: auto; }
+.dc-key-digit { font-weight: 700; font-size: 1rem; font-variant-numeric: tabular-nums; line-height: 1; }
+.glyph { fill: none; stroke: var(--dc-ink); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+.glyph .fill { fill: var(--dc-ink); stroke: none; }
+
+/* The reading window */
+.dc-stage { display: grid; place-items: center; padding: 8px 0; }
+.dc-current {
+  width: 168px; height: 168px; border-radius: 12px; display: grid; place-items: center;
+  background: var(--dc-card); border: 1px solid var(--dc-line); box-shadow: inset 0 0 0 1px var(--dc-card);
+}
+/* identical, static acknowledgement for every answer during the 150 ms gap */
+.dc-current.dc-ack { border-color: var(--dc-deep); box-shadow: inset 0 0 0 1px var(--dc-deep); }
+
+.dc-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 360px; width: 100%; justify-self: center; }
+.dc-digit {
+  min-height: 64px; border-radius: 8px; border: 1px solid var(--dc-line); background: var(--dc-card); color: var(--dc-ink);
+  font: inherit; font-size: 1.5rem; font-weight: 600; cursor: pointer; font-variant-numeric: tabular-nums;
+}
+.dc-digit:active { background: var(--dc-tint); }
+.dc-digit:disabled { opacity: 0.5; }
+
+/* After the round */
+.dc-message {
+  margin: 0; font-family: var(--font-head, 'Instrument Sans', ui-sans-serif, system-ui, sans-serif); font-size: 1.375rem; line-height: 1.35;
+  border-left: 3px solid var(--dc-deep); padding-left: 16px; max-width: 40ch;
+}
+.dc-streak { font-weight: 600; }
+.dc-side { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; }
+@media (max-width: 600px) { .dc-side { grid-template-columns: 1fr; } }
+.dc-panel { border: 1px solid var(--dc-line); border-radius: 12px; padding: 16px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.dc-stats { display: grid; gap: 0; margin: 0; }
+.dc-stats div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 6px 0; border-top: 1px solid var(--dc-line); }
+.dc-stats dt { color: var(--dc-muted); font-size: 0.875rem; }
+.dc-stats dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+.dc-cmp { font-weight: 600; }
+.dc-why { border-top: 1px solid var(--dc-line); padding-top: 8px; }
+.dc-why summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--dc-deep); font-weight: 600; width: max-content; }
+.dc-why[open] { display: grid; gap: 8px; }
+.dc-why p { font-size: 0.875rem; }
+
+/* Brand motifs from app.css (.eyebrow, .num-badge, .callout), spaced for these cards */
+.dc-sec-head { display: flex; align-items: center; gap: 12px; }
+.dc-callout { display: grid; gap: 6px; }
+.dc-callout p { margin: 0; }
+.dc-page .eyebrow { margin-bottom: -8px; }
+.dc-page .emblem { justify-self: start; }
+.dc-unit-tight { margin-left: 1px; }
