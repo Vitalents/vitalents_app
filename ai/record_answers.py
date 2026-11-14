@@ -64,7 +64,7 @@ def publish(recording, policy, raw_sha256):
         metadata_changes = []
         if decision != "retain":
             reason = review["reason"] if review else "This exact recording has not been checked against its sources."
-            response.update(status="blocked", science=None, citations=[], limits=(
+            response.update(status="blocked", reason="publication_review", science=None, citations=[], limits=(
                 "Publication review withheld this recorded response. " + reason +
                 " This is a publication decision, not a new answer from the model. No medical advice is provided."
             ))

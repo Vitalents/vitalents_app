@@ -41,7 +41,7 @@ export default defineConfig({
         // Scenario bundles are up to ~0.5 MB each; generated ones may grow.
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/data\//],
+        navigateFallbackDenylist: [/^\/data\//, /^\/build-info\.json$/],
         cleanupOutdatedCaches: true,
         clientsClaim: true,
         runtimeCaching: [

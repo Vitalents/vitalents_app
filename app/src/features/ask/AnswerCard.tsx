@@ -74,7 +74,7 @@ export function AnswerCard({ question, result }: { question: string; result: Ask
           <p>{r.science}</p>
         ) : (
           <>
-            <p>{r.status === 'blocked' ? S.blocked : S.notInLibrary}</p>
+            <p>{r.reason === 'publication_review' ? S.withheld : r.status === 'blocked' ? S.blocked : S.notInLibrary}</p>
             {gapButton}
           </>
         )}

@@ -8,7 +8,8 @@
       "science": null,
       "citations": [],
       "limits": "Publication review withheld this recorded response. The sleep response claims that monitoring ensures adequate rest; the cited monitoring evidence does not establish that guarantee. This is a publication decision, not a new answer from the model. No medical advice is provided.",
-      "model": "gpt-oss:20b"
+      "model": "gpt-oss:20b",
+      "reason": "publication_review"
     },
     "label": "Recorded from the onboard model",
     "publication_review": {
@@ -57,7 +58,8 @@
       "science": null,
       "citations": [],
       "limits": "Publication review withheld this recorded response. The pulse response includes an unsupported absolute claim and attributes a structural claim to a source that does not state it. This is a publication decision, not a new answer from the model. No medical advice is provided.",
-      "model": "gpt-oss:20b"
+      "model": "gpt-oss:20b",
+      "reason": "publication_review"
     },
     "label": "Recorded from the onboard model",
     "publication_review": {
