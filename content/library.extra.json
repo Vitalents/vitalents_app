@@ -1,0 +1,432 @@
+[
+  {
+    "id": "lib:source:x-nasa-food-nutrition-risk",
+    "title": "Risk of Inadequate Food and Nutrition",
+    "publisher": "NASA Human Research Program",
+    "url": "https://www.nasa.gov/reference/risk-of-inadequate-food-and-nutrition/",
+    "domain": "nutrition",
+    "source_kind": "NASA_resource",
+    "publication_date": "2024-10-23",
+    "source_version": "web page, last updated 2025-05-16",
+    "retrieval_date": "2026-11-14",
+    "excerpts": [
+      {
+        "text": "Risk of performance decrement and crew illness due to inadequate food and nutrition",
+        "locator": "Did you know? (formal risk description)"
+      },
+      {
+        "text": "Providing desired foods and extending their shelf-life will become even more complex",
+        "locator": "What are the top risks? (fragment)"
+      },
+      {
+        "text": "NASA researchers are focused on enhancing diets to boost nutritional value",
+        "locator": "What can be done about it? (fragment)"
+      }
+    ],
+    "file": "x-nasa-food-nutrition-risk.md",
+    "scope": "nutrition",
+    "license_status": "not_verified",
+    "approval_status": "draft",
+    "needs_review": true,
+    "review_status": "TODO(review: confirm fragments against the live page; one top-risks sentence was left out because it uses the word 'healthy')"
+  },
+  {
+    "id": "lib:source:x-ochmo-tb-food-nutrition",
+    "title": "NASA-STD-3001 Technical Brief: Food and Nutrition",
+    "publisher": "NASA Office of the Chief Health and Medical Officer (OCHMO)",
+    "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-013-food-and-nutrition.pdf",
+    "domain": "nutrition",
+    "source_kind": "NASA_resource",
+    "publication_date": "2023-12-07",
+    "source_version": "OCHMO-TB-013 Rev D",
+    "retrieval_date": "2026-11-14",
+    "excerpts": [
+      {
+        "text": "Even with tremendous gains in scientific knowledge, the need for adequate and acceptable food is underestimated.",
+        "locator": "p. 3, Background"
+      },
+      {
+        "text": "As mission length increases menu cycle length must increase to provide variety, which promotes consumption.",
+        "locator": "p. 12, Space Food System Design: Mission Requirements"
+      },
+      {
+        "text": "Pre-mission nutritional status shall be assessed, and any deficiencies mitigated prior to launch.",
+        "locator": "p. 19, Referenced Technical Requirements (NASA-STD-3001 Vol. 1 Rev C)"
+      }
+    ],
+    "file": "x-ochmo-tb-food-nutrition.md",
+    "scope": "nutrition",
+    "license_status": "not_verified",
+    "approval_status": "draft",
+    "needs_review": true,
+    "review_status": "TODO(review: confirm page numbers against the PDF; the brief has numeric intake requirements that are deliberately not excerpted)"
+  },
+  {
+    "id": "lib:source:x-nasa-nutritional-biochemistry",
+    "title": "Nutritional Biochemistry",
+    "publisher": "NASA Human Health and Performance",
+    "url": "https://www.nasa.gov/directorates/esdmd/hhp/nutritional-biochemistry/",
+    "domain": "nutrition",
+    "source_kind": "NASA_resource",
+    "publication_date": "2023-03-10",
+    "source_version": "web page, last updated 2026-03-13",
+    "retrieval_date": "2026-11-14",
+    "excerpts": [
+      {
+        "text": "Nutritional needs are different during spaceflight than on Earth.",
+        "locator": "Studying the Role of Nutrition in Spaceflight"
+      },
+      {
+        "text": "Biochemical assessments of nutritional status are checked before and after flight.",
+        "locator": "Operational Goals of the Nutritional Biochemistry Laboratory"
+      },
+      {
+        "text": "During these 4 to 6-month flights, astronauts’ dietary intake and body mass are monitored.",
+        "locator": "Operational Goals of the Nutritional Biochemistry Laboratory"
+      }
+    ],
+    "file": "x-nasa-nutritional-biochemistry.md",
+    "scope": "nutrition",
+    "license_status": "not_verified",
+    "approval_status": "draft",
+    "needs_review": true,
+    "review_status": "TODO(review: the page's operational-goal sentence uses the word 'healthy' and was left out; check the '4 to 6-month' wording)"
+  },
+  {
+    "id": "lib:source:x-hrp-fn-risk-strategy",
+    "title": "NASA HRP Food and Nutrition Risk Strategy (presentation)",
+    "publisher": "NASA Human Research Program (B. Brocato), via NTRS",
+    "url": "https://ntrs.nasa.gov/api/citations/20240010162/downloads/FN%20Risk%20Strategy%20ISLSWG%20Sep%202024.pdf",
+    "domain": "nutrition",
+    "source_kind": "NASA_resource",
+    "publication_date": null,
+    "source_version": "slide deck, HRP Research Strategy 2024",
+    "retrieval_date": "2026-11-14",
+    "excerpts": [
+      {
+        "text": "Food System is a large mass driver",
+        "locator": "slide 5 (bullet)"
+      },
+      {
+        "text": "High tempo EVAs, meeting nutritional requirements for energy expenditures",
+        "locator": "slide 5 (bullet)"
+      },
+      {
+        "text": "Microbial limits for crops is forward work",
+        "locator": "slide 11 (bullet)"
+      }
+    ],
+    "file": "x-hrp-fn-risk-strategy.md",
+    "scope": "nutrition",
+    "license_status": "not_verified",
+    "approval_status": "draft",
+    "needs_review": true,
+    "review_status": "TODO(review: slide bullets, not prose; publication date is not printed on the slides, take it from the NTRS record 20240010162)"
+  },
+  {
+    "id": "lib:source:x-ochmo-tb-bone-loss",
+    "title": "NASA-STD-3001 Technical Brief: Bone Loss",
+    "publisher": "NASA Office of the Chief Health and Medical Officer (OCHMO)",
+    "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-030-bone-loss.pdf",
+    "domain": "movement",
+    "source_kind": "NASA_resource",
+    "publication_date": "2026-02-11",
+    "source_version": "OCHMO-MTB-013 Rev D",
+    "retrieval_date": "2026-11-14",
+    "excerpts": [
+      {
+        "text": "The spaceflight environment of microgravity reduces the loading on muscles and bones.",
+        "locator": "p. 2, Physiology: Spaceflight effects on bone health"
+      },
+      {
+        "text": "Load bearing exercise stimulates osteoblasts, leading to bone growth and bone density increase.",
+        "locator": "p. 12, Reference Data: Countermeasures"
+      },
+      {
+        "text": "NASA monitors crew terrestrially pre- and post-flight but no system to date measures bone density in-flight.",
+        "locator": "p. 19, Application: BMD loss monitoring"
+      }
+    ],
+    "file": "x-ochmo-tb-bone-loss.md",
+    "scope": "movement",
+    "license_status": "not_verified",
+    "approval_status": "draft",
+    "needs_review": true,
+    "review_status": "TODO(review: the URL says tb-030 but the PDF header reads OCHMO-MTB-013 Rev D dated 11-Feb-26; confirm the identifier; numeric loading and post-flight schedule lines deliberately not excerpted)"
+  },
+  {
+    "id": "lib:source:x-nasa-fitness-risk",
+    "title": "Risk of Reduced Cardiorespiratory and Musculoskeletal Fitness",
+    "publisher": "NASA Human Research Program",
+    "url": "https://www.nasa.gov/reference/risk-of-reduced-cardiorespiratory-and-musculoskeletal-fitness",
+    "domain": "movement",
+    "source_kind": "NASA_resource",
+    "publication_date": "2024-10-23",
+    "source_version": "web page, last updated 2025-05-16",
+    "retrieval_date": "2026-11-14",
+    "excerpts": [
+      {
+        "text": "Living in microgravity can weaken the bones, muscles, and cardiopulmonary systems of astronauts",
+        "locator": "What are the top risks? (fragment)"
+      },
+      {
+        "text": "Spacecraft set to carry astronauts to the Moon and Mars, however, will likely have less space for exercise equipment.",
+        "locator": "What can be done about it?"
+      },
+      {
+        "text": "researchers are working to understand how to optimize both exercise machines and protocols",
+        "locator": "What can be done about it? (fragment)"
+      }
+    ],
+    "file": "x-nasa-fitness-risk.md",
+    "scope": "movement",
+    "license_status": "not_verified",
+    "approval_status": "draft",
+    "needs_review": true,
+    "review_status": "TODO(review: the page gives an average strength/aerobic loss figure, deliberately not excerpted until checked by hand; formal risk title may be longer than the fragment)"
+  },
+  {
+    "id": "lib:source:x-nasa-astronaut-exercise",
+    "title": "Astronaut Exercise",
+    "publisher": "NASA International Space Station Research",
+    "url": "https://www.nasa.gov/missions/station/iss-research/astronaut-exercise/",
+    "domain": "movement",
+    "source_kind": "NASA_resource",
+    "publication_date": "2024-05-20",
+    "source_version": "web page (Science in Space: May 2024), last updated 2025-02-03",
+    "retrieval_date": "2026-11-14",
+    "excerpts": [
+      {
+        "text": "Without Earth’s gravity, both bone and muscle atrophy, or become smaller and weaker.",
+        "locator": "Science in Space: May 2024"
+      },
+      {
+        "text": "While current exercise programs appear to moderate changes in musculoskeletal systems, individual results vary.",
+        "locator": "Science in Space: May 2024"
+      }
+    ],
+    "file": "x-nasa-astronaut-exercise.md",
+    "scope": "movement",
+    "license_status": "not_verified",
+    "approval_status": "draft",
+    "needs_review": true,
+    "review_status": "TODO(review: a sentence on weekly exercise hours is deliberately not excerpted until its figure is checked by hand)"
+  },
+  {
+    "id": "lib:source:x-ochmo-tb-ionizing-radiation",
+    "title": "NASA-STD-3001 Technical Brief: Design for Ionizing Radiation Protection",
+    "publisher": "NASA Office of the Chief Health and Medical Officer (OCHMO)",
+    "url": "https://www.nasa.gov/wp-content/uploads/2023/03/radiation-protection-technical-brief-ochmo.pdf",
+    "domain": "radiation",
+    "source_kind": "NASA_resource",
+    "publication_date": "2022-12-27",
+    "source_version": "OCHMO-TB-020 Rev E",
+    "retrieval_date": "2026-11-14",
+    "excerpts": [
+      {
+        "text": "During any mission, crewmembers face threats of ionizing radiation from a variety of sources.",
+        "locator": "p. 1, Executive Summary"
+      },
+      {
+        "text": "Occurs continuously, omni-directional, varying in flux with solar cycle.",
+        "locator": "p. 2, Space Radiation Environment Overview: Galactic Cosmic Rays"
+      },
+      {
+        "text": "All crew radiation exposures shall be minimized using the ALARA principle.",
+        "locator": "p. 13, Referenced Technical Requirements, [V1 4029] ALARA Principle"
+      }
+    ],
+    "file": "x-ochmo-tb-ionizing-radiation.md",
+    "scope": "radiation",
+    "license_status": "not_verified",
+    "approval_status": "draft",
+    "needs_review": true,
+    "review_status": "TODO(review: quote only; the [V2 6101] monitoring requirement was left out because it uses the word 'dose', which the assistant guardrail blocks)"
+  },
+  {
+    "id": "lib:source:x-nasa-radiation-cancer-risk",
+    "title": "Risk of Radiation-Induced Cancers",
+    "publisher": "NASA Human Research Program",
+    "url": "https://www.nasa.gov/reference/risk-of-radiation-induced-cancers",
+    "domain": "radiation",
+    "source_kind": "NASA_resource",
+    "publication_date": "2024-10-01",
+    "source_version": "web page, last updated 2025-05-16",
+    "retrieval_date": "2026-11-14",
+    "excerpts": [
+      {
+        "text": "Astronauts are exposed to higher levels of radiation in space than on Earth",
+        "locator": "What are the top risks? (fragment)"
+      },
+      {
+        "text": "missions to the Moon and Mars will extend beyond this protective bubble.",
+        "locator": "Did you know? (fragment)"
+      },
+      {
+        "text": "various instruments that measure radiation exposure are in place aboard the International Space Station.",
+        "locator": "What can be done about it? (fragment)"
+      }
+    ],
+    "file": "x-nasa-radiation-cancer-risk.md",
+    "scope": "radiation",
+    "license_status": "not_verified",
+    "approval_status": "draft",
+    "needs_review": true,
+    "review_status": "TODO(review: quote only; confirm fragments against the live page)"
+  },
+  {
+    "id": "lib:source:x-nasa-space-radiation-element",
+    "title": "About the Space Radiation Element",
+    "publisher": "NASA Human Research Program",
+    "url": "https://www.nasa.gov/reference/about-the-space-radiation-element",
+    "domain": "radiation",
+    "source_kind": "NASA_resource",
+    "publication_date": "2024-03-11",
+    "source_version": "web page, last updated 2024-07-31",
+    "retrieval_date": "2026-11-14",
+    "excerpts": [
+      {
+        "text": "energetic particles from the Sun and galactic cosmic rays",
+        "locator": "About the Space Radiation Element (fragment)"
+      },
+      {
+        "text": "Scientists do not fully understand all the specific ways in which this ionizing radiation affects the human body.",
+        "locator": "About the Space Radiation Element"
+      },
+      {
+        "text": "seeks to characterize human health outcomes associated with space radiation exposure.",
+        "locator": "About the Space Radiation Element (fragment)"
+      }
+    ],
+    "file": "x-nasa-space-radiation-element.md",
+    "scope": "radiation",
+    "license_status": "not_verified",
+    "approval_status": "draft",
+    "needs_review": true,
+    "review_status": "TODO(review: quote only; confirm fragments against the live page)"
+  },
+  {
+    "id": "lib:source:x-nasa-five-hazards",
+    "title": "5 Hazards of Human Spaceflight",
+    "publisher": "NASA Human Research Program",
+    "url": "https://www.nasa.gov/hrp/hazards",
+    "domain": "general",
+    "source_kind": "NASA_resource",
+    "publication_date": "2023-10-26",
+    "source_version": "web page, last updated 2026-06-12",
+    "retrieval_date": "2026-11-14",
+    "excerpts": [
+      {
+        "text": "Astronauts encounter five hazards as they journey through space.",
+        "locator": "Introduction"
+      },
+      {
+        "text": "Behavioral responses occur among groups of people isolated and confined in a small space over a long period of time.",
+        "locator": "Watch Videos: Isolation and Confinement"
+      },
+      {
+        "text": "Rather than a three-day lunar trip, astronauts would be leaving our planet for roughly three years.",
+        "locator": "Watch Videos: Distance from Earth"
+      }
+    ],
+    "file": "x-nasa-five-hazards.md",
+    "scope": "general",
+    "license_status": "not_verified",
+    "approval_status": "draft",
+    "needs_review": true,
+    "review_status": "TODO(review: same page as lib:nasa-hrp-hazards in content/library.json (url null there); merge the two IDs or keep one)"
+  },
+  {
+    "id": "lib:source:x-ochmo-tb-behavioral-health",
+    "title": "NASA-STD-3001 Technical Brief: Behavioral Health and Performance",
+    "publisher": "NASA Office of the Chief Health and Medical Officer (OCHMO)",
+    "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-016-behavioral-health.pdf",
+    "domain": "general",
+    "source_kind": "NASA_resource",
+    "publication_date": "2023-10-24",
+    "source_version": "OCHMO-TB-016 Rev B",
+    "retrieval_date": "2026-11-14",
+    "excerpts": [
+      {
+        "text": "Crew behavioral health and performance are affected by missions in isolated, confined, and extreme (ICE) environments.",
+        "locator": "p. 2, Executive Summary"
+      },
+      {
+        "text": "Space flight occurs in an extreme environment that has unique stressors.",
+        "locator": "p. 3, Background"
+      },
+      {
+        "text": "It should be noted that current behavioral health support is provided before, during, and after the mission.",
+        "locator": "p. 6, Application: Behavioral Health Support"
+      }
+    ],
+    "file": "x-ochmo-tb-behavioral-health.md",
+    "scope": "general",
+    "license_status": "not_verified",
+    "approval_status": "draft",
+    "needs_review": true,
+    "review_status": "TODO(review: the brief does not cover communication delay or crew autonomy; those come from the two sources below)"
+  },
+  {
+    "id": "lib:source:x-ntrs-comm-bandwidth-medical",
+    "title": "Communication Bandwidth Considerations for Exploration Medical Care During Space Missions",
+    "publisher": "NASA (Krihak, Middour, Reyes, Nusbaum, Antonsen), NTRS",
+    "url": "https://ntrs.nasa.gov/citations/20200001702",
+    "domain": "general",
+    "source_kind": "NASA_resource",
+    "publication_date": "2019-08-01",
+    "source_version": "NASA/TM-2019-220335",
+    "retrieval_date": "2026-11-14",
+    "excerpts": [
+      {
+        "text": "delayed communication with ground support teams",
+        "locator": "Abstract (fragment)"
+      },
+      {
+        "text": "medical care is driven towards greater autonomy",
+        "locator": "Abstract (fragment)"
+      },
+      {
+        "text": "Earth-based subject matter experts will be relied upon to augment mission medical capability.",
+        "locator": "Abstract"
+      }
+    ],
+    "file": "x-ntrs-comm-bandwidth-medical.md",
+    "scope": "general",
+    "license_status": "not_verified",
+    "approval_status": "draft",
+    "needs_review": true,
+    "review_status": "TODO(review: NTRS lists 'Public Use Permitted'; abstract fragments only, full PDF at ntrs.nasa.gov/api/citations/20200001702/downloads/20200001702.pdf)"
+  },
+  {
+    "id": "lib:source:x-nasa-hera-comm-delay",
+    "title": "Houston, Do You Copy? HERA Crew Navigates Communication Delays",
+    "publisher": "NASA",
+    "url": "https://www.nasa.gov/humans-in-space/houston-do-you-copy-hera-crew-navigates-communication-delays",
+    "domain": "general",
+    "source_kind": "NASA_resource",
+    "publication_date": "2022-10-19",
+    "source_version": "web page, last updated 2023-09-25",
+    "retrieval_date": "2026-11-14",
+    "excerpts": [
+      {
+        "text": "the crew experiences communication delays of up to five minutes each way with the Mission Control Center",
+        "locator": "main body (fragment)"
+      },
+      {
+        "text": "whether the crew can effectively coordinate as a team using headsets and other tools",
+        "locator": "main body (fragment)"
+      },
+      {
+        "text": "communication technologies that foster autonomy on missions to the Moon and beyond",
+        "locator": "main body (fragment)"
+      }
+    ],
+    "file": "x-nasa-hera-comm-delay.md",
+    "scope": "general",
+    "license_status": "not_verified",
+    "approval_status": "draft",
+    "needs_review": true,
+    "review_status": "TODO(review: describes a ground analog (HERA), not spaceflight; fragments only)"
+  }
+]
