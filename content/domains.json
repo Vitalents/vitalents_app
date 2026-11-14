@@ -1,0 +1,114 @@
+{
+  "content_version": "0.1-draft",
+  "review_status": "TODO(review: Amr replaces this draft with reviewed text and source links)",
+  "domains": [
+    {
+      "id": "cognition",
+      "name": "Cognition and subjective state",
+      "region": "head",
+      "live": true,
+      "indicators": [
+        { "id": "decode_correct_count", "name": "Decode correct answers", "unit": "count", "frequency": "daily", "source_entity": "decode_session" },
+        { "id": "alertness_self", "name": "Self-rated alertness", "unit": "1-10", "frequency": "daily", "source_entity": "self_report" }
+      ],
+      "why_space": "Shows performance and feeling side by side to support the follow-up plan and review requests.",
+      "limits_note": "No psychological diagnosis from a game or a pulse. The self-rating and Decode are different scales and are never combined.",
+      "how_to_measure": "Daily check: rate alertness 1-10, log mood, then play one 90-second Decode round.",
+      "when_to_involve_specialist": "When a follow-up asks for a review, or any time you want one: use Request help.",
+      "hazard": "Isolation and confinement",
+      "risk": "Risk of Behavioral Changes and Psychiatric Disorders",
+      "sources": ["lib:cognition-battery", "lib:nasa-behavioral-risk"]
+    },
+    {
+      "id": "sleep",
+      "name": "Sleep and daily rhythm",
+      "region": "sleep",
+      "live": true,
+      "indicators": [
+        { "id": "sleep_duration", "name": "Recorded sleep", "unit": "h", "frequency": "daily", "source_entity": "sleep_record" }
+      ],
+      "why_space": "Separates recorded sleep from the rest opportunity, follows the plan and reviews schedule conflicts and alternatives.",
+      "limits_note": "Recorded sleep is a wrist estimate. Less sleep and lower performance happening together is not proof of a cause.",
+      "how_to_measure": "Imported each morning from the wrist sensor, with its source.",
+      "when_to_involve_specialist": "When short sleep continues despite plan steps, or you want help with the schedule.",
+      "hazard": "Hostile / closed environments",
+      "risk": "Risk from Inadequate Sleep and Irregular Schedules",
+      "sources": ["lib:nasa-sleep-risk", "lib:nasa-standard-measures"]
+    },
+    {
+      "id": "heart",
+      "name": "Heart and circulation",
+      "region": "chest",
+      "live": true,
+      "indicators": [
+        { "id": "hr_resting_bpm", "name": "Resting pulse", "unit": "bpm", "frequency": "daily", "source_entity": "measurement" }
+      ],
+      "why_space": "Follows the measurement plan, shows trends and requests a review when needed.",
+      "limits_note": "Pulse alone does not assess heart health.",
+      "how_to_measure": "Seated, at rest, with the wrist sensor in firm contact.",
+      "when_to_involve_specialist": "When the plan's review condition is met, or with any symptom.",
+      "hazard": "Gravity fields",
+      "risk": "Cardiovascular Adaptations",
+      "sources": ["lib:nasa-hrp-risks"]
+    },
+    {
+      "id": "symptoms",
+      "name": "Symptoms and temperature",
+      "region": "arms",
+      "live": true,
+      "indicators": [
+        { "id": "symptom", "name": "Reported symptoms", "unit": null, "frequency": "as_needed", "source_entity": "self_report" },
+        { "id": "temperature", "name": "Temperature", "unit": "°C", "frequency": "as_needed", "source_entity": "measurement" }
+      ],
+      "why_space": "Keeps the sequence of symptoms, completes missing information and supports specialist follow-up.",
+      "limits_note": "Temperature is not an immunity score. Skin temperature is not core body temperature.",
+      "how_to_measure": "Use Report something at any time; no medical category needed.",
+      "when_to_involve_specialist": "Any symptom can be sent for review. The urgent path never waits for a game result.",
+      "hazard": "Hostile / closed environments",
+      "risk": "Altered Immune System Responses",
+      "sources": ["lib:nasa-hrp-risks", "lib:nasa-medops"]
+    },
+    {
+      "id": "nutrition",
+      "name": "Nutrition and hydration",
+      "region": "stomach",
+      "live": false,
+      "indicators": [],
+      "why_space": "Follows the specialist's targets and avoids duplicate entry.",
+      "limits_note": "A consumption log does not prove deficiency or dehydration.",
+      "how_to_measure": "Sample card in this demo.",
+      "when_to_involve_specialist": "As set by the mission's nutrition plan.",
+      "hazard": "Distance from Earth",
+      "risk": "Inadequate Food and Nutrition",
+      "sources": ["lib:nasa-hrp-risks"]
+    },
+    {
+      "id": "movement",
+      "name": "Movement and exercise",
+      "region": "legs",
+      "live": false,
+      "indicators": [],
+      "why_space": "Tracks execution of the exercise plan and reasons for missed sessions.",
+      "limits_note": "Completing exercise does not measure bone density. Step count is not evidence of bone health.",
+      "how_to_measure": "Sample card in this demo.",
+      "when_to_involve_specialist": "Pain during exercise, or sessions repeatedly missed.",
+      "hazard": "Gravity fields",
+      "risk": "Reduced Fitness; Spaceflight-Induced Bone Changes",
+      "sources": ["lib:nasa-hrp-risks"]
+    },
+    {
+      "id": "radiation",
+      "name": "Radiation exposure",
+      "region": "aura",
+      "live": false,
+      "indicators": [],
+      "why_space": "Exposure log and review by an approved protocol.",
+      "limits_note": "Solar activity alone does not give a personal dose.",
+      "how_to_measure": "Sample card in this demo.",
+      "when_to_involve_specialist": "As set by the approved exposure protocol.",
+      "hazard": "Space radiation",
+      "risk": "Radiation-Induced Cancers",
+      "sources": ["lib:nasa-hrp-hazards", "lib:esa-radiation"]
+    }
+  ]
+}

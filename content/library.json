@@ -1,0 +1,14 @@
+{
+  "content_version": "0.1-draft",
+  "review_status": "TODO(review: Amr adds URL, date and excerpts for each source; titles come from the team's source list)",
+  "sources": [
+    { "id": "lib:nasa-hrp-hazards", "title": "5 Hazards of Human Spaceflight", "publisher": "NASA Human Research Program", "url": null },
+    { "id": "lib:nasa-hrp-risks", "title": "Risks of Human Spaceflight", "publisher": "NASA Human Research Program", "url": null },
+    { "id": "lib:nasa-sleep-risk", "title": "Risk from Inadequate Sleep and Irregular Schedules", "publisher": "NASA Human Research Program", "url": null },
+    { "id": "lib:nasa-behavioral-risk", "title": "Risk of Behavioral Changes and Psychiatric Disorders", "publisher": "NASA Human Research Program", "url": null },
+    { "id": "lib:nasa-standard-measures", "title": "Standard Measures", "publisher": "NASA", "url": null },
+    { "id": "lib:nasa-medops", "title": "Medical Operations", "publisher": "NASA", "url": null },
+    { "id": "lib:cognition-battery", "title": "Cognition test battery", "publisher": "University of Pennsylvania", "url": null },
+    { "id": "lib:esa-radiation", "title": "Radiation and magnetic fields", "publisher": "ESA", "url": null }
+  ]
+}
