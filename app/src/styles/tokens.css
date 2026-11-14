@@ -33,8 +33,11 @@
   --focus: #00687a;
   --shadow: 0 1px 2px rgb(24 54 61 / 6%), 0 6px 20px rgb(24 54 61 / 6%);
 
-  --font-head: 'Bricolage Grotesque', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-head: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-body: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Arabic (RTL) later: 'Noto Sans Arabic' via @fontsource/noto-sans-arabic, as in the brand files. */
+  --font-ar: 'Noto Sans Arabic', 'Instrument Sans', system-ui, sans-serif;
+  --brand-cover: #31b9d4; /* the teal of the brand covers; ink text on it */
   --radius: 14px;
   --radius-sm: 9px;
   color-scheme: light;

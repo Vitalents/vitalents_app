@@ -9,6 +9,7 @@ import { useReviewDate, useSubject, useWaitingToSend } from '../store/selectors'
 import { useStore } from '../store/store'
 import { HelpDialog, ReportDialog } from './Dialogs'
 import { Icon } from './Icons'
+import { Emblem, Logo, Mark } from './Logo'
 
 export const NAV = [
   { to: '/', key: 'map', end: true },
@@ -35,8 +36,8 @@ export function Layout() {
       <div className="banner" role="note">{S.banner}</div>
       <header className="topbar">
         <Link to="/" className="brand" aria-label={S.appName}>
-          <svg viewBox="0 0 64 64" width="30" height="30" aria-hidden="true"><rect width="64" height="64" rx="14" fill="currentColor" /><circle cx="32" cy="22" r="8" fill="var(--teal)" /><path d="M20 52c0-9 5-17 12-17s12 8 12 17" fill="none" stroke="var(--teal)" strokeWidth="6" strokeLinecap="round" /></svg>
-          <span>{S.appName}</span>
+          <span className="brand-full"><Logo height={24} /></span>
+          <span className="brand-compact"><Mark size={28} title={S.appName} /></span>
         </Link>
         <div className="mission">
           <strong className="mission-day">
@@ -66,7 +67,7 @@ export function Layout() {
         </nav>
         <main className="main" id="main">
           {!ready ? (
-            <p className="muted pad">{S.loading}</p>
+            <div className="loading-state" role="status"><Emblem size={88} /><p className="muted">{S.loading}</p></div>
           ) : error ? (
             <div className="card pad">
               <p>{S.loadError}</p>

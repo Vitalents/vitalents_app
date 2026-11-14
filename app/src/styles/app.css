@@ -9,7 +9,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 h1, h2, h3 { font-family: var(--font-head); line-height: 1.2; margin: 0; letter-spacing: -0.01em; }
-h1 { font-size: 1.75rem; font-weight: 700; }
+h1 { font-size: 1.75rem; font-weight: 600; letter-spacing: -0.02em; }
 h2 { font-size: 1.12rem; font-weight: 600; margin-bottom: 0.6rem; }
 h3 { font-size: 0.95rem; font-weight: 600; margin: 0.9rem 0 0.4rem; }
 p { margin: 0 0 0.6rem; }
@@ -34,7 +34,9 @@ code { font-size: 0.78em; color: var(--muted); word-break: break-all; }
   display: flex; align-items: center; gap: 1rem;
   padding: 0.6rem 1.25rem; background: var(--card); border-bottom: 1px solid var(--line);
 }
-.brand { display: flex; align-items: center; gap: 0.5rem; color: var(--ink); text-decoration: none; font-family: var(--font-head); font-weight: 700; font-size: 1.15rem; }
+.brand { display: flex; align-items: center; min-height: 44px; padding-right: 0.25rem; color: var(--ink); text-decoration: none; border-radius: var(--radius-sm); }
+.brand .logo, .brand .logo-mark { display: block; }
+.brand-compact { display: none; }
 .mission { display: flex; flex-direction: column; min-width: 0; flex: 1; line-height: 1.25; }
 .mission-day { font-family: var(--font-head); font-weight: 600; }
 .mission-day .short { display: none; }
@@ -58,7 +60,7 @@ code { font-size: 0.78em; color: var(--muted); word-break: break-all; }
 .page { max-width: 1080px; margin: 0 auto; }
 .page-head { margin-bottom: 1.2rem; display: grid; gap: 0.35rem; }
 .page-head .muted { max-width: 60ch; margin: 0; }
-.eyebrow { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--deep); margin: 0; }
+.eyebrow { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--deep); margin: 0; }
 .back { display: inline-flex; min-height: 44px; align-items: center; text-decoration: none; font-weight: 500; }
 
 /* ---------- controls ---------- */
@@ -226,7 +228,8 @@ code { font-size: 0.78em; color: var(--muted); word-break: break-all; }
   .tb-help { grid-area: help; justify-content: center; }
   .tb-report { grid-area: report; justify-content: center; }
   .tb-settings { grid-area: settings; }
-  .brand span { display: none; }
+  .brand-full { display: none; }
+  .brand-compact { display: block; }
   .mission-day .long { display: none; }
   .mission-day .short { display: inline; }
   .crew { display: none; }
@@ -258,3 +261,14 @@ code { font-size: 0.78em; color: var(--muted); word-break: break-all; }
   .top-actions .icon-btn { width: 40px; height: 40px; }
   .ind-grid.two { grid-template-columns: 1fr; }
 }
+
+/* ---------- brand motifs (from the team brand files) ---------- */
+.loading-state { display: grid; justify-items: center; gap: 0.75rem; padding: 4rem 1rem; text-align: center; }
+.loading-state .emblem { display: block; }
+/* Small uppercase kicker above a heading, as on the brand covers. */
+.kicker { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--deep); margin: 0; }
+/* Section number in a teal circle: 01, 02 … */
+.num-badge { display: inline-grid; place-items: center; width: 2rem; height: 2rem; border-radius: 999px; background: var(--tint); color: var(--deep); font-weight: 600; font-size: 0.8rem; font-variant-numeric: tabular-nums; flex: none; }
+/* Callout: tint background with a deep teal edge. Information only, never a health state. */
+.callout { background: var(--tint-soft); border-left: 4px solid var(--deep); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 0.8rem 1rem; }
+.callout > :last-child { margin-bottom: 0; }

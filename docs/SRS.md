@@ -656,7 +656,7 @@ The UI never shows a state without its proof. Records carry their IDs, so a rese
 | NFR-10 | Core functions (map, check, Decode, review, follow-ups, sharing) work with the assistant disabled | Stop the service; full loop works |
 | NFR-11 | The TS engine reproduces the Python golden vectors exactly (to 3 decimal places) | `npm run test:engine` |
 | NFR-12 | Simulation is deterministic with a seed | Same seed, same files |
-| NFR-13 | Brand: design tokens from the Vitalents identity (ink #18363D, teal #31B9D4, deep teal #00687A, paper #F5F3EB, line #CFDBDC; Bricolage Grotesque headings, Instrument Sans body); light and dark | Token file |
+| NFR-13 | Brand: design tokens from the Vitalents identity (ink #18363D, teal #31B9D4, deep teal #00687A, paper #F5F3EB, line #CFDBDC; Instrument Sans headings and body, Noto Sans Arabic for Arabic; real logo paths in app/src/shell/brandPaths.ts); light and dark | Token file |
 | NFR-14 | Every simulated screen shows the simulated-data banner | Visual check |
 
 **Forbidden wording (minimum list for `language.json`):** healthy, all clear, normal (as a status), diagnosis / diagnose, readiness score, ready / not ready, fit for duty, fatigue detected, proves, caused by, worked (about an action), best treatment, validated (about our task), will improve your sleep.

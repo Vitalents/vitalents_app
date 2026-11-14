@@ -1,10 +1,21 @@
-# Vitalents · Design system (v1, 14 Nov 2026)
+# Vitalents · Design system (v1.1, 14 Nov 2026)
 
-One look for every screen. Agents: load the `anthropic-skills:impeccable` and `frontend-design:frontend-design` skills before styling, and follow this file. Where a skill suggests something that conflicts with CLAUDE.md's product rules, CLAUDE.md wins.
+One look for every screen. Agents: follow the Brand section first, then load the `anthropic-skills:impeccable` and `frontend-design:frontend-design` skills before styling, and follow this file. Where a skill suggests something that conflicts with CLAUDE.md's product rules, CLAUDE.md wins.
 
 ## Direction
 
 **Calm mission instrument.** A quiet, precise tool used every morning on a spacecraft: warm paper background, deep ink text, one teal accent, generous space, no decoration that carries no meaning. Think a well-made field notebook crossed with a flight checklist, not a fitness app and not a sci-fi HUD. No gradients-as-decoration, no glassmorphism, no neon, no emoji, no stock space imagery, no NASA logos.
+
+## Brand (from the team brand files)
+
+Source: the shared Vitalents PDFs (Project Brief, Complete Vision, Master Project). Everything below is taken from them, not invented.
+
+- **Logo:** the figure mark (a person with raised arms forming a V) plus the lowercase wordmark **vitalents**. Vector paths are extracted exactly into `app/src/shell/brandPaths.ts`; use `<Logo/>`, `<Mark/>` or `<Emblem/>` from `app/src/shell/Logo.tsx`. Static files are in `app/public/brand/` (`lockup.svg`, `lockup-dark.svg`, `mark.svg`, `emblem.svg`, icons). Never redraw, stretch, outline or recolour the logo.
+- **Logo colours:** mark in `--deep` (#00687A), wordmark in `--ink` (#18363D). On dark: mark #5FD0E3, wordmark #E7F0F1. On the teal cover colour (#31B9D4): mark and wordmark in ink.
+- **Emblem:** the mark on the soft `--tint` (#BFEAF0) blob. Use it for loading, empty states and onboarding instead of any other illustration.
+- **Favicon / app icon:** ink mark on the teal cover colour, rounded square.
+- **Motifs:** small uppercase teal kicker above a heading (`.eyebrow` / `.kicker`); section numbers 01, 02 … in a tint circle (`.num-badge`); callouts on tint with a 4 px `--deep` left edge (`.callout`). Callouts carry information, never a health state.
+- **Clear space:** at least the height of the mark's head circle around the logo. Minimum lockup height 20 px; below that use the mark alone.
 
 ## Tokens (CSS variables, defined once in `app/src/index.css`)
 
@@ -27,8 +38,8 @@ Contrast: all text ≥ 4.5:1 on its background (WCAG AA). Colour never carries m
 
 ## Type
 
-- Headings: **Bricolage Grotesque** 600 (Google Fonts), fallback `ui-sans-serif, system-ui`.
-- Body and UI: **Instrument Sans** 400/500/600, fallback `system-ui`.
+- Headings and body: **Instrument Sans** (the brand font), headings 600 with −0.02em tracking, body 400/500. Self-hosted through `@fontsource/instrument-sans` so the app works offline; no Google Fonts.
+- Arabic (later, RTL): **Noto Sans Arabic**, as in the brand files (`@fontsource/noto-sans-arabic`, token `--font-ar`).
 - Numbers in readings: Instrument Sans with `font-variant-numeric: tabular-nums`.
 - Scale (rem): 0.75 label · 0.875 small · 1 body · 1.125 lead · 1.375 h3 · 1.75 h2 · 2.25 h1. Line height 1.5 body, 1.15 headings.
 - Labels: 0.75 rem, 600, uppercase, letter-spacing 0.06em, `--deep`.
@@ -47,7 +58,7 @@ Contrast: all text ≥ 4.5:1 on its background (WCAG AA). Colour never carries m
 | `FollowChip` | Pill, follow-up status: symbol + text. ● quiet "No open follow-up", ◐ watch "Watching", ◑ watch "Action open", ▲ review "Review requested", ▲ review "Under specialist review", ✓ quiet "Closed". |
 | `DataBadge` | Small square-cornered tag, data status: "Valid", "Limited quality", "Stale", "Not comparable", "Incomplete", "No reading". Valid is plain text in `--muted`; problems use the hatched `--data` background. Never green. |
 | `SyncLabel` | Inline text with a dot: "Saved on device", "Waiting to send", "Sent", "Delivered", "Reviewed", each with its time. |
-| `Card` | `--card`, 1 px `--line`, 12 px radius, 16–24 px padding. Title in Bricolage 1.125 rem. |
+| `Card` | `--card`, 1 px `--line`, 12 px radius, 16–24 px padding. Title in Instrument Sans 600, 1.125 rem. |
 | `Why` | `<details>` disclosure labelled "Why?"; inside: a compact table of supporting records (date, what, value, data status), then rule id + version, explanation, limitations in `--muted`. |
 | `Source` | "Source: <title>, <publisher>" with a link only when a URL exists. |
 | `Button` | Primary: `--deep` background, white text. Secondary: `--card` with `--line` border. Danger is never used for health; Request help uses the `--review` colour with text "Request help". |
