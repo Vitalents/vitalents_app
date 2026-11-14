@@ -25,6 +25,7 @@ export interface Rule {
   finding: string
   step: { title: string; decision_owner: 'astronaut' | 'medical' | 'planner'; followup_days: number; opens?: 'schedule_alternatives' }
   source_id: string
+  source_type?: 'nasa' | 'research' | 'team_rule'
   limits: string
 }
 

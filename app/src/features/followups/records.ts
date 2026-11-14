@@ -1,15 +1,12 @@
 // Action and follow-up state changes (SRS 5.7, contract D-7). Pure functions: every write the UI makes comes from here,
 // so the permission check lives in the data layer, not in which buttons are visible (CLAUDE.md rule 12).
+import { LANGUAGE } from '../../content/content'
 import type { Action, FeedbackEntry, FollowUp } from '../../data/contract'
 
 export type Role = Action['owner_role']
 
 // TODO(question: Amr — move these templates to content/language.json; FR-FU-05 names that file but it does not exist yet).
-export const OUTCOME_TEXT = {
-  within: 'Your result was within your reference after this action. This does not show that the action caused it.',
-  outside: 'Your result was outside your reference after this action. This does not show anything about the action.',
-  no_reading: 'No reading after this action yet. The follow-up stays open until a result is recorded.',
-} as const
+export const OUTCOME_TEXT = LANGUAGE.followups.outcome_text as { within: string; outside: string; no_reading: string }
 export type LaterReading = { position: 'within' | 'outside'; record_id: string } | null
 
 export class NotPermitted extends Error {}

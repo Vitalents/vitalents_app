@@ -147,7 +147,7 @@ export const FOLLOW_STATUS: Record<string, string> = {
 export const INFO_STATUS: Record<string, string> = {
   valid: 'Valid',
   limited: 'Limited',
-  stale: 'Stale',
+  stale: 'Out of date',
   not_comparable: 'Not comparable',
   incomplete: 'Incomplete',
   no_reading: 'No reading',

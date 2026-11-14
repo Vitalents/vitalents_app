@@ -69,7 +69,7 @@ export const S = {
   statusLabels: {
     valid: 'Valid',
     limited: 'Limited quality',
-    stale: 'Stale',
+    stale: 'Out of date',
     not_comparable: 'Not comparable',
     incomplete: 'Incomplete',
     no_reading: 'No reading',

@@ -1,3 +1,4 @@
+import { LANGUAGE } from '../../content/content'
 // English UI strings for Act and follow (one file so Arabic/RTL can follow). TODO(review: Amr — merge into content/strings.ts).
 export const T = {
   followTitle: 'Plan & follow-ups',
@@ -28,10 +29,10 @@ export const T = {
   rateQ: 'Was this step useful to you?',
   useful: 'Useful',
   notUseful: 'Not useful',
-  rated: (v: string) => `You rated this step: ${v}. Ratings never change your reference or the rules.`,
+  rated: (v: string) => LANGUAGE.followups.rated.replace('{value}', v),
   declinedWith: (r: string | null) => (r ? `Declined: “${r}”` : 'Declined, no reason given'),
   unableWith: (r: string | null) => (r ? `Couldn't do it: “${r}”` : "Couldn't do it"),
-  waitingNote: 'Stays open until a later reading is recorded.',
+  waitingNote: LANGUAGE.followups.waitingNote,
   // Follow-up date reached (FR-FU-04). Observations only, never an effect of the step.
   reviewKicker: (due: string) => `Follow-up date reached · ${due}`,
   reviewQ: 'What did you observe after this step?',
