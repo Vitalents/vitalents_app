@@ -1,0 +1,67 @@
+[
+  {
+    "question": "Why do we measure sleep on a long mission?",
+    "label": "Recorded answers not added yet",
+    "response": {
+      "status": "not_in_library",
+      "question_id": "placeholder-1",
+      "your_data": null,
+      "science": null,
+      "citations": [],
+      "limits": "Recorded answers not added yet. TODO(record: run ai/record_answers.py on Ahmed's laptop)",
+      "model": "none (placeholder)"
+    }
+  },
+  {
+    "question": "What does a Decode result below my reference mean?",
+    "label": "Recorded answers not added yet",
+    "response": {
+      "status": "not_in_library",
+      "question_id": "placeholder-2",
+      "your_data": null,
+      "science": null,
+      "citations": [],
+      "limits": "Recorded answers not added yet. TODO(record: run ai/record_answers.py on Ahmed's laptop)",
+      "model": "none (placeholder)"
+    }
+  },
+  {
+    "question": "Why is pulse alone not enough to judge heart health?",
+    "label": "Recorded answers not added yet",
+    "response": {
+      "status": "not_in_library",
+      "question_id": "placeholder-3",
+      "your_data": null,
+      "science": null,
+      "citations": [],
+      "limits": "Recorded answers not added yet. TODO(record: run ai/record_answers.py on Ahmed's laptop)",
+      "model": "none (placeholder)"
+    }
+  },
+  {
+    "question": "How does light affect the sleep cycle in space?",
+    "label": "Recorded answers not added yet",
+    "response": {
+      "status": "not_in_library",
+      "question_id": "placeholder-4",
+      "your_data": null,
+      "science": null,
+      "citations": [],
+      "limits": "Recorded answers not added yet. TODO(record: run ai/record_answers.py on Ahmed's laptop)",
+      "model": "none (placeholder)"
+    }
+  },
+  {
+    "question": "What dose of melatonin should I take tonight?",
+    "label": "Recorded answers not added yet",
+    "response": {
+      "status": "not_in_library",
+      "question_id": "placeholder-5",
+      "your_data": null,
+      "science": null,
+      "citations": [],
+      "limits": "Recorded answers not added yet. TODO(record: run ai/record_answers.py on Ahmed's laptop)",
+      "model": "none (placeholder)"
+    }
+  }
+]

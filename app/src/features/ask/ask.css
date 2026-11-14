@@ -1,0 +1,164 @@
+/* Ask NASA. Uses the shared tokens from docs/DESIGN.md (names as in app/src/styles/tokens.css);
+   the fallbacks only matter on the dev entry before the shell's tokens load. */
+.ask-page, .ask-box {
+  --a-ink: var(--ink, #18363D);
+  --a-muted: var(--muted, #52666B);
+  --a-paper: var(--paper, #F5F3EB);
+  --a-card: var(--card, #FFFFFF);
+  --a-line: var(--line, #CFDBDC);
+  --a-teal: var(--teal, #31B9D4);
+  --a-deep: var(--deep, #00687A);
+  --a-tint: var(--tint, #BFEAF0);
+  --a-soft: var(--tint-soft, #E4F4F6);
+  --a-on-deep: var(--paper, #F5F3EB);
+  /* Control edges need 3:1 against the page (WCAG 1.4.11); --line alone is about 1.3:1. */
+  --a-edge: color-mix(in srgb, var(--a-muted) 72%, var(--a-line));
+  --a-focus: var(--focus, var(--a-deep));
+  --a-head: var(--font-head, 'Instrument Sans', ui-sans-serif, system-ui, sans-serif);
+  --a-body: var(--font-body, 'Instrument Sans', ui-sans-serif, system-ui, sans-serif);
+  color: var(--a-ink);
+  font-family: var(--a-body);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) :is(.ask-page, .ask-box) {
+    --a-ink: var(--ink, #E7F0F1); --a-muted: var(--muted, #9FB3B7); --a-paper: var(--paper, #0F1F23);
+    --a-card: var(--card, #152A30); --a-line: var(--line, #2A4249); --a-deep: var(--deep, #5FD0E3);
+    --a-tint: var(--tint, #173E47); --a-soft: var(--tint-soft, #183238); --a-on-deep: var(--paper, #0F1F23);
+  }
+}
+:root[data-theme='dark'] :is(.ask-page, .ask-box) {
+  --a-ink: var(--ink, #E7F0F1); --a-muted: var(--muted, #9FB3B7); --a-paper: var(--paper, #0F1F23);
+  --a-card: var(--card, #152A30); --a-line: var(--line, #2A4249); --a-deep: var(--deep, #5FD0E3);
+  --a-tint: var(--tint, #173E47); --a-soft: var(--tint-soft, #183238); --a-on-deep: var(--paper, #0F1F23);
+}
+
+/* ---------- page ---------- */
+.ask-page { max-width: 760px; margin: 0 auto; padding: 8px 0 48px; }
+.ask-head { display: flex; align-items: center; gap: 16px; }
+.ask-head .emblem { flex: none; display: block; }
+.ask-head .eyebrow { margin: 0 0 2px; }
+.ask-head h1 { font-family: var(--a-head); font-weight: 600; font-size: 2.25rem; line-height: 1.15; margin: 0; letter-spacing: -0.015em; }
+.ask-intro { color: var(--a-muted); max-width: 60ch; margin: 8px 0 24px; font-size: 1.125rem; line-height: 1.5; }
+
+/* ---------- question box ---------- */
+.ask-box { display: flex; flex-direction: column; gap: 12px; }
+.ask-form { display: flex; gap: 8px; }
+.ask-input {
+  flex: 1; min-width: 0; min-height: 48px; padding: 10px 14px; font: inherit; font-size: 1rem;
+  color: var(--a-ink); background: var(--a-card); border: 1px solid var(--a-edge); border-radius: 8px;
+}
+.ask-input::placeholder { color: var(--a-muted); }
+.ask-btn {
+  min-height: 48px; padding: 0 20px; font: inherit; font-weight: 600; cursor: pointer; white-space: nowrap;
+  color: var(--a-on-deep); background: var(--a-deep); border: 1px solid var(--a-deep); border-radius: 8px;
+}
+.ask-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.ask-btn--ghost {
+  color: var(--a-deep); background: var(--a-card); border-color: var(--a-line);
+  align-self: flex-start; min-height: 44px; margin-top: 8px;
+}
+.ask-btn--ghost:hover { border-color: var(--a-deep); }
+:is(.ask-input, .ask-btn, .ask-pill, .ask-page a, .ask-box a):focus-visible {
+  outline: 2px solid var(--a-focus); outline-offset: 2px;
+}
+
+.ask-suggest { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.ask-suggest__label { width: 100%; font-size: 0.875rem; color: var(--a-muted); margin: 4px 0 0; }
+.ask-pill {
+  min-height: 44px; padding: 8px 14px; font: inherit; font-size: 0.875rem; line-height: 1.35; text-align: left; cursor: pointer;
+  color: var(--a-ink); background: var(--a-card); border: 1px solid var(--a-edge); border-radius: 999px;
+  transition: border-color 150ms ease-out, background-color 150ms ease-out;
+}
+.ask-pill:hover:not(:disabled) { border-color: var(--a-deep); background: var(--a-soft); }
+.ask-pill:disabled { opacity: 0.55; cursor: not-allowed; }
+.ask-status { color: var(--a-muted); font-size: 0.875rem; margin: 0; }
+
+/* ---------- answer ---------- */
+.ask-answer {
+  background: var(--a-card); border: 1px solid var(--a-line); border-radius: 12px;
+  padding: 20px 24px; line-height: 1.5; margin-top: 4px;
+}
+.ask-answer > p { margin: 8px 0 0; }
+.ask-answer--fallback { border-style: dashed; }
+.ask-answer__meta { display: flex; justify-content: space-between; align-items: baseline; gap: 4px 12px; flex-wrap: wrap; }
+.ask-chip {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 600; line-height: 1.3;
+  padding: 4px 10px; border-radius: 999px; background: var(--a-tint); color: var(--a-ink);
+}
+.ask-chip::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: none; }
+.ask-chip--muted { background: transparent; border: 1px dashed var(--a-muted); }
+.ask-model { font-size: 0.75rem; color: var(--a-muted); font-variant-numeric: tabular-nums; }
+.ask-matched { font-size: 0.875rem; color: var(--a-muted); }
+
+.ask-section { margin-top: 16px; }
+.ask-section h3 {
+  margin: 0 0 4px; font-family: var(--a-body); font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--a-deep);
+}
+.ask-section p { margin: 0; }
+.ask-section p + p { margin-top: 8px; }
+/* Your data sits on a tinted panel so it never reads as part of the science text (FR-AS-03). */
+/* Brand callout (.callout in app.css); the fallback here keeps the dev entry and tests readable without it. */
+.ask-section--data { background: var(--a-soft); border-left: 4px solid var(--a-deep); border-radius: 0 8px 8px 0; padding: 12px 16px; }
+.ask-answer--empty { display: flex; gap: 16px; align-items: flex-start; }
+.ask-answer--empty .emblem { flex: none; display: block; }
+.ask-answer--empty p { margin: 8px 0 0; }
+.ask-section--science { padding: 0 2px; }
+.ask-section--science > p { max-width: 68ch; }
+
+.ask-cites { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.ask-cite { display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: 0 12px; align-items: start; }
+/* Uses the brand .num-badge; sizes repeated as a fallback. */
+.ask-cite__id {
+  display: inline-grid; place-items: center; width: 2rem; height: 2rem; border-radius: 999px;
+  background: var(--a-tint); color: var(--a-deep); font-weight: 600; font-size: 0.8rem; font-variant-numeric: tabular-nums;
+}
+.ask-cite > div { padding-top: 4px; }
+.ask-cite__title { font-weight: 600; }
+.ask-cite__page { color: var(--a-muted); font-weight: 400; }
+.ask-cite__excerpt {
+  margin: 6px 0; padding: 4px 0 4px 12px; border-left: 2px solid var(--a-teal);
+  font-size: 0.875rem; color: var(--a-ink);
+}
+.ask-cite a, .ask-cite__nolink { font-size: 0.875rem; }
+.ask-cite a { color: var(--a-deep); font-weight: 600; display: inline-flex; min-height: 44px; align-items: center; }
+.ask-cite__nolink { color: var(--a-muted); }
+
+.ask-limits { margin: 16px 0 0; padding-top: 12px; border-top: 1px solid var(--a-line); font-size: 0.875rem; color: var(--a-muted); }
+.ask-limits strong { color: var(--a-ink); font-weight: 600; }
+.ask-note { color: var(--a-deep); font-size: 0.875rem; font-weight: 600; margin: 8px 0 0; }
+.ask-foot { color: var(--a-muted); font-size: 0.875rem; margin: 4px 0 0; }
+.ask-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+
+/* ---------- library ---------- */
+.ask-library { margin-top: 48px; }
+.ask-library h2 { font-family: var(--a-head); font-weight: 600; font-size: 1.375rem; line-height: 1.15; margin: 0; }
+.ask-library__count { font-family: var(--a-body); font-weight: 400; font-size: 1rem; color: var(--a-muted); }
+.ask-library__note { color: var(--a-muted); font-size: 0.875rem; margin: 4px 0 0; }
+.ask-library ul { list-style: none; padding: 0; margin: 12px 0 0; border-top: 1px solid var(--a-line); }
+.ask-library li {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 16px; align-items: baseline;
+  padding: 12px 0; border-bottom: 1px solid var(--a-line);
+}
+.ask-lib__title { font-weight: 500; }
+.ask-lib__title a { color: var(--a-deep); }
+.ask-lib__pub { font-size: 0.875rem; color: var(--a-muted); text-align: right; }
+
+/* ---------- compact (domain card Understand tab) ---------- */
+.ask-box--compact .ask-answer { padding: 16px; }
+.ask-box--compact .ask-pill { font-size: 0.8125rem; }
+
+@media (max-width: 560px) {
+  .ask-head h1 { font-size: 1.75rem; }
+  .ask-head .emblem { height: 56px; width: auto; }
+  .ask-answer--empty .emblem { display: none; }
+  .ask-intro { font-size: 1rem; }
+  .ask-form { flex-direction: column; }
+  .ask-btn:not(.ask-btn--ghost) { width: 100%; }
+  .ask-answer { padding: 16px; }
+  .ask-library li { grid-template-columns: 1fr; }
+  .ask-lib__pub { text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ask-pill { transition: none; }
+}
