@@ -6,7 +6,7 @@
   "subject_id": "sim:crew:fahim",
   "scenario_code": "S1",
   "source_file": "app/public/data/fixtures/S1.json",
-  "source_sha256": "7e59f793fdfb58ffc219eb60044b818264a024f1dfa12868981f32bb83d0d99e",
+  "source_sha256": "924ef1f2a36f462f6c13adeb099b47444ba08629f2264d5ebaf93aac819fbdf8",
   "inputs": [
     {
       "key": "sleep_h",
