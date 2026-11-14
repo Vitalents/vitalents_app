@@ -2,6 +2,7 @@
 import { describe, expect, it } from 'vitest'
 import { buildReference, compareToReference } from './reference'
 import { scoreDecode } from './decode'
+import { restOpportunity } from './schedule'
 
 const files = import.meta.glob('../../../contracts/vectors/*/*.json', { eager: true, import: 'default' }) as Record<
   string,
@@ -12,6 +13,7 @@ const fns: Record<string, (input: never) => unknown> = {
   build_reference: buildReference as never,
   compare_to_reference: compareToReference as never,
   score_decode: scoreDecode as never,
+  rest_opportunity: restOpportunity as never,
 }
 
 function close(actual: unknown, expected: unknown, tol: number, path = ''): void {

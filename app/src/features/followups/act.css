@@ -1,0 +1,142 @@
+/* Act and follow screens. Token names follow app/src/styles/tokens.css (wp-01-ui) with fallbacks, so this file
+   works before and after the shell's tokens are merged. Only .act-* classes and the shared .chip/.btn names. */
+.act {
+  --a-ink: var(--ink, #18363d);
+  --a-muted: var(--muted, #52666b);
+  --a-paper: var(--paper, #f5f3eb);
+  --a-card: var(--card, #ffffff);
+  --a-line: var(--line, #cfdbdc);
+  --a-deep: var(--deep, #00687a);
+  --a-teal: var(--teal, #31b9d4);
+  --a-tint: var(--tint, #bfeaf0);
+  --a-tint-soft: var(--tint-soft, #e4f4f6);
+  --a-watch-bg: var(--fu-watch-bg, #f6ead2);
+  --a-watch-fg: var(--fu-watch-fg, #7a4e0b);
+  --a-review-bg: var(--fu-review-bg, #f6dfe1);
+  --a-review-fg: var(--fu-review-fg, #93323b);
+  --a-none-bg: var(--fu-none-bg, #e6eced);
+  --a-none-fg: var(--fu-none-fg, #3d5459);
+  --a-hatch: var(--hatch, #5b6b6f);
+  --a-focus: var(--focus, #00687a);
+  --a-head: var(--font-head, 'Instrument Sans', ui-sans-serif, system-ui, sans-serif);
+  --a-body: var(--font-body, 'Instrument Sans', ui-sans-serif, system-ui, sans-serif);
+  --a-radius: var(--radius, 12px);
+  --a-radius-sm: var(--radius-sm, 8px);
+  /* Control borders at >= 3:1 against the card (--line is 1.4:1, fine for dividers only). */
+  --a-control-line: color-mix(in srgb, var(--a-muted) 80%, var(--a-card));
+  color: var(--a-ink);
+  font-family: var(--a-body);
+  line-height: 1.5;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+@media (prefers-color-scheme: dark) {
+  .act {
+    --a-ink: var(--ink, #e7f0f1); --a-muted: var(--muted, #9fb3b7); --a-paper: var(--paper, #0f1f23);
+    --a-card: var(--card, #152a30); --a-line: var(--line, #2a4249); --a-deep: var(--deep, #5fd0e3);
+    --a-tint: var(--tint, #173e47); --a-tint-soft: var(--tint-soft, #183238);
+    --a-watch-bg: var(--fu-watch-bg, #3a2e17); --a-watch-fg: var(--fu-watch-fg, #f0cd8a);
+    --a-review-bg: var(--fu-review-bg, #3b1d21); --a-review-fg: var(--fu-review-fg, #f2aab0);
+    --a-none-bg: var(--fu-none-bg, #22383e); --a-none-fg: var(--fu-none-fg, #c3d3d6);
+    --a-hatch: var(--hatch, #b8c4c7); --a-focus: var(--focus, #5fd0e3);
+  }
+}
+.act *, .act *::before, .act *::after { box-sizing: border-box; }
+/* Focus uses the shell's --focus (deep, 5.8:1 on paper); teal is 2.1:1 and fails WCAG 1.4.11. */
+.act :focus-visible { outline: 3px solid var(--a-focus); outline-offset: 2px; }
+.act h1, .act h2, .act h3 { font-family: var(--a-head); font-weight: 600; line-height: 1.15; margin: 0; letter-spacing: -0.01em; }
+.act h1 { font-size: 1.75rem; }
+.act h2 { font-size: 1.125rem; }
+.act p { margin: 0; }
+.act-num { font-variant-numeric: tabular-nums; }
+.act-muted { color: var(--a-muted); }
+.act-small { font-size: 0.875rem; }
+
+.act-head { display: grid; gap: 6px; margin-bottom: 24px; max-width: 62ch; }
+.act-section { display: grid; gap: 12px; margin-bottom: 32px; }
+.act-section > h2 { color: var(--a-muted); font-family: var(--a-body); font-size: 0.875rem; font-weight: 600; }
+.act-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+
+/* card */
+.act-card { background: var(--a-card); border: 1px solid var(--a-line); border-radius: var(--a-radius); padding: 20px 24px; display: grid; gap: 14px; }
+.act-card.is-quiet { background: transparent; }
+.act-card-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.act-kind { font-size: 0.875rem; font-weight: 600; color: var(--a-deep); }
+.act-card h2.act-title { font-size: 1.25rem; }
+.act-reason { max-width: 68ch; }
+.act-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 20px; margin: 0; padding-top: 14px; border-top: 1px solid var(--a-line); }
+.act-facts div { display: grid; gap: 2px; min-width: 0; align-content: start; }
+.act-facts dt { font-size: 0.75rem; font-weight: 600; color: var(--a-muted); }
+.act-facts dd { margin: 0; font-size: 0.9375rem; overflow-wrap: anywhere; }
+.act-note { border-left: 3px solid var(--a-line); padding: 4px 0 4px 12px; color: var(--a-ink); max-width: 68ch; }
+.act-note strong { display: block; font-size: 0.75rem; color: var(--a-muted); }
+.act-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.act-form { display: grid; gap: 8px; max-width: 460px; }
+.act-form label { font-size: 0.875rem; font-weight: 600; }
+.act-form textarea { font: inherit; color: var(--a-ink); background: var(--a-card); border: 1px solid var(--a-control-line); border-radius: var(--a-radius-sm); padding: 10px 12px; min-height: 72px; resize: vertical; }
+.act-error { color: var(--a-review-fg); font-weight: 600; font-size: 0.875rem; }
+.act-link { color: var(--a-deep); font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; text-underline-offset: 3px; }
+
+/* Buttons, chips, .kicker and .callout come from the shell (styles/app.css); only small local adjustments here. */
+.act .btn { border-radius: var(--a-radius-sm); }
+.act .btn:not(.primary) { border-color: var(--a-control-line); }
+.act .btn[aria-pressed='true'] { background: var(--a-tint); border-color: var(--a-deep); }
+
+/* rest window */
+.act-rest { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
+.act-rest-main { display: grid; gap: 16px; min-width: 0; }
+.act-rest-side { display: grid; gap: 16px; }
+.act-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--a-line); border-radius: var(--a-radius); background: var(--a-card); overflow: hidden; }
+.act-pair > div { padding: 16px 20px; display: grid; gap: 2px; }
+.act-pair > div + div { border-left: 1px solid var(--a-line); background: var(--a-tint-soft); }
+.act-pair .label { font-size: 0.875rem; font-weight: 600; color: var(--a-muted); }
+.act-pair .value { font-family: var(--a-head); font-size: 2.25rem; font-weight: 600; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.act-pair .unit { font-size: 0.875rem; color: var(--a-muted); }
+.act-pair.single { grid-template-columns: 1fr; }
+
+.act-timeline { background: var(--a-card); border: 1px solid var(--a-line); border-radius: var(--a-radius); padding: 16px 16px 12px; }
+.act-timeline > div > svg { display: block; width: 100%; height: auto; overflow: visible; }
+.act-legend svg { display: inline-block; width: auto; }
+.tl-lane-label { font: 600 13px var(--a-body); fill: var(--a-ink); }
+.tl-window { fill: var(--a-tint-soft); stroke: var(--a-deep); stroke-width: 1; stroke-dasharray: 3 3; }
+.tl-fixed { fill: var(--a-ink); }
+.tl-movable { fill: var(--a-card); stroke: var(--a-deep); stroke-width: 2; }
+.tl-moved { fill: var(--a-deep); }
+.tl-prep { fill: url(#tl-hatch); }
+.tl-hatch-line { stroke: var(--a-hatch); stroke-width: 2; opacity: 0.6; }
+/* Free block in --deep: teal on the tint band is 2.1:1 (WCAG 1.4.11 needs 3:1). */
+.tl-free { fill: var(--a-deep); }
+.tl-free-text { font: 600 13px var(--a-body); fill: var(--a-ink); font-variant-numeric: tabular-nums; }
+.tl-item-text { font: 600 12px var(--a-body); pointer-events: none; }
+.tl-item-text.on-dark { fill: var(--a-card); }
+.tl-item-text.on-light { fill: var(--a-deep); }
+.tl-tick { stroke: var(--a-line); }
+.tl-tick-text { font: 500 12px var(--a-body); fill: var(--a-muted); font-variant-numeric: tabular-nums; }
+.act-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 10px 0 0; padding: 0; list-style: none; font-size: 0.8125rem; color: var(--a-muted); }
+.act-legend li { display: inline-flex; align-items: center; gap: 6px; }
+.act-legend svg { flex: none; }
+
+.act-constraints { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.act-constraints li { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 10px 0; border-top: 1px solid var(--a-line); }
+.act-constraints li:first-child { border-top: 0; padding-top: 0; }
+.act-constraints .name { font-weight: 600; }
+.act-constraints .time { font-variant-numeric: tabular-nums; color: var(--a-muted); text-align: right; }
+.act-constraints .rule { grid-column: 1 / -1; font-size: 0.875rem; color: var(--a-muted); }
+.act-tag { display: inline-block; font-size: 0.75rem; font-weight: 600; padding: 1px 8px; border-radius: 4px; border: 1px solid var(--a-line); margin-right: 6px; color: var(--a-ink); }
+.act-tag.fixed { background: var(--a-ink); color: var(--a-card); border-color: var(--a-ink); }
+.act-quote { background: var(--a-paper); border: 1px solid var(--a-line); border-radius: var(--a-radius-sm); padding: 12px 14px; display: grid; gap: 4px; font-size: 0.9375rem; }
+.act-sync { display: inline-flex; align-items: center; gap: 8px; font-size: 0.875rem; font-weight: 600; }
+.act-sync::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--a-deep); }
+.act-notice { border-left: 4px solid var(--a-ink); }
+
+@media (max-width: 900px) {
+  .act-rest { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .act h1 { font-size: 1.5rem; }
+  .act-card { padding: 16px; }
+  .act-facts { grid-template-columns: 1fr 1fr; }
+  .act-pair .value { font-size: 1.75rem; }
+  .act-pair > div { padding: 14px 16px; }
+  .act-controls .btn { flex: 1 1 auto; }
+}

@@ -1,0 +1,46 @@
+{
+  "vector_id": "all-fixed",
+  "function": "rest_opportunity",
+  "contract_version": "1.0",
+  "description": "Same evening, but the meeting is fixed: no valid alternative; the current opportunity is still reported.",
+  "input": {
+    "rest_window": {
+      "start": "2026-11-14T23:00:00Z",
+      "end": "2026-11-15T06:00:00Z"
+    },
+    "items": [
+      {
+        "item_id": "sim:mission_schedule:meeting-d27",
+        "label": "Planning meeting",
+        "start": "2026-11-14T23:00:00Z",
+        "end": "2026-11-15T00:00:00Z",
+        "is_fixed": true,
+        "prep_minutes": 0,
+        "travel_minutes": 0,
+        "movable_earliest_start": "2026-11-14T21:00:00Z",
+        "movable_latest_end": "2026-11-15T00:00:00Z"
+      },
+      {
+        "item_id": "sim:mission_schedule:eva-prep-d27",
+        "label": "EVA procedure review",
+        "start": "2026-11-14T19:00:00Z",
+        "end": "2026-11-14T21:00:00Z",
+        "is_fixed": true,
+        "prep_minutes": 0,
+        "travel_minutes": 0,
+        "movable_earliest_start": null,
+        "movable_latest_end": null
+      }
+    ],
+    "step_minutes": 15
+  },
+  "expected": {
+    "status": "no_valid_alternative",
+    "current_minutes": 360,
+    "best_minutes": 360,
+    "current_total_minutes": 360,
+    "best_total_minutes": 360,
+    "changes": []
+  },
+  "tolerance": 0.001
+}
