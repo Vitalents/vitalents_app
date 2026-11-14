@@ -64,7 +64,7 @@ code { font-size: 0.78em; color: var(--muted); word-break: break-all; }
 .mission-day { font-family: var(--font-head); font-weight: 600; }
 .mission-day .short { display: none; }
 .crew, .sync { font-size: 0.8rem; color: var(--muted); }
-.sync::before { content: '⇅ '; }
+.sync::before { content: '⇅ ' / ''; }
 .top-actions { display: flex; gap: 0.5rem; align-items: center; }
 
 .body { flex: 1; display: grid; grid-template-columns: 232px minmax(0, 1fr); }

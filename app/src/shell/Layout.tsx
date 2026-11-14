@@ -41,7 +41,7 @@ export function Layout() {
 
   return (
     <div className="app">
-      <div className="banner" role="note">{S.banner}</div>
+      <aside className="banner" aria-label="Data notice">{S.banner}</aside>
       <header className="topbar">
         <Link to="/" className="brand" aria-label={S.appName}>
           <span className="brand-full"><Logo height={24} /></span>
