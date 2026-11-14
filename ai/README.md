@@ -38,6 +38,8 @@ VITA_LLM="YOUR-QWEN-TAG" python ask_nasa.py --eval ../content/eval.json --out ..
 
 `eval.json`: `[{"q": "...", "answerable": true, "expect": "title substring"}, {"q": "...", "answerable": false}]`. The eval prints PASS/FAIL per question and counts of correct source, correct abstention and blocked answers. Tune `VITA_MIN_SCORE` (default 0.55) so answerable questions pass and the unanswerable ones stay refused.
 
+The eval file holds counts but no rates. `python eval_summary.py ../science/out/assistant_eval_*.json` prints, per model, `correct_source_rate` (of answerable questions), `abstention_rate` (of unanswerable questions) and `blocked_rate` (of all questions), each with its count; a rate with no questions behind it is `null`. `python3 scripts/publish_proof.py` (repo root) uses the same module to put these on the Proof screen. Tests: `pytest tests/test_eval_summary.py` (synthetic files, no Ollama).
+
 ```bash
 curl -s localhost:8008/health
 curl -s localhost:8008/ask -H 'Content-Type: application/json' \

@@ -1,0 +1,22 @@
+{
+  "proof_version": "1.0",
+  "generated_by": "scripts/publish_proof.py",
+  "generated_at_utc": "2026-11-14T08:36:01Z",
+  "status": "not_generated",
+  "validation": {
+    "status": "not_generated",
+    "source": "science/out/validation.json",
+    "source_generated_at_utc": null,
+    "source_generated_by": null,
+    "seed": null,
+    "areas": null,
+    "illustrative_parameters": null,
+    "problems": []
+  },
+  "assistant_eval": {
+    "status": "not_generated",
+    "source_pattern": "science/out/assistant_eval*.json",
+    "models": null,
+    "problems": []
+  }
+}
