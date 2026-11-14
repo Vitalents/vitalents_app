@@ -12,8 +12,8 @@ test('/record: Decode chart with "No reading" on day 27, self-rating on its own 
   await expect(figure).toBeVisible()
   await expect(figure.locator('svg.recharts-surface')).toBeVisible()
 
-  // The gap on day 27: labelled on the chart, in the legend, in the stats and in the value table.
-  await expect(figure.locator('svg text', { hasText: 'No reading' })).toHaveCount(1)
+  // Day 23 had an interrupted round with no score. Day 27 has no round yet.
+  await expect(figure.locator('svg text', { hasText: 'No reading' })).toHaveCount(2)
   await expect(figure).toContainText('No reading (a gap, never 0)')
   await expect(decode.locator('.tr-stats')).toContainText('No reading: 14 Nov (day 27)')
   const today = decode.locator('details.tr-table tbody tr').first()

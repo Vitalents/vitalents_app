@@ -31,7 +31,7 @@ describe('templateSections', () => {
     expect(s.trend).toContain('(data: Limited, weak sensor contact)')
     expect(s.context).toContain('Lower back pain after exercise')
     expect(s.context).toContain('Limits: ')
-    expect(s.what_was_tried).toContain('Request a review by the medical team')
+    expect(s.what_was_tried).toContain('Send your report to the medical team')
     expect(s.crew_question).toBe(Q)
     expect(s.requested_decision).toBe(C.template.decisionWithQuestion)
   })
