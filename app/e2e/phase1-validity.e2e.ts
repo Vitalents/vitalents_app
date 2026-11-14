@@ -2,6 +2,16 @@ import { expect, open, switchRole, test } from './helpers'
 
 test.use({ serviceWorkers: 'block' })
 
+test('the public assistant distinguishes withdrawn explanations and lists the full library', async ({ page }) => {
+  await open(page, '/ask')
+  await expect(page.getByRole('heading', { name: 'Onboard library 34 sources' })).toBeVisible()
+  await page.getByRole('button', { name: 'Why do we measure sleep on a long mission?', exact: true }).click()
+  const answer = page.getByRole('article', { name: 'Answer to: Why do we measure sleep on a long mission?' })
+  await expect(answer).toContainText('This recorded explanation is withheld until its claims are supported by the cited sources.')
+  await expect(answer).not.toContainText('This question is outside what the assistant may answer')
+  await expect(answer).toContainText('Publication review withheld this recorded response.')
+})
+
 for (const exit of ['navigation', 'reload'] as const) {
   test(`an unfinished measured round survives ${exit} with its event ledger`, async ({ page }) => {
     await page.clock.install()

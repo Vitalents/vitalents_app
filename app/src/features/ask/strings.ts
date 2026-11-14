@@ -1,6 +1,7 @@
 // English strings for Ask NASA. Kept in one place so Arabic / RTL can follow (CLAUDE.md rule 11).
 // TODO(merge: move into app/src/content/strings.ts once the shell's strings file lands)
 export const S = {
+  withheld: 'This recorded explanation is withheld until its claims are supported by the cited sources.',
   title: 'Ask NASA',
   kicker: 'Understand',
   noRecordedChip: 'No recorded answer',

@@ -1,6 +1,7 @@
 // Typed access to content/ (owned by Amr). Text comes from these files only.
 import domainsJson from '../../../content/domains.json'
 import libraryJson from '../../../content/library.json'
+import extraLibraryJson from '../../../content/library.extra.json'
 import rulesJson from '../../../content/rules.json'
 import messagesJson from '../../../content/messages.json'
 import languageJson from '../../../content/language.json'
@@ -42,7 +43,7 @@ export interface LibrarySource {
 
 export const DOMAINS = domainsJson.domains as DomainContent[]
 export const CONTENT_IS_DRAFT = String(domainsJson.content_version).includes('draft')
-export const LIBRARY = new Map((libraryJson.sources as LibrarySource[]).map((s) => [s.id, s]))
+export const LIBRARY = new Map(([...libraryJson.sources, ...extraLibraryJson] as LibrarySource[]).map((s) => [s.id, s]))
 export const domainById = (id: string) => DOMAINS.find((d) => d.id === id)
 
 /** Rules from content/rules.json (drafts until a medical owner approves each one). */
