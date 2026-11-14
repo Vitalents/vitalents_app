@@ -54,6 +54,18 @@ MEDICATION_Q = re.compile(
     r"ibuprofen|paracetamol|acetaminophen|aspirin|antibiotics?|painkillers?|overdose)\b",
     re.I,
 )
+# Questions asking whether the crew member has a condition, or what their symptoms mean for them,
+# are refused before retrieval (CLAUDE.md rule 1: no diagnosis). General "what is X" questions still pass.
+DIAGNOSIS_REFUSAL = ("I can't tell whether you have a condition or what your symptoms mean. "
+                     "Use Request help to ask the medical team; you can report the symptom with Report something.")
+DIAGNOSIS_Q = re.compile(
+    r"\b(do|could|might|may|can)\s+i\s+(have|be\s+getting|be\s+developing|be\s+suffering\s+from)\b"
+    r"|\b(am\s+i|is\s+(this|it|that))\s+(sick|ill|unwell|having|getting|developing|a\s+sign\s+of|a\s+symptom\s+of|serious|dangerous|okay|ok|fine)\b"
+    r"|\bwhat(?:'s|\s+is)\s+wrong\s+with\s+me\b"
+    r"|\b(diagnose|diagnosis)\b"
+    r"|\bshould\s+i\s+(worry|be\s+worried|see\s+a\s+doctor)\b",
+    re.I,
+)
 # Wording the product must never output, whatever the sources say (CLAUDE.md rules 1 and 4).
 FORBIDDEN_OUT = re.compile(
     r"\b(ready|not ready|fit for duty|unfit|readiness score|healthy|all clear|diagnos\w*|dose|dosage|mg|milligrams?|"
@@ -217,6 +229,10 @@ def parse_json(text: str):
 
 def is_medication_question(q: str) -> bool:
     return bool(MEDICATION_Q.search(q or ""))
+
+
+def is_diagnosis_question(q: str) -> bool:
+    return bool(DIAGNOSIS_Q.search(q or ""))
 
 
 def fence(text: str) -> str:
@@ -416,6 +432,8 @@ def ask(req: AskIn):
 
     if is_medication_question(req.question):
         return _respond("blocked", qid, your_data, limits=MED_REFUSAL, trace=trace, reason="medication_or_dose")
+    if is_diagnosis_question(req.question):
+        return _respond("blocked", qid, your_data, limits=DIAGNOSIS_REFUSAL, trace=trace, reason="diagnosis_request")
     s = store()
     if s is None:
         raise HTTPException(503, "Index missing: run python ask_nasa.py --build")
