@@ -11,6 +11,7 @@ import { HelpDialog, ReportDialog } from './Dialogs'
 import { Icon } from './Icons'
 import { Emblem, Logo, Mark } from './Logo'
 import { HELP_EVENT } from '../features/decode/useRound'
+import { useOutboxTicker } from '../sync/link'
 
 export const NAV = [
   { to: '/', key: 'map', end: true },
@@ -27,6 +28,7 @@ export function Layout() {
   const date = useReviewDate()
   const waiting = useWaitingToSend()
   const [dialog, setDialog] = useState<'help' | 'report' | null>(null)
+  useOutboxTicker() // moves shared packages through the simulated link (FR-SY-02)
 
   useEffect(() => {
     init()

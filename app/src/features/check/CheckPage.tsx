@@ -8,6 +8,7 @@ import {
 import { useStore } from '../../store/store'
 import { DecodeRound } from '../decode/DecodeRound'
 import { DataBadge, ResultView } from '../decode/ResultView'
+import { S as SH } from '../../content/strings'
 import { Emblem } from '../../shell/Logo'
 import { messageFor } from '../decode/messages'
 import { S } from '../decode/strings'
@@ -103,6 +104,7 @@ export function CheckPage() {
 
   return (
     <div className="dc-page">
+      <h1 className="sr-only">{SH.nav.check.full}</h1>
       {step === 'check' && <DailyCheck ctx={ctx} onDone={() => setStep('intro')} />}
 
       {step === 'intro' && (

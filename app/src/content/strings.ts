@@ -208,11 +208,16 @@ export const S = {
   settings: {
     title: 'Settings',
     scenario: 'Scenario',
-    current: (code: string) => `Loaded: ${code} (Fahim, simulated)`,
-    reload: 'Reload scenario S1',
-    reloadConfirm: 'Confirm: replace local data with S1',
-    reloaded: 'Scenario S1 reloaded.',
-    moreLater: 'Scenarios S2–S5, the role switcher and the link delay arrive in later builds.',
+    current: (code: string) => `Loaded: ${code} (simulated)`,
+    choose: 'Choose a scenario',
+    reload: (code: string) => `Load ${code}`,
+    reloadConfirm: (code: string) => `Confirm: replace local data with ${code}`,
+    reloaded: (code: string) => `Scenario ${code} loaded.`,
+    roleTitle: 'Demo role',
+    roleViews: 'Open the view for this role:',
+    medicalView: 'Medical team view',
+    plannerView: 'Mission planner view',
+    linkTitle: 'Link to Earth (simulated)',
   },
 
   placeholder: {

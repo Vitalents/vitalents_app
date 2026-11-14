@@ -1,4 +1,5 @@
-import { StrictMode } from 'react'
+// Entry: fonts, tokens and the router. Screens load on demand so the first page stays small.
+import { lazy, StrictMode, Suspense, type ComponentType, type ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import '@fontsource/instrument-sans/400.css'
@@ -9,14 +10,31 @@ import './styles/tokens.css'
 import './styles/app.css'
 import { Layout } from './shell/Layout'
 import { MapPage } from './features/map/MapPage'
-import { CheckPage } from './features/check/CheckPage'
-import { ReviewPage } from './features/review/ReviewPage'
-import { RecordPage, SharePage } from './features/placeholder/Placeholder'
-import { FollowUpList } from './features/followups/FollowUpList'
-import { RestWindowPage } from './features/schedule/RestWindowPage'
-import { DomainPage } from './features/domain/DomainPage'
-import { SettingsPage } from './features/settings/SettingsPage'
-import { AskPage } from './features/ask/AskPage'
+import { S } from './content/strings'
+import { useSubject } from './store/selectors'
+
+const pick = <M,>(load: () => Promise<M>, name: keyof M) =>
+  lazy(async () => ({ default: (await load())[name] as unknown as ComponentType<Record<string, unknown>> }))
+
+const CheckPage = pick(() => import('./features/check/CheckPage'), 'CheckPage')
+const ReviewPage = pick(() => import('./features/review/ReviewPage'), 'ReviewPage')
+const RecordPage = pick(() => import('./features/placeholder/Placeholder'), 'RecordPage')
+const FollowUpList = pick(() => import('./features/followups/FollowUpList'), 'FollowUpList')
+const RestWindowPage = pick(() => import('./features/schedule/RestWindowPage'), 'RestWindowPage')
+const DomainPage = pick(() => import('./features/domain/DomainPage'), 'DomainPage')
+const SettingsPage = pick(() => import('./features/settings/SettingsPage'), 'SettingsPage')
+const AskPage = pick(() => import('./features/ask/AskPage'), 'AskPage')
+const SharePage = pick(() => import('./features/sharing/SharePage'), 'SharePage')
+const MedicalView = pick(() => import('./features/roles/MedicalView'), 'MedicalView')
+const PlannerView = pick(() => import('./features/roles/PlannerView'), 'PlannerView')
+
+const page = (node: ReactNode) => <Suspense fallback={<p className="muted pad" role="status">{S.loading}</p>}>{node}</Suspense>
+
+// Role screens follow the loaded scenario's subject.
+function WithSubject({ C }: { C: ComponentType<Record<string, unknown>> }) {
+  const id = useSubject()?.subject_profile_id
+  return id ? page(<C subjectId={id} />) : null
+}
 
 const router = createBrowserRouter([
   {
@@ -24,15 +42,17 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <MapPage /> },
-      { path: 'check', element: <CheckPage /> },
-      { path: 'review', element: <ReviewPage /> },
-      { path: 'record', element: <RecordPage /> },
-      { path: 'plan', element: <FollowUpList scheduleHref="/rest-window" /> },
-      { path: 'rest-window', element: <RestWindowPage backHref="/plan" /> },
-      { path: 'share', element: <SharePage /> },
-      { path: 'domain/:id', element: <DomainPage /> },
-      { path: 'settings', element: <SettingsPage /> },
-      { path: 'ask', element: <AskPage /> },
+      { path: 'check', element: page(<CheckPage />) },
+      { path: 'review', element: page(<ReviewPage />) },
+      { path: 'record', element: page(<RecordPage />) },
+      { path: 'plan', element: page(<FollowUpList scheduleHref="/rest-window" />) },
+      { path: 'rest-window', element: page(<RestWindowPage backHref="/plan" />) },
+      { path: 'share', element: <WithSubject C={SharePage} /> },
+      { path: 'medical', element: <WithSubject C={MedicalView} /> },
+      { path: 'planner', element: <WithSubject C={PlannerView} /> },
+      { path: 'domain/:id', element: page(<DomainPage />) },
+      { path: 'settings', element: page(<SettingsPage />) },
+      { path: 'ask', element: page(<AskPage />) },
       { path: '*', element: <MapPage /> },
     ],
   },

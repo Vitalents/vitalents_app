@@ -7,6 +7,7 @@ import { Emblem } from '../../shell/Logo'
 import { fmtMinutes, hm, T } from '../followups/strings'
 import { describeChange, plannerRequest } from './request'
 import { Timeline } from './Timeline'
+import { sendOperationalRequest } from '../../sync/link'
 import '../followups/act.css'
 
 export interface RestWindowPageProps {
@@ -42,7 +43,9 @@ export function RestWindowPage({ day = '2026-11-14', schedule, now = () => new D
   async function request() {
     setError(null)
     try {
-      await put('action', [plannerRequest(result.changes, records, result.current_minutes as number, result.best_minutes as number, now())])
+      const action = plannerRequest(result.changes, records, result.current_minutes as number, result.best_minutes as number, now())
+      await put('action', [action])
+      await sendOperationalRequest(action, 'astronaut') // operational data only, never health records
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e))
     }
