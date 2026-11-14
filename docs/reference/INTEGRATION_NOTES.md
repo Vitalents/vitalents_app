@@ -25,3 +25,29 @@ The app still uses its TypeScript engine (`app/src/engine/reference.ts`), which 
 7. **Provenance of the reference record.** `task2_record` writes `data_origin: application_generated` with `is_simulated: true` for simulated subjects; `status.py` itself treats `is_simulated` as true only for `simulated_mission`. Choose which one a simulated subject's reference uses.
 8. **Freeze.** D-10 freezes the reference while a follow-up is open. `reference.py` freezes only on an explicit decision. Fine: the app adapter will record the freeze decision when a follow-up opens. No engine change needed.
 9. **Still open from Task 3:** a `limited` status (weak sensor contact) and D-11's subject mode for a live round played into Fahim's simulated history (`mission_simulation` in the contract, `live_player` expected by `status.py`).
+
+## Tasks 6–7: rules.py (rules-1.0.0) and schedule.py (schedule-1.0.0), added 14 Nov 2026
+
+Integrated with tests (`cd science && pytest` → 202 passed, 1 expected failure) and docs in `docs/rules-schedule/`. `status.py` and `reference.py` are unchanged, so the decisions above are still open.
+
+### Schedule: agrees with the app
+
+The app's engine (`app/src/engine/schedule.ts`) searches for the best move; `schedule.py` checks moves it is given and adds the approval step. Fed the app's best move, `schedule.py` matches every shared vector in `contracts/vectors/rest_opportunity/`:
+
+| Vector | App | schedule.py |
+|---|---|---|
+| fahim-d27 | 360 → 420 min | 360 → 420, `pending_approval` (planner) |
+| midnight-crossing | longest 165 → 345, total 345 → 375 | longest 165 → 345, total 345 → 375 |
+| all-fixed | no valid alternative | `no_valid_alternative` |
+| missing-window | not computable | needs an explicit window (the app returns null minutes, never zero) |
+
+Plan: the app proposes the move, `schedule.py`'s rules confirm it, and the planner's approval keeps it pending until given. No decision needed.
+
+### Rules: one decision needed (Shaimaa, Amr, Ahmed)
+
+The two engines order the daily next step differently:
+
+- App (SRS attention order): urgent / help → due follow-ups → changes → missing information → reference. Fahim day 27: **rest-window step (R-PLAN-01)** first.
+- `rules.py`: `request_review` (including any review already open) → `complete_measurement` → `approved_plan_step` → `observe`. Fahim day 27: his pain follow-up is already under specialist review, so the main step becomes **continue that review**, and the rest window drops below the missing-measurement steps.
+
+Choose one order and update either `rules.py` or the SRS and the app. Also: `rules.py` proposes a plan step only with an `ApprovedMatch` (a signed-off rule, evidence and decision owner). That needs Amr's reviewed `content/rules.json` and a medical owner's approval of each rule.
